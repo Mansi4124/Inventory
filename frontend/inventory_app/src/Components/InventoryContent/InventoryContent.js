@@ -1,6 +1,6 @@
 import React from "react";
 import "../InventoryContent/InventoryContent.css"; // Import custom CSS for styling
-import { Card, Button, CloseButton } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const InventoryContent = () => {

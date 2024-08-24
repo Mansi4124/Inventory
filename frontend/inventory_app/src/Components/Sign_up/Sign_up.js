@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "./Sign_up.css";
+import axios from "axios"
 
 function Sign_up() {
   const [formErrors, setFormErrors] = useState({});
+
   const [user, setUserDetails] = useState({
     fname: "",
     lname: "",
@@ -16,39 +19,33 @@ function Sign_up() {
     setUserDetails({ ...user, [name]: value });
   };
 
-  const validateForm = (values) => {
-    const error = {};
-    const regex = /^[^\s+@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!values.fname) {
-      error.fname = "First Name is required";
+  const navigate = useNavigate();
+
+  const signupHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post("http://localhost:8000/sign_up/", user);
+      const data = res.data;
+
+      if (data.success) {
+        const userId = data.user_id;
+
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + 30);
+
+        document.cookie = `userId=${userId}; expires=${expiryDate.toUTCString()}; path=/; secure; SameSite=Lax`;
+
+        navigate('/dashboard');
+      } else {
+        setFormErrors(data);
+      }
+    } catch (error) {
+      console.error('Error signing up:', error);
+      setFormErrors({ message: 'An error occurred. Please try again.' });
     }
-    if (!values.lname) {
-      error.lname = "Last Name is required";
-    }
-    if (!values.email) {
-      error.email = "Email is required";
-    } else if (!regex.test(values.email)) {
-      error.email = "This is not a valid email format!";
-    }
-    if (!values.password) {
-      error.password = "Password is required";
-    } else if (values.password.length < 4) {
-      error.password = "Password must be more than 4 characters";
-    } else if (values.password.length > 10) {
-      error.password = "Password cannot exceed more than 10 characters";
-    }
-    if (!values.cpassword) {
-      error.cpassword = "Confirm Password is required";
-    } else if (values.cpassword !== values.password) {
-      error.cpassword = "Confirm password and password should be same";
-    }
-    return error;
   };
 
-  const signupHandler = (e) => {
-    e.preventDefault();
-    setFormErrors(validateForm(user));
-  };
 
   return (
     <>
@@ -64,7 +61,6 @@ function Sign_up() {
               onChange={changeHandler}
               value={user.fname}
             />
-            <p className="error">{formErrors.fname}</p>
             <input
               type="text"
               name="lname"
@@ -73,7 +69,6 @@ function Sign_up() {
               onChange={changeHandler}
               value={user.lname}
             />
-            <p className="error">{formErrors.lname}</p>
             <input
               type="email"
               name="email"

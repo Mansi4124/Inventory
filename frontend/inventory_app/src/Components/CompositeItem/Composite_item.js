@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "../Composite_item/Composite_item.css";
+import "./Composite_item.css";
 
 function MyForm() {
   const [rows, setRows] = useState([
