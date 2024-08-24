@@ -1,11 +1,68 @@
-import React from "react";
-import "../Homecontent/HomeContent.css"; // Import custom CSS for styling
+import React, { useEffect, useState } from "react";
+import "./HomeContent.css";
+import axios from "axios"
 
 const HomeContent = () => {
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getCookie = (name) => {
+      const cookieName = `${name}=`;
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookies = decodedCookie.split(';');
+
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i];
+        while (cookie.charAt(0) === ' ') {
+          cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(cookieName) === 0) {
+          return cookie.substring(cookieName.length, cookie.length);
+        }
+      }
+      return null;
+    };
+
+
+    const fetchData = async () => {
+      const userId = getCookie('userId');
+      if (userId) {
+        try {
+          const response = await axios.post("http://localhost:8000/get_customer_data/", { user_id: userId });
+          if (response.data.user) {
+            setData(response.data.user);
+          } else {
+            console.warn('No user data returned from server');
+            setData(null);
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setData(null);
+        }
+      } else {
+        console.warn('No user ID cookie found');
+        setData(null);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+  },[]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!data) {
+    return <div>No data available</div>;
+  }
+
   return (
     <div className="main-div">
       <div className="content-div">
-        <h2 className="title">Hello, XYZ</h2>
+        <h2 className="title">Hello, {data['fname']} </h2>
         <p className="text-muted">Organization Name</p>
       </div>
 

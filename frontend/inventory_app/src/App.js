@@ -10,7 +10,7 @@ import Home from './Components/Homepage/Homepage';
 import SignUp from './Components/Sign_up/Sign_up';
 import Dashboard from './Components/Dashboard/Dashboard';
 import ItemForm from './Components/ItemForm/ItemForm';
-import Composite from './Components/Composite_item/Composite_item';
+import Composite from './Components/CompositeItem/Composite_item';
 
 const App = () => {
     const [organizationName, setOrganizationName] = useState('');

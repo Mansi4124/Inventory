@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Nav} from 'react-bootstrap';
 
-import '../Dashboard/Dashboard.css'; // Import custom CSS
-import HomeContent from '../Homecontent/HomeContent';
+import '../Dashboard/Dashboard.css';
+import HomeContent from '../HomeContent/HomeContent';
 import InventoryContent from '../InventoryContent/InventoryContent';
 
 const Dashboard = () => {
     const [selectedPage, setSelectedPage] = useState('home');
-  
-
+    
     const renderContent = () => {
         switch (selectedPage) {
             case 'home':

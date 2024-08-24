@@ -1,35 +1,42 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "./Sign_in.css";
+import axios from "axios"
 
 function Sign_in() {
-  const [formErrors, setFormErrors] = useState({});
   const [user, setUserDetails] = useState({
     email: "",
     password: "",
   });
+
+  const [formErrors, setFormErrors] = useState({});
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUserDetails({ ...user, [name]: value });
   };
 
-  const validateForm = (values) => {
-    const error = {};
-    const regex = /^[^\s+@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!values.email) {
-      error.email = "Email is required";
-    } else if (!regex.test(values.email)) {
-      error.email = "Please enter a valid email address";
-    }
-    if (!values.password) {
-      error.password = "Password is required";
-    }
-    return error;
-  };
+  const navigate = useNavigate();
+  const loginHandler = async (e) => {
 
-  const loginHandler = (e) => {
     e.preventDefault();
-    setFormErrors(validateForm(user));
+
+    const res = await axios.post("http://localhost:8000/sign_in/", user);
+
+    const data = await res.data;
+
+    if (data.success) {
+      const userId = data.user_id;
+
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 30);
+
+      document.cookie = `userId=${userId}; expires=${expiryDate.toUTCString()}; path=/; secure; SameSite=Lax`;
+
+      navigate('/dashboard')
+    } else {
+      setFormErrors(data)
+    }
   };
 
   return (
@@ -54,7 +61,7 @@ function Sign_in() {
             onChange={changeHandler}
             value={user.password}
           />
-          <p className="error">{formErrors.password}</p>
+          <p className="error">{formErrors.notMatch}</p>
           <button
             type="submit"
             className="button_common"
@@ -67,4 +74,5 @@ function Sign_in() {
     </div>
   );
 }
+
 export default Sign_in;
