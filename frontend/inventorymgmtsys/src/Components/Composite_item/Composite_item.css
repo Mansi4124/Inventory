@@ -1,0 +1,137 @@
+/* General form styling */
+form {
+    font-family: Arial, sans-serif;
+  }
+  
+  .form-fieldset {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px auto;
+    max-width: 800px;
+  }
+  
+  .form-legend {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .form-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Table styling */
+  .form-table, .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .table-bordered {
+    width: 100%;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .table-bordered tr {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table-bordered th, .table-bordered td {
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .table-bordered th {
+    background-color: #f2f2f2;
+  }
+  
+  .table-bordered tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* Action buttons */
+  .form-buttons {
+    text-align: right;
+    margin-top: 20px;
+  }
+  
+  .btn-save, .btn-cancel {
+    padding: 10px 20px;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .btn-save {
+    background-color: #007bff;
+    margin-right: 10px;
+  }
+  
+  .btn-cancel {
+    background-color: #6c757d;
+  }
+  
+  .btn-save:hover, .btn-cancel:hover {
+    opacity: 0.9;
+  }
+  
+  /* Custom styling for the table */
+  .table {
+    margin-top: 20px;
+  }
+  
+  .table td input {
+    width: 90%;
+    padding: 6px;
+  }
+  
+  .table tr td:first-child {
+    width: 40%;
+  }
+  
+  .table tr td:nth-child(2), .table tr td:nth-child(3), .table tr td:nth-child(4) {
+    width: 20%;
+    text-align: right;
+  }
+  
+  /* Align the sales and purchase information */
+  .table + table {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .table + table td {
+    padding: 10px;
+  }
+  
+  .table + table tr:nth-child(1) td {
+    font-weight: bold;
+  }
+  
+  .table + table tr:nth-child(2) td {
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #f2f2f2;
+  }
+  

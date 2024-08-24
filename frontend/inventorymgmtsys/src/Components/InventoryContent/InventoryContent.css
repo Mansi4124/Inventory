@@ -1,0 +1,97 @@
+/* General styles */
+
+
+
+.text-muted {
+    color: #6c757d;
+}
+
+/* Inventory content styling */
+.inventory-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Card styling */
+.inventory-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 20px;
+    flex: 1 1 calc(50% - 20px); /* Two cards per row */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.inventory-card.full-width {
+    flex: 1 1 100%; /* Full width for the third card */
+}
+
+.inventory-card h2 {
+    
+    text-align: center;
+    margin: 0;
+    font-size: 25px;
+    color: white;
+    
+    padding: 10px;
+   
+}
+.inventory-card{
+    height: 250px;
+}
+
+.backgrounddiv {
+    border-radius: 10px;
+    background-color: var(--dark);
+    height: 50px;
+    width: 492px;
+    margin-top: -22px;
+    border: 2px solid white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.inventory-card p {
+    margin: 10px 0;
+    font-size: 17px;
+    color: #132F58;
+}
+
+.inventory-card p span {
+    font-weight: bold;
+    color: #333;
+}
+
+.inventory-card select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.inventory-card i {
+    margin-bottom: 10px;
+}
+
+.inventory-card button {
+    margin-top: 10px;
+}
+
+.inv-btn{
+    background-color: var(--dark);
+
+}
+
+.inv-btn:hover{
+    background-color: var(--link);
+    color: black;
+}

@@ -1,0 +1,333 @@
+/* General Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  background-color: #132F58;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1px;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  height: 50px;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar ul li {
+  margin: 0 20px;
+}
+
+.navbar ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 5px 10px;
+}
+
+/* Sign In and Sign Up Buttons */
+.navbar .auth-buttons {
+  display: flex;
+}
+
+.navbar .auth-buttons button {
+  margin-left: 10px;
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #132F58;
+  background-color: #61dafb;
+  font-size: 14px;
+}
+
+.navbar .auth-buttons button:hover {
+  background-color: #21a1f1;
+  color: #fff;
+}
+
+/* Home Container */
+.home-container {
+  text-align: center;
+  padding: 20px;
+  max-width: 2000px;
+  background-color: #E5F6FF;
+}
+
+/* Hero Section */
+.hero {
+  background-color: #E5F6FF;
+  color: #132F58;
+  padding: 100px;
+}
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.cta-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  color: #132F58;
+  background-color: #61dafb;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cta-button:hover {
+  background-color: #21a1f1;
+}
+
+/* Ratings Section */
+.ratings-section {
+  margin: 7% auto 0;
+}
+
+.rating-number {
+  font-family: Zoho Puvi Semibold, -apple-system, BlinkMacSystemFont, San Francisco, Helvetica Neue, Helvetica, Ubuntu, Roboto, Noto, Segoe UI, Arial, sans-serif;
+  font-size: 17px;
+}
+
+.separation-line {
+  margin: 0 2%;
+  height: 25px;
+  width: 2px;
+  background-color: #3191ff;
+  opacity: .4;
+}
+
+.header-img-section {
+  position: relative;
+}
+
+.app-store-section {
+  padding: 4% 0 4%;
+  background-color: #132F58;
+}
+
+.app-store-section img {
+  width: 24%;
+  margin: 2%;
+}
+
+.app-store-section-wrap {
+  margin: auto;
+  max-width: 900px;
+}
+
+.app-store-section-wrap h1, 
+.app-store-section-wrap h4, 
+.app-store-section-wrap img, 
+.rating-block span, 
+.ratings-section div {
+  color:#3191ff;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media screen and (max-width: 1100px) {
+  .app-store-section-wrap {
+    width: 80%;
+  }
+}
+
+/* Carousel Section */
+.carousel-section {
+  text-align: center;
+  position: relative;
+}
+
+.carousel {
+  position: relative;
+  overflow: hidden;
+  height: 300px;
+}
+
+.carousel-content {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.carousel-content.active {
+  opacity: 1;
+}
+
+.testimonial-block, .testimonial-summary {
+  width: 50%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.testimonial-block {
+  background-color: #f9f9f9; /* Default color, will be overridden by inline styles */
+  margin-right: auto;
+  margin-left: 100px;
+  margin-bottom: 16px;
+  margin-top: 25px;
+  border-radius: 13px;
+  transition: background-color 0.5s ease-in-out;
+}
+
+.customer-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.customer-section img {
+  width: 80px; /* Smaller image size */
+  height: 80px; /* Ensure the image is square */
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.testimonial-summary {
+  background-color: #fff;
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+}
+
+.carousel-content.active .testimonial-summary {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.carousel-dots {
+  margin-top: 20px;
+}
+
+.carousel-dots .dot {
+  height: 12px;
+  width: 12px;
+  margin: 0 5px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.carousel-dots .dot.active {
+  background-color: #717171;
+}
+
+.prev-arrow, .next-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.prev-arrow {
+  left: 10px;
+}
+
+.next-arrow {
+  right: 10px;
+}
+
+.prev-arrow:hover, .next-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Footer */
+footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+footer .col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+footer .logo {
+  margin-bottom: 30px;
+}
+
+footer h4 {
+  font-size: 14px;
+  padding-bottom: 20px;
+}
+
+footer p {
+  font-size: 13px;
+  margin: 0 0 8px 0;
+}
+
+footer a {
+  font-size: 13px;
+  text-decoration: none;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+footer .follow {
+  margin-top: 20px;
+}
+
+footer .follow i {
+  color: #465b52;
+  padding-right: 4px;
+  cursor: pointer;
+}
+
+footer .install .row img {
+  border: 1px solid #088178;
+  border-radius: 6px;
+}
+
+footer .install img {
+  margin: 10px 0 15px 0;
+}
+
+footer .follow i:hover,
+footer a:hover {
+  color: #088178;
+}
+
+.footer-last-text {
+  background-color: #E3E6F3;
+  padding: 20px 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  top: 100%;
+}

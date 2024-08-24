@@ -1,0 +1,32 @@
+.sidebar {
+    background-color: #f5f9fb;
+    padding-top: 50px;
+    text-align: left;
+    padding-left: 20px;
+    font-weight: bold;
+    height: 100vh; /* Full height of the viewport */
+    position: fixed; /* Fix the position of the sidebar */
+    top: 10; /* Start from the top of the viewport */
+    left: 0; /* Start from the left of the viewport */
+    width: 200px; /* Set a specific width for the sidebar */
+    z-index: 0; /* Ensure the sidebar stays on top of other elements */
+}
+
+
+.sidebar .nav-link {
+    margin-bottom: 15px;
+    cursor: pointer;
+    color: #132F58;
+    
+}
+
+.content {
+    margin-left: 200px; /* Offset by the width of the sidebar + padding */
+    padding-left: 200px;
+    position: relative; /* Normal flow of the document */
+}
+
+
+.page-content {
+    padding-top: 50px;
+}
