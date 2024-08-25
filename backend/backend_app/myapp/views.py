@@ -43,7 +43,6 @@ def sign_in(request):
             status=200,
         )
 
-
 @csrf_exempt
 def sign_up(request):
     if request.method == "POST":
@@ -95,6 +94,6 @@ def get_customer_data(request):
         user_id = data.get("user_id")
         user = customer_collection.find_one({"user_id": user_id})
         if user:
-            user["_id"] = str(user["_id"])  # Ensure _id is serializable
+            user["_id"] = str(user["_id"])
             return JsonResponse({"user": user})
         return JsonResponse({"message": "User not found"}, status=404)

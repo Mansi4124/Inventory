@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./HomeContent.css";
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 const HomeContent = () => {
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getCookie = (name) => {
@@ -33,23 +36,22 @@ const HomeContent = () => {
           const response = await axios.post("http://localhost:8000/get_customer_data/", { user_id: userId });
           if (response.data.user) {
             setData(response.data.user);
-          } else {
-            console.warn('No user data returned from server');
-            setData(null);
           }
         } catch (error) {
           console.error('Error fetching data:', error);
           setData(null);
+          navigate("/sign_in")
         }
       } else {
-        console.warn('No user ID cookie found');
         setData(null);
+        navigate("/sign_in")
       }
       setLoading(false);
     };
 
     fetchData();
-  },[]);
+
+  }, [navigate]);
 
   if (loading) {
     return <div>Loading...</div>;
