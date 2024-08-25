@@ -4,6 +4,12 @@ import { Link } from 'react-router-dom';
 import profileIcon from '../../assets/profile.jpeg';  // Path to your profile icon
 import './NavbarAfter.css';  // Import the custom CSS file
 
+function deleteCookie(name) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; secure; SameSite=Lax`;
+}
+
+
+
 const NavbarAfter = ({ organizationName }) => {
     return (
         <Navbar className="navbar-custom" expand="lg" sticky="top">
@@ -35,6 +41,9 @@ const NavbarAfter = ({ organizationName }) => {
                             className="rounded-circle"
                         />
                     </Nav.Link>
+                    <Link to="/" onClick={()=>{deleteCookie("userId")}} >
+                        Sign out
+                    </Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
