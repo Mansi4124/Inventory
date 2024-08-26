@@ -1,0 +1,150 @@
+.myform-container {
+  background-color: #E5F6FF;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.myform-fieldset {
+  background-color: #FFF;
+  border: 1px solid #ccc;
+  padding: 50px;
+  border-radius: 30px;
+  margin: 50px auto;
+  max-width: 800px;
+  width: 100%;
+}
+
+.myform-legend {
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.myform-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.myform-label-cell {
+  padding: 10px;
+  vertical-align: top;
+  width: 30%;
+}
+
+.myform-input-cell {
+  padding: 10px;
+  vertical-align: top;
+  width: 70%;
+}
+
+.myform-label {
+  display: block;
+  font-weight: bold;
+}
+
+.myform-input,
+.myform-textarea,
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.myform-weight-row {
+  display: flex;
+  align-items: center;
+}
+
+.myform-weight-input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.myform-weight-select {
+  flex-shrink: 0;
+  width: 80px;
+}
+
+.myform-new-entry {
+  margin-top: 10px;
+  display: block;
+}
+
+.myform-textarea {
+  margin-top: 10px;
+  min-height: 100px;
+}
+
+.myform-button-cell {
+  padding: 10px;
+  text-align: right;
+}
+
+.myform-button {
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.myform-button-save {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.myform-button-cancel {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .myform-fieldset {
+    padding: 30px;
+    margin: 30px auto;
+  }
+
+  .myform-label-cell,
+  .myform-input-cell {
+    width: 100%;
+    display: block;
+    padding: 10px 0;
+  }
+
+  .myform-weight-row {
+    flex-direction: column;
+  }
+
+  .myform-button-cell {
+    text-align: center;
+  }
+
+  .myform-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .myform-legend {
+    font-size: 18px;
+  }
+
+  .myform-input,
+  .myform-textarea,
+  select {
+    font-size: 14px;
+  }
+
+  .myform-button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

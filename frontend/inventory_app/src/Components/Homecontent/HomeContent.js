@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./HomeContent.css";
+import "../Homecontent/HomeContent.css";
 import axios from "axios"
 
 const HomeContent = () => {
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [orgData, setOrgData] = useState({orgName:""});
 
   useEffect(() => {
     const getCookie = (name) => {
@@ -31,6 +32,10 @@ const HomeContent = () => {
       if (userId) {
         try {
           const response = await axios.post("http://localhost:8000/get_customer_data/", { user_id: userId });
+          const res = await axios.post("http://localhost:8000/get_organization_data/", { "user_id": userId })
+          if (res.data.success) {
+            setOrgData(res.data.org)
+          }
           if (response.data.user) {
             setData(response.data.user);
           } else {
@@ -49,7 +54,7 @@ const HomeContent = () => {
     };
 
     fetchData();
-  },[]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -63,7 +68,7 @@ const HomeContent = () => {
     <div className="main-div">
       <div className="content-div">
         <h2 className="title">Hello, {data['fname']} </h2>
-        <p className="text-muted">Organization Name</p>
+        <p className="text-muted">{orgData['orgName']}</p>
       </div>
 
       <div className="home-content">
