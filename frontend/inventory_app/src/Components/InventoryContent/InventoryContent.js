@@ -43,18 +43,7 @@ const InventoryContent = () => {
         </div>
 
         {/* View Low Stock Item Card */}
-        <div className="card inventory-card full-width">
-          <div className="backgrounddiv">
-            <h2>Low Stock items</h2>
-          </div>
-          <div className="">
-            <i className="bi bi-exclamation-triangle" style={{ fontSize: "2rem" }}></i>
-            <p>Click the button below to view items with low stock.</p>
-            <Button className="inv-btn" onClick={() => navigate("/low-stock-items")}>
-              View Low Stock Items
-            </Button>
-          </div>
-        </div>
+        
       </div>
     </div>
   );

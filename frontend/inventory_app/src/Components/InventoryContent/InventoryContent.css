@@ -1,20 +1,19 @@
 /* General styles */
-
-
-
 .text-muted {
     color: #6c757d;
+    
 }
 
 /* Inventory content styling */
 .inventory-content {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 270px; /* Increased gap for more space between cards */
 }
 
 /* Card styling */
 .inventory-card {
+    margin-left: -150px; /* This may not be necessary or could be adjusted */
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 20px;
@@ -28,36 +27,33 @@
 }
 
 .inventory-card.full-width {
-    flex: 1 1 100%; /* Full width for the third card */
+    flex: 1 1 100%; /* Full width for cards that should take the full row */
 }
 
 .inventory-card h2 {
-    
     text-align: center;
     margin: 0;
     font-size: 25px;
     color: white;
-    
     padding: 10px;
-   
 }
-.inventory-card{
-    height: 250px;
+
+.inventory-card {
+    height: 500px;
+    gap: 20px; /* This gap is within the card itself */
 }
 
 .backgrounddiv {
     border-radius: 10px;
     background-color: var(--dark);
     height: 50px;
-    width: 492px;
-    margin-top: -22px;
+    width: 498px;
+    margin-top: -21px;
     border: 2px solid white;
-    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
 
 .inventory-card p {
     margin: 10px 0;
@@ -86,12 +82,11 @@
     margin-top: 10px;
 }
 
-.inv-btn{
+.inv-btn {
     background-color: var(--dark);
-
 }
 
-.inv-btn:hover{
+.inv-btn:hover {
     background-color: var(--link);
     color: black;
 }

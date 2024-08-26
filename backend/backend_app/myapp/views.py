@@ -5,11 +5,13 @@ import json
 import re
 from pymongo import MongoClient
 import uuid
+from bson import ObjectId
 
 client = MongoClient("mongodb://localhost:27017/")
 
 db = client.my_database
 customer_collection = db.customers
+organization_collection = db.organization
 
 
 @csrf_exempt
@@ -43,6 +45,7 @@ def sign_in(request):
             status=200,
         )
 
+
 @csrf_exempt
 def sign_up(request):
     if request.method == "POST":
@@ -75,16 +78,24 @@ def sign_up(request):
 
         data["user_id"] = user_id
 
-        customer_collection.insert_one(data)
+        user = customer_collection.find_one({"email": email})
 
-        return JsonResponse(
-            {
-                "message": f"Welcome {email}",
-                "user_id": data["user_id"],
-                "success": True,
-            },
-            status=200,
-        )
+        if user:
+            return JsonResponse(
+                {"accountFound": "An account with this email already exists"}
+            )
+
+        else:
+            customer_collection.insert_one(data)
+
+            return JsonResponse(
+                {
+                    "message": f"Welcome {email}",
+                    "user_id": data["user_id"],
+                    "success": True,
+                },
+                status=200,
+            )
 
 
 @csrf_exempt
@@ -97,3 +108,32 @@ def get_customer_data(request):
             user["_id"] = str(user["_id"])
             return JsonResponse({"user": user})
         return JsonResponse({"message": "User not found"}, status=404)
+
+
+@csrf_exempt
+def get_organization_data(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_id = data.get("user_id")
+
+        org = organization_collection.find_one({"org_user_id": user_id})
+        if org:
+            org["_id"] = str(org["_id"])
+            return JsonResponse({"org": org, "success": True})
+        return JsonResponse({"message": "Org not found"})
+
+
+@csrf_exempt
+def add_organization(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        organization_collection.insert_one(data)
+
+        return JsonResponse(
+            {
+                "message": f"Success",
+                "user_id": data["org_user_id"],
+                "success": True,
+            },
+            status=200,
+        )

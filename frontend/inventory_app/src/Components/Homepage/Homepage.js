@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Homepage/Homepage.css';
 import { Navbar } from 'react-bootstrap';
-import NavBar from '../Navbar/NavBar';
+
 
 const testimonials = [
   {
@@ -71,7 +71,7 @@ const HomePage = () => {
 
   return (
     <>
-    <NavBar/>
+    
     <div className="home-container">
     <section>
       <div>
