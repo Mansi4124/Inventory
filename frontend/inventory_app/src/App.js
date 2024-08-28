@@ -20,12 +20,11 @@ const App = () => {
             <Routes>
                 <Route path="/add-organization" element={<AddOrganization />} />
                 <Route path="/" element={<Home />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard/*" element={<Dashboard />} />
                 <Route path="/sign_in" element={<SignIn />}></Route>
                 <Route path="/sign_up" element={<SignUp />}></Route>
                 <Route path="/itemform" element={<ItemForm />}></Route>
                 <Route path="/compositeform" element={<Composite />}></Route>
-                <Route path="/inventory" element={<InventoryContent />} />
                 <Route path="/my-organization" element={<MyOrganization/>}/>
             </Routes>
         </Router>

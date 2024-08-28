@@ -51,7 +51,6 @@ function MyForm() {
 
   const handlePriceChange = (e, setPrice) => {
     const value = e.target.value;
-    // Allow only numbers and decimals, and prevent negative values
     if (/^\d*\.?\d*$/.test(value) && value >= 0) {
       setPrice(value);
     }
@@ -60,14 +59,12 @@ function MyForm() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    // Add new manufacturer to the list if not empty and not already added
     if (newManufacturer && !manufacturers.includes(newManufacturer)) {
       const updatedManufacturers = [...manufacturers, newManufacturer];
       setManufacturers(updatedManufacturers);
       localStorage.setItem('manufacturers', JSON.stringify(updatedManufacturers));
     }
 
-    // Add new brand to the list if not empty and not already added
     if (newBrand && !brands.includes(newBrand)) {
       const updatedBrands = [...brands, newBrand];
       setBrands(updatedBrands);
@@ -96,6 +93,15 @@ function MyForm() {
             <tr>
               <td className="myform-label-cell">
                 <label htmlFor="name" className="myform-label">Name:</label>
+              </td>
+              <td className="myform-input-cell">
+                <input type="text" id="name" name="name" className="myform-input" required />
+              </td>
+            </tr>
+
+            <tr>
+              <td className="myform-label-cell">
+                <label htmlFor="name" className="myform-label">Category:</label>
               </td>
               <td className="myform-input-cell">
                 <input type="text" id="name" name="name" className="myform-input" required />

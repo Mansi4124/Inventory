@@ -4,12 +4,12 @@
     text-align: left;
     padding-left: 20px;
     font-weight: bold;
-    height: 100vh; /* Full height of the viewport */
-    position: fixed; /* Fix the position of the sidebar */
-    top: 10; /* Start from the top of the viewport */
-    left: 0; /* Start from the left of the viewport */
-    width: 200px; /* Set a specific width for the sidebar */
-    z-index: 0; /* Ensure the sidebar stays on top of other elements */
+    height: 100vh;
+    position: fixed;
+    top: 10; 
+    left: 0; 
+    width: 200px;
+    z-index: 0; 
 }
 
 
@@ -21,12 +21,8 @@
 }
 
 .content {
-    margin-left: 200px; /* Offset by the width of the sidebar + padding */
+    margin-left: 200px; 
     padding-left: 200px;
-    position: relative; /* Normal flow of the document */
-}
-
-
-.page-content {
-    padding-top: 50px;
+    position: relative;
+    padding-top: 100px;
 }
