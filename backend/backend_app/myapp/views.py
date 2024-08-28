@@ -97,3 +97,114 @@ def get_customer_data(request):
             user["_id"] = str(user["_id"])
             return JsonResponse({"user": user})
         return JsonResponse({"message": "User not found"}, status=404)
+<<<<<<< Updated upstream
+=======
+
+
+@csrf_exempt
+def get_organization_data(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_id = data.get("user_id")
+
+        org = organization_collection.find_one({"org_user_id": user_id})
+        if org:
+            org["_id"] = str(org["_id"])
+            return JsonResponse({"org": org, "success": True})
+        return JsonResponse({"message": "Org not found"})
+
+
+@csrf_exempt
+def add_organization(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            organization_collection.insert_one(data)
+            return JsonResponse({"message": "Organization added successfully", "user_id": data["org_user_id"], "success": True}, status=201)
+        except Exception as e:
+            return JsonResponse({"message": "An error occurred", "error": str(e)}, status=500)
+        
+@csrf_exempt
+def update_organization(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            org_id = data.get("org_id")
+            updated_data = {
+                "orgName": data.get("orgName"),
+                "industry": data.get("industry"),
+                "startDate": data.get("startDate"),
+                "location": data.get("location"),
+                "currency": data.get("currency"),
+                # Add more fields as necessary
+            }
+
+            organization_collection.update_one({"_id": ObjectId(org_id)}, {"$set": updated_data})
+            return JsonResponse({"message": "Organization updated successfully", "success": True}, status=200)
+        except Exception as e:
+            return JsonResponse({"message": "An error occurred", "error": str(e)}, status=500)
+
+@csrf_exempt
+def get_profile(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_id = data.get("user_id")
+        user = customer_collection.find_one({"user_id": user_id})
+        del user["_id"]
+        if user:
+            return JsonResponse({"user": user, "success": True}, status=200)
+        return JsonResponse({"message": "User not found"}, status=404)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+import re
+from pymongo import MongoClient
+from bson import ObjectId
+
+client = MongoClient("mongodb://localhost:27017/")
+db = client.my_database
+customer_collection = db.customers
+
+@csrf_exempt
+def update_profile(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_id = data.get("user_id")
+        updated_data = {
+            "fname": data.get("fname"),
+            "lname": data.get("lname"),
+            "email": data.get("email"),
+        }
+        old_password = data.get("old_password")
+        new_password = data.get("new_password")
+        confirm_password = data.get("confirm_password")
+
+        user = customer_collection.find_one({"user_id": user_id})
+
+        if old_password or new_password or confirm_password:
+            if not user:
+                return JsonResponse({"message": "User not found"}, status=404)
+
+            if old_password != user.get("password"):
+                return JsonResponse({"message": "Old password is incorrect"}, status=400)
+
+            if new_password != confirm_password:
+                return JsonResponse({"message": "New passwords do not match"}, status=400)
+
+            # Regular expression for password validation
+            re_password = r"^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+            if not re.match(re_password, new_password):
+                return JsonResponse({
+                    "message": "Invalid New Password, please use a password of 8 or more characters having at least 1 symbol, 1 capital letter & 1 number"
+                }, status=400)
+
+            updated_data["password"] = new_password
+            updated_data["cpassword"]=confirm_password
+        result = customer_collection.update_one({"user_id": user_id}, {"$set": updated_data})
+
+        if result.matched_count == 0:
+            return JsonResponse({"message": "User not found or no changes made"}, status=400)
+            
+        return JsonResponse({"message": "Profile updated successfully", "success": True}, status=200)
+>>>>>>> Stashed changes

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
+<<<<<<< Updated upstream
 import "./HomeContent.css";
+=======
+import "../HomeContent/HomeContent.css";
+>>>>>>> Stashed changes
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
 

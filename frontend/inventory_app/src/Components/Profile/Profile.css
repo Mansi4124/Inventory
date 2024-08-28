@@ -1,0 +1,169 @@
+.profile-container {
+  height: auto;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--light) !important;
+  margin-top: -30px;
+}
+
+.profile-fieldset {
+  background-color: #FFF;
+  border: 1px solid #ccc;
+  padding: 30px;
+  border-radius: 20px;
+  margin: 30px auto;
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-legend {
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.profile-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.profile-label-cell {
+  padding: 10px;
+  vertical-align: top;
+  width: 30%;
+}
+
+.profile-input-cell {
+  padding: 10px;
+  vertical-align: top;
+  width: 70%;
+}
+
+.profile-label {
+  display: block;
+  font-weight: bold;
+}
+
+.profile-input,
+.profile-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.profile-new-entry {
+  margin-top: 10px;
+}
+
+.profile-button-cell {
+  padding: 10px;
+  text-align: right;
+}
+
+.profile-button {
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.profile-button-save {
+  background-color: var(--dark) !important;
+  color: #fff;
+}
+
+.profile-button-cancel {
+  background-color: var(--dark) !important;
+  color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-fieldset {
+    padding: 20px;
+    max-width: 100%; /* Full-width form on smaller screens */
+  }
+
+  .profile-label-cell,
+  .profile-input-cell {
+    width: 100%;
+    display: block;
+    padding: 10px 0;
+  }
+
+  .profile-button-cell {
+    text-align: center;
+  }
+
+  .profile-button {
+    width: 100%; /* Full-width buttons on smaller screens */
+    margin-bottom: 10px; /* Add spacing between buttons */
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-legend {
+    font-size: 20px;
+  }
+
+  .profile-input,
+  .profile-select {
+    font-size: 14px;
+  }
+
+  .profile-button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+.view-profile {
+  border: 3px solid black;
+  background-color: var(--light);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 900px;
+  margin: 30px auto;
+  text-align: left;
+}
+
+.view-profile h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.view-profile p {
+  margin: 20px 10px;
+  color: #444;
+  font-size: large;
+}
+
+.profile-button-save, .profile-button-cancel {
+  margin: 20px 10px 0 0;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.profile-button-save {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.profile-button-cancel {
+  background-color: #f44336;
+  color: white;
+}
+
+.myform-button-cell .error{
+  max-width: 300px;
+}
