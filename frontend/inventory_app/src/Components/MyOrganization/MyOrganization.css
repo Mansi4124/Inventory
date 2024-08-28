@@ -1,0 +1,40 @@
+.view-org {
+    border: 3px solid black;       /* Adds a solid black border around the div */
+    background-color: var(--light); /* Sets the background color to the CSS variable --link */
+    padding: 20px;                 /* Reduces padding to make it more balanced */
+    border-radius: 20px;           /* Rounds the corners of the div */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
+    width: 900px;              /* Restricts the width of the div to make it more readable */
+    margin: 30px auto;             /* Centers the div horizontally and adds some top margin */
+    text-align: left;              /* Aligns text to the left for a clean look */
+}
+
+.view-org h2 {
+    margin-top: 0;                 /* Removes the default margin on top of the h2 element */
+    color: #333;                   /* Sets a color for the heading for better contrast */
+}
+
+.view-org p {
+    margin: 20px 10px;                /* Adds vertical space between paragraphs */
+    color: #444;
+    font-size: large;                   /* Sets a color for the paragraph text */
+}
+
+.myform-button-save, .myform-button-cancel {
+    margin: 20px 10px 0 0;         /* Adds space between the buttons */
+    padding: 10px 20px;            /* Increases padding inside the buttons */
+    cursor: pointer;               /* Changes the cursor to a pointer on hover */
+    border: none;                  /* Removes any default border */
+    border-radius: 5px;            /* Rounds the corners of the buttons */
+    font-size: 16px;               /* Increases the font size for better readability */
+}
+
+.myform-button-save {
+    background-color: #4CAF50;     /* Sets a green background for the save button */
+    color: white;                  /* Sets text color to white for contrast */
+}
+
+.myform-button-cancel {
+    background-color: #f44336;     /* Sets a red background for the cancel button */
+    color: white;                  /* Sets text color to white for contrast */
+}

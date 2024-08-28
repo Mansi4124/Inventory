@@ -124,13 +124,24 @@ function Add_organization() {
 
                         <tr>
                             <td className="myform-label-cell">
-                                <label htmlFor="month" className="myform-label">Start Month:</label>
+                                <label htmlFor="loc" className="myform-label">Location:</label>
                             </td>
                             <td className="myform-input-cell">
-                                <input type="text" id="month" name="startMonth" className="myform-input" value={org.startMonth} required />
+                                <input type="text" id="loc" name="location" className="myform-input"  required />
                             </td>
                         </tr>
+                        <tr>
+                            <td className="myform-label-cell">
+                                <label htmlFor="currency" className="myform-label">Currency:</label>
+                            </td>
+                            <td className="myform-input-cell">
+                                <select id="currency" name="currency" className="myform-input" >
+                                    <option value="INR" selected>INR</option>
+                                    <option value="USD">USD</option>
+                                </select>
 
+                            </td>
+                        </tr>
                         <tr>
                             <td colSpan="2" className="myform-button-cell">
                                 <button type="submit" className="myform-button myform-button-save" onClick={handleSubmit}>

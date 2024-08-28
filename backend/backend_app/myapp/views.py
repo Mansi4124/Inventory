@@ -126,14 +126,29 @@ def get_organization_data(request):
 @csrf_exempt
 def add_organization(request):
     if request.method == "POST":
-        data = json.loads(request.body)
-        organization_collection.insert_one(data)
+        try:
+            data = json.loads(request.body)
+            organization_collection.insert_one(data)
+            return JsonResponse({"message": "Organization added successfully", "user_id": data["org_user_id"], "success": True}, status=201)
+        except Exception as e:
+            return JsonResponse({"message": "An error occurred", "error": str(e)}, status=500)
+        
+@csrf_exempt
+def update_organization(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            org_id = data.get("org_id")
+            updated_data = {
+                "orgName": data.get("orgName"),
+                "industry": data.get("industry"),
+                "startDate": data.get("startDate"),
+                "location": data.get("location"),
+                "currency": data.get("currency"),
+                # Add more fields as necessary
+            }
 
-        return JsonResponse(
-            {
-                "message": f"Success",
-                "user_id": data["org_user_id"],
-                "success": True,
-            },
-            status=200,
-        )
+            organization_collection.update_one({"_id": ObjectId(org_id)}, {"$set": updated_data})
+            return JsonResponse({"message": "Organization updated successfully", "success": True}, status=200)
+        except Exception as e:
+            return JsonResponse({"message": "An error occurred", "error": str(e)}, status=500)

@@ -76,7 +76,7 @@ const Dashboard = () => {
             <div className='dashboard-content'>
                 <div className="sidebar">
                     <Nav className="flex-column">
-                        <Nav.Link href="#home" onClick={() => setSelectedPage('home')}>Home</Nav.Link>
+                        <Nav.Link href="/" onClick={() => setSelectedPage('home')}>Home</Nav.Link>
                         <Nav.Link href="#inventory" onClick={() => setSelectedPage('inventory')}>Inventory</Nav.Link>
                         <Nav.Link href="#sales" onClick={() => setSelectedPage('sales')}>Sales</Nav.Link>
                         <Nav.Link href="#reports" onClick={() => setSelectedPage('reports')}>Reports</Nav.Link>

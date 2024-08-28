@@ -35,7 +35,7 @@
 }
 
 .myform-label1 {
-  text-align: 'center';
+  text-align: center;
   font-weight: bold;
   flex: 0 0 200px; /* Adjust the width of the label */
   margin-right: 20px; /* Space between label and input */
@@ -173,6 +173,18 @@
   background-color: #6c757d;
   color: #fff;
 }
+.myform-remove-row-button {
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.myform-remove-row-button:hover {
+  color: darkred;
+}
+
 
 @media (max-width: 768px) {
   .myform-fieldset {
@@ -207,6 +219,9 @@
     width: 100%; /* Full-width button on smaller screens */
     justify-content: center; /* Center-align button content */
   }
+  .myform-remove-row-button {
+    font-size: 18px; /* Slightly smaller font size */
+  }
 }
 
 
@@ -218,6 +233,7 @@
   width: 100%; /* Ensure table takes full width */
   min-width: 600px; /* Set minimum width for the table */
 }
+
 
 
 @media (max-width: 576px) {
@@ -248,5 +264,9 @@
   .myform-button {
     width: 100%; /* Full-width buttons */
     margin-bottom: 10px; /* Add space between buttons */
+  }
+
+  .myform-remove-row-button {
+    font-size: 16px; /* Further reduce font size for very small screens */
   }
 }

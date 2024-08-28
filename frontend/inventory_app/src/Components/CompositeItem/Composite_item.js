@@ -15,7 +15,14 @@ function MyForm1() {
   // Handle adding a new row
   const addNewRow = (event) => {
     event.preventDefault();
-    setRows([...rows, { quantity: '', sellingPrice: '1', costPrice: '1' }]);
+    setRows([...rows, { quantity: '', sellingPrice: '', costPrice: '' }]);
+  };
+
+  // Handle removing a row
+  const removeRow = (index) => {
+    const newRows = [...rows];
+    newRows.splice(index, 1);
+    setRows(newRows);
   };
 
   // Restrict input to numbers only and prevent entering zero
@@ -64,19 +71,7 @@ function MyForm1() {
                   <input type="text" id="name" name="name" className="myform-input myform-input-full-width" required />
                 </td>
               </tr>
-              <tr className="myform-row">
-                <td className="myform-label">
-                  <label htmlFor="unit" className="myform-label">Unit:</label>
-                </td>
-                <td>
-                  <select id="unit" name="unit" className="myform-select">
-                    <option value="kg">kg</option>
-                    <option value="g">g</option>
-                    <option value="cm">cm</option>
-                    <option value="m">m</option>
-                  </select>
-                </td>
-              </tr>
+             
               <tr>
                 <td colSpan="2">
                   <label htmlFor="name" className="myform-label">Associate items:</label>
@@ -87,6 +82,7 @@ function MyForm1() {
                         <td>Quantity</td>
                         <td>Selling Price</td>
                         <td>Cost Price</td>
+                        <td></td>
                       </tr>
                     </thead>
                     <tbody>
@@ -129,6 +125,11 @@ function MyForm1() {
                               step="1" // Step set to 1 for cost price
                             />
                           </td>
+                          <td>
+                            <button type="button" className="myform-remove-row-button" onClick={() => removeRow(index)}>
+                              &times;
+                            </button>
+                          </td>
                         </tr>
                       ))}
                       <tr>
@@ -146,6 +147,7 @@ function MyForm1() {
                         <td className="myform-button-cell">Total:</td>
                         <td className="myform-button-cell">{calculateTotal('sellingPrice')}</td>
                         <td className="myform-button-cell">{calculateTotal('costPrice')}</td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>

@@ -1,14 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../ItemForm/Item_form.css';
 
 function MyForm() {
+  const [manufacturers, setManufacturers] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [selectedManufacturer, setSelectedManufacturer] = useState('');
   const [newManufacturer, setNewManufacturer] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('');
   const [newBrand, setNewBrand] = useState('');
   const [sellingPrice, setSellingPrice] = useState('');
   const [costPrice, setCostPrice] = useState('');
- 
+
+  // Load manufacturers and brands from localStorage on component mount
+  useEffect(() => {
+    const storedManufacturers = localStorage.getItem('manufacturers');
+    const storedBrands = localStorage.getItem('brands');
+    if (storedManufacturers) {
+      setManufacturers(JSON.parse(storedManufacturers));
+    } else {
+      setManufacturers(['Manufacturer 1', 'Manufacturer 2']);
+    }
+    if (storedBrands) {
+      setBrands(JSON.parse(storedBrands));
+    } else {
+      setBrands(['Brand 1', 'Brand 2']);
+    }
+  }, []);
+
   const handleSelectChange = (e) => {
     setSelectedManufacturer(e.target.value);
     if (e.target.value === 'add-new') {
@@ -39,8 +57,36 @@ function MyForm() {
     }
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    // Add new manufacturer to the list if not empty and not already added
+    if (newManufacturer && !manufacturers.includes(newManufacturer)) {
+      const updatedManufacturers = [...manufacturers, newManufacturer];
+      setManufacturers(updatedManufacturers);
+      localStorage.setItem('manufacturers', JSON.stringify(updatedManufacturers));
+    }
+
+    // Add new brand to the list if not empty and not already added
+    if (newBrand && !brands.includes(newBrand)) {
+      const updatedBrands = [...brands, newBrand];
+      setBrands(updatedBrands);
+      localStorage.setItem('brands', JSON.stringify(updatedBrands));
+    }
+
+    // Reset form fields
+    setSelectedManufacturer('');
+    setNewManufacturer('');
+    setSelectedBrand('');
+    setNewBrand('');
+    setSellingPrice('');
+    setCostPrice('');
+
+    alert('Form submitted!');
+  };
+
   return (
-    <form className="myform-container">
+    <form className="myform-container" onSubmit={handleFormSubmit}>
       <fieldset className="myform-fieldset">
         <legend className="myform-legend">Product Information</legend>
 
@@ -53,21 +99,6 @@ function MyForm() {
               </td>
               <td className="myform-input-cell">
                 <input type="text" id="name" name="name" className="myform-input" required />
-              </td>
-            </tr>
-
-            {/* Unit Row */}
-            <tr>
-              <td className="myform-label-cell">
-                <label htmlFor="unit" className="myform-label">Unit:</label>
-              </td>
-              <td className="myform-input-cell">
-                <select id="unit" name="unit" className="myform-input">
-                  <option value="kg">kg</option>
-                  <option value="g">g</option>
-                  <option value="cm">cm</option>
-                  <option value="m">m</option>
-                </select>
               </td>
             </tr>
 
@@ -91,8 +122,14 @@ function MyForm() {
                   >
                     <option value="kg">kg</option>
                     <option value="g">g</option>
-                    <option value="cm">cm</option>
-                    <option value="m">m</option>
+                    <option value="mg">mg</option>
+                    <option value="lb">lb</option>
+                    <option value="oz">oz</option>
+                    <option value="t">t</option>
+                    <option value="MT">MT</option>
+                    <option value="st">st</option>
+                    <option value="ct">ct</option>
+                    <option value="µg">µg</option>
                   </select>
                 </div>
               </td>
@@ -112,8 +149,11 @@ function MyForm() {
                   className="myform-input"
                 >
                   <option value="">Select a manufacturer</option>
-                  <option value="manufacturer1">Manufacturer 1</option>
-                  <option value="manufacturer2">Manufacturer 2</option>
+                  {manufacturers.map((manufacturer, index) => (
+                    <option key={index} value={manufacturer}>
+                      {manufacturer}
+                    </option>
+                  ))}
                   <option value="add-new">Add new manufacturer</option>
                 </select>
                 {selectedManufacturer === 'add-new' && (
@@ -142,8 +182,11 @@ function MyForm() {
                   className="myform-input"
                 >
                   <option value="">Select a brand</option>
-                  <option value="brand1">Brand 1</option>
-                  <option value="brand2">Brand 2</option>
+                  {brands.map((brand, index) => (
+                    <option key={index} value={brand}>
+                      {brand}
+                    </option>
+                  ))}
                   <option value="add-new1">Add new brand</option>
                 </select>
                 {selectedBrand === 'add-new1' && (
@@ -174,12 +217,6 @@ function MyForm() {
                   value={sellingPrice}
                   onChange={(e) => handlePriceChange(e, setSellingPrice)}
                 />
-                <textarea
-                  id="sellingPriceDescription"
-                  name="sellingPriceDescription"
-                  placeholder="Enter description for selling price"
-                  className="myform-textarea"
-                />
               </td>
             </tr>
 
@@ -198,12 +235,6 @@ function MyForm() {
                   required
                   value={costPrice}
                   onChange={(e) => handlePriceChange(e, setCostPrice)}
-                />
-                <textarea
-                  id="costPriceDescription"
-                  name="costPriceDescription"
-                  placeholder="Enter description for cost price"
-                  className="myform-textarea"
                 />
               </td>
             </tr>

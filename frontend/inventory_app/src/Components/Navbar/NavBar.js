@@ -67,6 +67,7 @@ const NavBar = () => {
           </>
         ) : (
           <>
+           <li><a href="/dashboard">Dashboard</a></li>
             <li>
               <FaUserCircle
                 className="profile-icon"
@@ -80,6 +81,7 @@ const NavBar = () => {
                 </div>
               )}
             </li>
+           
           </>
         )}
       </ul>

@@ -1,9 +1,11 @@
 .myform-container {
-    background-color: #E5F6FF;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: auto;
+  width: 100%;
+  height: 100vh;
+  background-color:var(--light) !important;
+  margin-top: -30px;
+    
+    
   }
   
   .myform-fieldset {
@@ -74,12 +76,12 @@
   }
   
   .myform-button-save {
-    background-color: #007bff;
+    background-color:var(--dark) !important;
     color: #fff;
   }
   
   .myform-button-cancel {
-    background-color: #6c757d;
+    background-color:var(--dark) !important;
     color: #fff;
   }
   
