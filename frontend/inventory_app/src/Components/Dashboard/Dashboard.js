@@ -1,13 +1,37 @@
-import React, { useState } from 'react';
-import { Container, Nav} from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Container, Nav } from 'react-bootstrap';
 
 import '../Dashboard/Dashboard.css';
-import HomeContent from '../HomeContent/HomeContent';
+import HomeContent from '../Homecontent/HomeContent';
 import InventoryContent from '../InventoryContent/InventoryContent';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+    const navigate = useNavigate();
+    useEffect(() => {
+        const getCookie = (name) => {
+            const cookieName = `${name}=`;
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookies = decodedCookie.split(';');
+
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            return null;
+        };
+        const user = getCookie("userId")
+        if (!user) {
+            navigate("/sign_in")
+        }
+    }, [])
     const [selectedPage, setSelectedPage] = useState('home');
-    
+
     const renderContent = () => {
         switch (selectedPage) {
             case 'home':
@@ -19,7 +43,7 @@ const Dashboard = () => {
             case 'inventory':
                 return (
                     <div className="page-content">
-                       <InventoryContent/>
+                        <InventoryContent />
                     </div>
                 );
             case 'sales':
@@ -45,14 +69,14 @@ const Dashboard = () => {
                 );
         }
     };
-    
+
 
     return (
         <Container fluid>
             <div className='dashboard-content'>
                 <div className="sidebar">
                     <Nav className="flex-column">
-                        <Nav.Link href="#home" onClick={() => setSelectedPage('home')}>Home</Nav.Link>
+                        <Nav.Link href="/" onClick={() => setSelectedPage('home')}>Home</Nav.Link>
                         <Nav.Link href="#inventory" onClick={() => setSelectedPage('inventory')}>Inventory</Nav.Link>
                         <Nav.Link href="#sales" onClick={() => setSelectedPage('sales')}>Sales</Nav.Link>
                         <Nav.Link href="#reports" onClick={() => setSelectedPage('reports')}>Reports</Nav.Link>

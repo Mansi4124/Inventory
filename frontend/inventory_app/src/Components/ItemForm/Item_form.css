@@ -1,0 +1,126 @@
+.myform-container {
+  background-color: #E5F6FF;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.myform-fieldset {
+  background-color: #FFF;
+  border: 1px solid #ccc;
+  padding: 50px;
+  border-radius: 30px;
+  max-width: 800px;
+  width: 100%;
+}
+
+.myform-legend {
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.myform-table {
+  width: 100%;
+}
+
+.myform-label-cell,
+.myform-input-cell {
+  padding: 10px;
+}
+
+.myform-label {
+  font-weight: bold;
+}
+
+.myform-input,
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.myform-weight-row {
+  display: flex;
+  align-items: center;
+}
+
+.myform-weight-input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.myform-weight-select {
+  width: 80px;
+}
+
+.myform-new-entry {
+  margin-top: 10px;
+}
+
+.myform-button-cell {
+  text-align: right;
+}
+
+.myform-button {
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.myform-button-save {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.myform-button-cancel {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .myform-fieldset {
+    padding: 30px;
+  }
+
+  .myform-label-cell,
+  .myform-input-cell {
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .myform-weight-row {
+    flex-direction: column;
+  }
+
+  .myform-button-cell {
+    text-align: center;
+  }
+
+  .myform-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .myform-legend {
+    font-size: 18px;
+  }
+
+  .myform-input,
+  select {
+    font-size: 14px;
+  }
+
+  .myform-button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

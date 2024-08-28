@@ -1,30 +1,57 @@
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color:var(--dark);
-    color: white;
-  }
-  
-  .logo {
-    font-size: 24px;
-    
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-  }
-  
-  .nav-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-  }
-  
-  .nav-links a:hover {
-    text-decoration: underline;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+}
+.logo{
+  font-size: 1.5rem;
+  padding-top: 10px;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+}
+
+.profile-icon {
+  font-size: 1.5rem;
+  color: white; /* Set profile icon color to white */
+  cursor: pointer;
+}
+
+.profile-menu {
+  position: absolute;
+  right: -0.5rem;
+  top: 3.5rem;
+  background-color:var(--dark);
+  color: rgb(245, 241, 241);
+  border: 1px solid #ccc;
+  border-radius: 0.2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000; /* Ensure it stays on top */
+}
+
+.profile-menu a,
+.profile-menu button {
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.profile-menu a:hover,
+.profile-menu button:hover {
+  background-color: #f0f0f0;
+}

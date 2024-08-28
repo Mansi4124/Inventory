@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./HomeContent.css";
+import "../Homecontent/HomeContent.css";
 import axios from "axios"
-import { useNavigate } from "react-router-dom";
 
 const HomeContent = () => {
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
+  const [orgData, setOrgData] = useState({orgName:""});
 
   useEffect(() => {
     const getCookie = (name) => {
@@ -34,24 +32,29 @@ const HomeContent = () => {
       if (userId) {
         try {
           const response = await axios.post("http://localhost:8000/get_customer_data/", { user_id: userId });
+          const res = await axios.post("http://localhost:8000/get_organization_data/", { "user_id": userId })
+          if (res.data.success) {
+            setOrgData(res.data.org)
+          }
           if (response.data.user) {
             setData(response.data.user);
+          } else {
+            console.warn('No user data returned from server');
+            setData(null);
           }
         } catch (error) {
           console.error('Error fetching data:', error);
           setData(null);
-          navigate("/sign_in")
         }
       } else {
+        console.warn('No user ID cookie found');
         setData(null);
-        navigate("/sign_in")
       }
       setLoading(false);
     };
 
     fetchData();
-
-  }, [navigate]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -65,7 +68,7 @@ const HomeContent = () => {
     <div className="main-div">
       <div className="content-div">
         <h2 className="title">Hello, {data['fname']} </h2>
-        <p className="text-muted">Organization Name</p>
+        <p className="text-muted">{orgData['orgName']}</p>
       </div>
 
       <div className="home-content">

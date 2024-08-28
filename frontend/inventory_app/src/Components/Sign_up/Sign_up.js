@@ -102,6 +102,7 @@ function Sign_up() {
               value="Sign up"
             >Sign up</button>
           </form>
+          <p className="error">{formErrors.accountFound}</p>
           <a href="/sign_in">Already registered? Sign in</a>
         </div>
       </div>

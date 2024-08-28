@@ -1,10 +1,31 @@
-import React, { useState } from 'react';
-import '../ItemForm/ItemForm.css'
-function ItemForm() {
+import React, { useState, useEffect } from 'react';
+import '../ItemForm/Item_form.css';
+
+function MyForm() {
+  const [manufacturers, setManufacturers] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [selectedManufacturer, setSelectedManufacturer] = useState('');
   const [newManufacturer, setNewManufacturer] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('');
   const [newBrand, setNewBrand] = useState('');
+  const [sellingPrice, setSellingPrice] = useState('');
+  const [costPrice, setCostPrice] = useState('');
+
+  // Load manufacturers and brands from localStorage on component mount
+  useEffect(() => {
+    const storedManufacturers = localStorage.getItem('manufacturers');
+    const storedBrands = localStorage.getItem('brands');
+    if (storedManufacturers) {
+      setManufacturers(JSON.parse(storedManufacturers));
+    } else {
+      setManufacturers(['Manufacturer 1', 'Manufacturer 2']);
+    }
+    if (storedBrands) {
+      setBrands(JSON.parse(storedBrands));
+    } else {
+      setBrands(['Brand 1', 'Brand 2']);
+    }
+  }, []);
 
   const handleSelectChange = (e) => {
     setSelectedManufacturer(e.target.value);
@@ -28,71 +49,111 @@ function ItemForm() {
     setNewBrand(e.target.value);
   };
 
-  return (
-    <form className='form'>
-      <fieldset style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '5px', margin: '0 auto', maxWidth: '1200px' }}>
-        <legend style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '20px', marginBottom: '20px' }}>Product Information</legend>
+  const handlePriceChange = (e, setPrice) => {
+    const value = e.target.value;
+    // Allow only numbers and decimals, and prevent negative values
+    if (/^\d*\.?\d*$/.test(value) && value >= 0) {
+      setPrice(value);
+    }
+  };
 
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    // Add new manufacturer to the list if not empty and not already added
+    if (newManufacturer && !manufacturers.includes(newManufacturer)) {
+      const updatedManufacturers = [...manufacturers, newManufacturer];
+      setManufacturers(updatedManufacturers);
+      localStorage.setItem('manufacturers', JSON.stringify(updatedManufacturers));
+    }
+
+    // Add new brand to the list if not empty and not already added
+    if (newBrand && !brands.includes(newBrand)) {
+      const updatedBrands = [...brands, newBrand];
+      setBrands(updatedBrands);
+      localStorage.setItem('brands', JSON.stringify(updatedBrands));
+    }
+
+    // Reset form fields
+    setSelectedManufacturer('');
+    setNewManufacturer('');
+    setSelectedBrand('');
+    setNewBrand('');
+    setSellingPrice('');
+    setCostPrice('');
+
+    alert('Form submitted!');
+  };
+
+  return (
+    <form className="myform-container" onSubmit={handleFormSubmit}>
+      <fieldset className="myform-fieldset">
+        <legend className="myform-legend">Product Information</legend>
+
+        <table className="myform-table">
           <tbody>
             {/* Name Row */}
             <tr>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
-                <label htmlFor="name" style={{ display: 'block', fontWeight: 'bold' }}>Name:</label>
+              <td className="myform-label-cell">
+                <label htmlFor="name" className="myform-label">Name:</label>
               </td>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
-                <input type="text" id="name" name="name" style={{ width: '195%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }} required />
-              </td>
-            </tr>
-
-            {/* Unit Row */}
-            <tr>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
-                <label htmlFor="unit" style={{ display: 'block', fontWeight: 'bold' }}>Unit:</label>
-              </td>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
-                <select id="unit" name="unit" style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}>
-                  <option value="kg">kg</option>
-                  <option value="g">g</option>
-                  <option value="cm">cm</option>
-                  <option value="m">m</option>
-                </select>
-              </td>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
-                <label htmlFor="weight" style={{ display: 'block', fontWeight: 'bold' }}>Weight:</label>
-              </td>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
-                <input type="text" id="weight" name="weight" style={{ width: 'calc(100% - 80px)', padding: '8px', border: '1px solid #ccc', borderRadius: '4px', marginRight: '10px' }} />
-                <select id="weightUnit" name="weightUnit" style={{ width: '70px', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}>
-                  <option value="kg">kg</option>
-                  <option value="g">g</option>
-                  <option value="cm">cm</option>
-                  <option value="m">m</option>
-                </select>
+              <td className="myform-input-cell">
+                <input type="text" id="name" name="name" className="myform-input" required />
               </td>
             </tr>
 
             {/* Weight Row */}
             <tr>
-              
+              <td className="myform-label-cell">
+                <label htmlFor="weight" className="myform-label">Weight:</label>
+              </td>
+              <td className="myform-input-cell">
+                <div className="myform-weight-row">
+                  <input
+                    type="text"
+                    id="weight"
+                    name="weight"
+                    className="myform-input myform-weight-input"
+                  />
+                  <select
+                    id="weightUnit"
+                    name="weightUnit"
+                    className="myform-unit-select myform-weight-select"
+                  >
+                    <option value="kg">kg</option>
+                    <option value="g">g</option>
+                    <option value="mg">mg</option>
+                    <option value="lb">lb</option>
+                    <option value="oz">oz</option>
+                    <option value="t">t</option>
+                    <option value="MT">MT</option>
+                    <option value="st">st</option>
+                    <option value="ct">ct</option>
+                    <option value="µg">µg</option>
+                  </select>
+                </div>
+              </td>
             </tr>
 
             {/* Manufacturer Row */}
             <tr>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
-                <label htmlFor="manufacturer" style={{ display: 'block', fontWeight: 'bold' }}>Manufacturer:</label>
+              <td className="myform-label-cell">
+                <label htmlFor="manufacturer" className="myform-label">Manufacturer:</label>
               </td>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
+              <td className="myform-input-cell">
                 <select
                   id="manufacturer"
                   name="manufacturer"
                   value={selectedManufacturer}
                   onChange={handleSelectChange}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                  className="myform-input"
                 >
                   <option value="">Select a manufacturer</option>
-                  <option value="manufacturer1">Manufacturer 1</option>
-                  <option value="manufacturer2">Manufacturer 2</option>
+                  {manufacturers.map((manufacturer, index) => (
+                    <option key={index} value={manufacturer}>
+                      {manufacturer}
+                    </option>
+                  ))}
                   <option value="add-new">Add new manufacturer</option>
                 </select>
                 {selectedManufacturer === 'add-new' && (
@@ -101,7 +162,7 @@ function ItemForm() {
                     placeholder="Enter new manufacturer"
                     value={newManufacturer}
                     onChange={handleInputChange}
-                    style={{ marginTop: '10px', display: 'block', width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                    className="myform-input myform-new-entry"
                   />
                 )}
               </td>
@@ -109,20 +170,23 @@ function ItemForm() {
 
             {/* Brand Row */}
             <tr>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
-                <label htmlFor="brand" style={{ display: 'block', fontWeight: 'bold' }}>Brand:</label>
+              <td className="myform-label-cell">
+                <label htmlFor="brand" className="myform-label">Brand:</label>
               </td>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
+              <td className="myform-input-cell">
                 <select
                   id="brand"
                   name="brand"
                   value={selectedBrand}
                   onChange={handleSelectChange1}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                  className="myform-input"
                 >
                   <option value="">Select a brand</option>
-                  <option value="brand1">Brand 1</option>
-                  <option value="brand2">Brand 2</option>
+                  {brands.map((brand, index) => (
+                    <option key={index} value={brand}>
+                      {brand}
+                    </option>
+                  ))}
                   <option value="add-new1">Add new brand</option>
                 </select>
                 {selectedBrand === 'add-new1' && (
@@ -131,7 +195,7 @@ function ItemForm() {
                     placeholder="Enter new brand"
                     value={newBrand}
                     onChange={handleInputChange1}
-                    style={{ marginTop: '10px', display: 'block', width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                    className="myform-input myform-new-entry"
                   />
                 )}
               </td>
@@ -139,80 +203,49 @@ function ItemForm() {
 
             {/* Selling Price Row */}
             <tr>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
-                <label htmlFor="sellingPrice" style={{ display: 'block', fontWeight: 'bold' }}>Selling Price:</label>
+              <td className="myform-label-cell">
+                <label htmlFor="sellingPrice" className="myform-label">Selling Price:</label>
               </td>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
+              <td className="myform-input-cell">
                 <input
                   type="text"
                   id="sellingPrice"
                   name="sellingPrice"
                   placeholder="Enter selling price"
-                  style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                  className="myform-input"
                   required
-                />
-                <textarea
-                  id="sellingPriceDescription"
-                  name="sellingPriceDescription"
-                  placeholder="Enter description for selling price"
-                  style={{ marginTop: '10px', width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px', minHeight: '100px' }}
+                  value={sellingPrice}
+                  onChange={(e) => handlePriceChange(e, setSellingPrice)}
                 />
               </td>
             </tr>
 
             {/* Cost Price Row */}
             <tr>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
-                <label htmlFor="costPrice" style={{ display: 'block', fontWeight: 'bold' }}>Cost Price:</label>
+              <td className="myform-label-cell">
+                <label htmlFor="costPrice" className="myform-label">Cost Price:</label>
               </td>
-              <td style={{ padding: '10px', verticalAlign: 'top' }}>
+              <td className="myform-input-cell">
                 <input
                   type="text"
                   id="costPrice"
                   name="costPrice"
                   placeholder="Enter cost price"
-                  style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                  className="myform-input"
                   required
-                />
-                <textarea
-                  id="costPriceDescription"
-                  name="costPriceDescription"
-                  placeholder="Enter description for cost price"
-                  style={{ marginTop: '10px', width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px', minHeight: '100px' }}
+                  value={costPrice}
+                  onChange={(e) => handlePriceChange(e, setCostPrice)}
                 />
               </td>
             </tr>
 
             {/* Action Buttons Row */}
             <tr>
-              <td colSpan="2" style={{ padding: '10px', textAlign: 'right' }}>
-                <button
-                  type="submit"
-                  style={{
-                    padding: '10px 20px',
-                    border: 'none',
-                    backgroundColor: '#007bff',
-                    color: '#fff',
-                    fontSize: '16px',
-                    cursor: 'pointer',
-                    marginRight: '10px',
-                    borderRadius: '4px',
-                  }}
-                >
+              <td colSpan="2" className="myform-button-cell">
+                <button type="submit" className="myform-button myform-button-save">
                   Save
                 </button>
-                <button
-                  type="button"
-                  style={{
-                    padding: '10px 20px',
-                    border: 'none',
-                    backgroundColor: '#6c757d',
-                    color: '#fff',
-                    fontSize: '16px',
-                    cursor: 'pointer',
-                    borderRadius: '4px',
-                  }}
-                >
+                <button type="button" className="myform-button myform-button-cancel">
                   Cancel
                 </button>
               </td>
@@ -224,4 +257,4 @@ function ItemForm() {
   );
 }
 
-export default ItemForm;
+export default MyForm;
