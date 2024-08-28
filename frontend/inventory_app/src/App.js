@@ -9,6 +9,7 @@ import SignIn from './Components/Sign_in/Sign_in';
 import Home from './Components/Homepage/Homepage';
 import SignUp from './Components/Sign_up/Sign_up';
 import Dashboard from './Components/Dashboard/Dashboard';
+import Profile from "./Components/Profile/Profile"
 import ItemForm from './Components/ItemForm/ItemForm';
 import Composite from './Components/CompositeItem/Composite_item';
 import InventoryContent from './Components/InventoryContent/InventoryContent';
@@ -26,6 +27,7 @@ const App = () => {
                 <Route path="/itemform" element={<ItemForm />}></Route>
                 <Route path="/compositeform" element={<Composite />}></Route>
                 <Route path="/my-organization" element={<MyOrganization/>}/>
+                <Route path="/profile" element={<Profile/>}/>
             </Routes>
         </Router>
     );
