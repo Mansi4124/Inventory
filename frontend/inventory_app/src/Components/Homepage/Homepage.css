@@ -424,3 +424,93 @@ footer a:hover {
   position: relative;
   top: 100%;
 }
+
+
+
+/* About Carousel Section */
+.about-carousel-section {
+  padding: 50px 0;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.about-carousel-section h1{
+  padding-bottom: 50px;
+  background-color: #f9f9f9;
+  text-align: center;
+  color: #132F58;
+}
+
+.about-carousel {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+}
+
+.about-carousel-slide {
+  width: 400px;
+  margin: 0 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  opacity: 0.5;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  text-align: center;
+}
+.about-carousel-slide img {
+  width : 50%;
+  height: 40%;
+}
+
+.about-carousel-slide.active {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.about-details h3 {
+  margin: 10px 0;
+  font-size: 1.5em;
+}
+
+.about-details p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.prev-arrow, .next-arrow {
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: #333;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.prev-arrow {
+  left: 0;
+}
+
+.next-arrow {
+  right: 0;
+}
+
+.about-carousel-dots {
+  margin-top: 20px;
+}
+
+.about-carousel-dots .dot {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin: 0 5px;
+  background-color: #ddd;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.about-carousel-dots .dot.active {
+  background-color: #333;
+}

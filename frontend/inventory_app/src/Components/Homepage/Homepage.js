@@ -45,8 +45,47 @@ const testimonials = [
   }
 ];
 
+const about = [
+  {
+    name: "Mansi Patel",
+    contactNo: "CONTACT : ",
+    image: "review.png",
+    linkedin: "LinkedIn :",
+    backgroundColor: "#bbdeeb"
+  },
+  {
+    name: "Avani Kathiriya",
+    contactNo: "CONTACT :",
+    image: "good-review.png",
+    linkedin: "LinkedIn :",
+    backgroundColor: "#ebe1bb"
+  },
+  {
+    name: "Ganpat Kumavat",
+    contactNo: "CONTACT :",
+    image: "review.png",
+    linkedin: "LinkedIn :",
+    backgroundColor: "#e6e3f3"
+  },
+  {
+    name: "Ketul Patel",
+    contactNo: "CONTACT :",
+    image: "review.png",
+    linkedin: "LinkedIn :",
+    backgroundColor: "#d2f3f3"
+  },
+  {
+    name: "Arya Chaudhri",
+    contactNo: "CONTACT :",
+    image: "review.png",
+    linkedin: "LinkedIn :",
+    backgroundColor: "#ffeeee"
+  },
+]
+
 const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -55,6 +94,7 @@ const HomePage = () => {
 
     return () => clearInterval(intervalId);
   }, []);
+ 
 
   const nextSlide = () => {
     setCurrentSlide((currentSlide + 1) % testimonials.length);
@@ -67,6 +107,35 @@ const HomePage = () => {
   const setSlide = (index) => {
     setCurrentSlide(index);
   };
+
+  const [aboutCurrentSlide, setAboutCurrentSlide] = useState(1); // Renamed state variables
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setAboutCurrentSlide((prevSlide) => (prevSlide + 1) % about.length);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const moveToNextAboutSlide = () => {
+    setAboutCurrentSlide((aboutCurrentSlide + 1) % about.length);
+  };
+
+  const moveToPrevAboutSlide = () => {
+    setAboutCurrentSlide((aboutCurrentSlide - 1 + about.length) % about.length);
+  };
+
+  const setAboutSlide = (index) => {
+    setAboutCurrentSlide(index);
+  };
+
+  const getVisibleAboutSlides = () => {
+    const prevIndex = (aboutCurrentSlide - 1 + about.length) % about.length;
+    const nextIndex = (aboutCurrentSlide + 1) % about.length;
+    return [prevIndex, aboutCurrentSlide, nextIndex];
+  };
+
 
   return (
     <>
@@ -168,7 +237,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="features">
+      <section id="features" className="features">
         <h1>Features</h1>
 
         <div className="features-container">
@@ -193,6 +262,43 @@ const HomePage = () => {
         </div>
       </section>
 
+
+      <section className="about-carousel-section">
+      <h1>About Us</h1>
+      <div className="about-carousel">
+        <button className="prev-arrow" onClick={moveToPrevAboutSlide}>&#10094;</button>
+
+        {getVisibleAboutSlides().map((index) => {
+          const person = about[index];
+          return (
+            <div
+              key={index}
+              className={`about-carousel-slide ${index === aboutCurrentSlide ? 'active' : ''}`}
+              style={{ backgroundColor: person.backgroundColor }}
+            >
+              <img src={person.image} alt={`About ${person.name}`} />
+              <div className="about-details">
+                <h3>{person.name}</h3>
+                <p>{person.contactNo}</p>
+                <p>{person.linkedin}</p>
+              </div>
+            </div>
+          );
+        })}
+
+        <button className="next-arrow" onClick={moveToNextAboutSlide}>&#10095;</button>
+      </div>
+
+      <div className="about-carousel-dots">
+        {about.map((_, index) => (
+          <span
+            key={index}
+            className={`dot ${index === aboutCurrentSlide ? 'active' : ''}`}
+            onClick={() => setAboutSlide(index)}
+          ></span>
+        ))}
+      </div>
+    </section>
       <footer className="section-p1">
         <div className="col">
           <img className="logo" src="no/favicon.ico" alt="logo" />
@@ -212,10 +318,7 @@ const HomePage = () => {
           <a href="#">View Inventory</a>
           <a href="#">Get Support</a>
         </div>
-        <div className="col">
-          <p>Secured Payment Gateways</p>
-          <img src="pay.png" alt="Payment Gateways" />
-        </div>
+        
       </footer>
     </>
   );
