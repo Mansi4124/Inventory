@@ -53,11 +53,18 @@ const NavBar = () => {
     window.location.reload();
   };
 
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <nav className="navbar">
       <h1 className="logo"><a href="/">InventoryLogo</a></h1>
       <ul className="nav-links">
-        <li><a href="/">Features</a></li>
+        <li><a href="#features" onClick={() => scrollToSection('features')}>Features</a></li>
         <li><a href="#contact">Contact Us</a></li>
         {loggedIn && !orgAdded && <li><a href="/add-organization">Add organization</a></li>}
         {!loggedIn ? (
