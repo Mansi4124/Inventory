@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Container, Nav } from 'react-bootstrap';
+import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 
 import '../Dashboard/Dashboard.css';
 import HomeContent from '../Homecontent/HomeContent';
 import InventoryContent from '../InventoryContent/InventoryContent';
-import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
     useEffect(() => {
         const getCookie = (name) => {
             const cookieName = `${name}=`;
@@ -25,65 +27,44 @@ const Dashboard = () => {
             }
             return null;
         };
-        const user = getCookie("userId")
+
+        const user = getCookie("userId");
         if (!user) {
-            navigate("/sign_in")
+            navigate("/sign_in");
         }
-    }, [])
-    const [selectedPage, setSelectedPage] = useState('home');
+    }, [navigate]);
 
-    const renderContent = () => {
-        switch (selectedPage) {
-            case 'home':
-                return (
-                    <div className="page-content">
-                        <HomeContent />
-                    </div>
-                );
-            case 'inventory':
-                return (
-                    <div className="page-content">
-                        <InventoryContent />
-                    </div>
-                );
-            case 'sales':
-                return (
-                    <div className="page-content">
-                        <h1>This is the Sales Page</h1>
-                        <p>Content for the sales page goes here.</p>
-                    </div>
-                );
-            case 'reports':
-                return (
-                    <div className="page-content">
-                        <h1>This is the Reports Page</h1>
-                        <p>Content for the reports page goes here.</p>
-                    </div>
-                );
-            default:
-                return (
-                    <div className="page-content">
-                        <h1>Welcome to the Dashboard</h1>
-                        <p>Select an option from the sidebar to get started.</p>
-                    </div>
-                );
-        }
-    };
-
+    // Determine if the current route is the dashboard home route
+    const isDashboardHome = location.pathname === '/dashboard';
 
     return (
         <Container fluid>
             <div className='dashboard-content'>
                 <div className="sidebar">
                     <Nav className="flex-column">
-                        <Nav.Link href="/" onClick={() => setSelectedPage('home')}>Home</Nav.Link>
-                        <Nav.Link href="#inventory" onClick={() => setSelectedPage('inventory')}>Inventory</Nav.Link>
-                        <Nav.Link href="#sales" onClick={() => setSelectedPage('sales')}>Sales</Nav.Link>
-                        <Nav.Link href="#reports" onClick={() => setSelectedPage('reports')}>Reports</Nav.Link>
+                        <Nav.Link onClick={() => navigate('/dashboard')}>Home</Nav.Link>
+                        <Nav.Link onClick={() => navigate('/dashboard/inventory')}>Inventory</Nav.Link>
+                        <Nav.Link onClick={() => navigate('/dashboard/sales')}>Sales</Nav.Link>
+                        <Nav.Link onClick={() => navigate('/dashboard/reports')}>Reports</Nav.Link>
                     </Nav>
                 </div>
                 <div className="content">
-                    {renderContent()}
+                    <Routes>
+                        <Route path="/" element={<HomeContent />} />
+                        <Route path="/inventory" element={<InventoryContent />} />
+                        <Route path="/sales" element={
+                            <div className="page-content">
+                                <h1>This is the Sales Page</h1>
+                                <p>Content for the sales page goes here.</p>
+                            </div>
+                        } />
+                        <Route path="/reports" element={
+                            <div className="page-content">
+                                <h1>This is the Reports Page</h1>
+                                <p>Content for the reports page goes here.</p>
+                            </div>
+                        } />
+                    </Routes>
                 </div>
             </div>
         </Container>

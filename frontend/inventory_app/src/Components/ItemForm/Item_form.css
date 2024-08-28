@@ -1,8 +1,9 @@
 .myform-container {
   background-color: #E5F6FF;
-  padding: 20px;
   display: flex;
   justify-content: center;
+  max-height: 90vh;
+  margin-top: 5px;
 }
 
 .myform-fieldset {

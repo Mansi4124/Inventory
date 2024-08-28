@@ -46,12 +46,13 @@ function Add_organization() {
         orgName: "",
         industry: "Grocery",
         startDate: formattedDate,
-        startMonth: month,
+        location: "",
+        currency: "INR"
     });
 
     const changeHandler = (e) => {
         const { name, value } = e.target;
-        org['org_user_id']=userId
+        org['org_user_id'] = userId
         setOrg({ ...org, [name]: value });
     };
 
@@ -127,15 +128,15 @@ function Add_organization() {
                                 <label htmlFor="loc" className="myform-label">Location:</label>
                             </td>
                             <td className="myform-input-cell">
-                                <input type="text" id="loc" name="location" className="myform-input"  required />
+                                <input type="text" id="loc" name="location" className="myform-input" value={org.location} onChange={changeHandler} required />
                             </td>
                         </tr>
                         <tr>
                             <td className="myform-label-cell">
-                                <label htmlFor="currency" className="myform-label">Currency:</label>
+                                <label htmlFor="currency" className="myform-label" >Currency:</label>
                             </td>
                             <td className="myform-input-cell">
-                                <select id="currency" name="currency" className="myform-input" >
+                                <select id="currency" name="currency" className="myform-input" value={org.currency} onChange={changeHandler}>
                                     <option value="INR" selected>INR</option>
                                     <option value="USD">USD</option>
                                 </select>

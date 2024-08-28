@@ -129,10 +129,20 @@ def add_organization(request):
         try:
             data = json.loads(request.body)
             organization_collection.insert_one(data)
-            return JsonResponse({"message": "Organization added successfully", "user_id": data["org_user_id"], "success": True}, status=201)
+            return JsonResponse(
+                {
+                    "message": "Organization added successfully",
+                    "user_id": data["org_user_id"],
+                    "success": True,
+                },
+                status=201,
+            )
         except Exception as e:
-            return JsonResponse({"message": "An error occurred", "error": str(e)}, status=500)
-        
+            return JsonResponse(
+                {"message": "An error occurred", "error": str(e)}, status=500
+            )
+
+
 @csrf_exempt
 def update_organization(request):
     if request.method == "POST":
@@ -148,7 +158,80 @@ def update_organization(request):
                 # Add more fields as necessary
             }
 
-            organization_collection.update_one({"_id": ObjectId(org_id)}, {"$set": updated_data})
-            return JsonResponse({"message": "Organization updated successfully", "success": True}, status=200)
+            organization_collection.update_one(
+                {"_id": ObjectId(org_id)}, {"$set": updated_data}
+            )
+            return JsonResponse(
+                {"message": "Organization updated successfully", "success": True},
+                status=200,
+            )
         except Exception as e:
-            return JsonResponse({"message": "An error occurred", "error": str(e)}, status=500)
+            return JsonResponse(
+                {"message": "An error occurred", "error": str(e)}, status=500
+            )
+
+
+@csrf_exempt
+def get_profile(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_id = data.get("user_id")
+        user = customer_collection.find_one({"user_id": user_id})
+        del user["_id"]
+        if user:
+            return JsonResponse({"user": user, "success": True}, status=200)
+        return JsonResponse({"message": "User not found"}, status=404)
+
+
+@csrf_exempt
+def update_profile(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_id = data.get("user_id")
+        updated_data = {
+            "fname": data.get("fname"),
+            "lname": data.get("lname"),
+            "email": data.get("email"),
+        }
+        old_password = data.get("old_password")
+        new_password = data.get("new_password")
+        confirm_password = data.get("confirm_password")
+
+        user = customer_collection.find_one({"user_id": user_id})
+
+        if old_password or new_password or confirm_password:
+            if not user:
+                return JsonResponse({"message": "User not found"}, status=404)
+
+            if old_password != user.get("password"):
+                return JsonResponse(
+                    {"message": "Old password is incorrect"}, status=400
+                )
+
+            if new_password != confirm_password:
+                return JsonResponse(
+                    {"message": "New passwords do not match"}, status=400
+                )
+            # Regular expression for password validation
+            re_password = r"^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+            if not re.match(re_password, new_password):
+                return JsonResponse(
+                    {
+                        "message": "Invalid New Password, please use a password of 8 or more characters having at least 1 symbol, 1 capital letter & 1 number"
+                    },
+                )
+            
+            updated_data["password"] = new_password
+            updated_data["cpassword"] = confirm_password
+        result = customer_collection.update_one(
+            {"user_id": user_id}, {"$set": updated_data}
+        )
+
+        if result.matched_count == 0:
+            return JsonResponse(
+                {"message": "User not found or no changes made"}
+            )
+
+        return JsonResponse(
+            {"message": "Profile updated successfully", "success": True}, status=200
+        )
