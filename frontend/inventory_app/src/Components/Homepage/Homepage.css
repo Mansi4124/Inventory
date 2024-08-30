@@ -1,4 +1,3 @@
-/* General Styles */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -119,6 +118,58 @@ body {
 .header-img-section {
   position: relative;
 }
+.header-img-section {
+  text-align: center; /* Center content for better alignment */
+  padding: 20px; /* Add some padding for spacing */
+}
+
+.header-img-section img {
+  max-width: 100%; /* Ensure image scales down with container */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Remove extra space below image */
+  margin: 0 auto; /* Center image horizontally */
+}
+
+.header-img-section a {
+  display: inline-block; /* Make link fit content */
+  margin-top: 20px; /* Add space above the link */
+  padding: 10px 20px; /* Add padding for click area */
+  text-decoration: none; /* Remove underline */
+  color: #ffffff; /* Text color */
+  background-color: #132F58; /* Background color */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 16px; /* Font size */
+}
+
+.header-img-section a:hover {
+  background-color: #0e2c4a; /* Darker background on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .header-img-section {
+    padding: 10px; /* Reduce padding on smaller screens */
+  }
+
+  .header-img-section a {
+    font-size: 14px; /* Slightly smaller font size */
+    padding: 8px 15px; /* Adjust padding for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .header-img-section {
+    padding: 5px; /* Further reduce padding on very small screens */
+  }
+
+  .header-img-section a {
+    font-size: 12px; /* Smaller font size for very small screens */
+    padding: 6px 10px; /* Adjust padding for very small screens */
+  }
+}
+
+
+
 
 .app-store-section {
   padding: 4% 0 4%;
@@ -590,4 +641,3 @@ footer a:hover {
 .contact-details button.cta-button:hover {
   background-color: #0056b3;
 }
-
