@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../HomeContent/HomeContent.css";
+import "./HomeContent.css";
 import axios from "axios"
 
 const HomeContent = () => {

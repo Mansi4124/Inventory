@@ -14,6 +14,7 @@ import ItemForm from './Components/ItemForm/ItemForm';
 import Composite from './Components/CompositeItem/Composite_item';
 import InventoryContent from './Components/InventoryContent/InventoryContent';
 import MyOrganization from './Components/MyOrganization/MyOrganization';
+
 const App = () => {
     return (
         <Router>
@@ -28,8 +29,10 @@ const App = () => {
                 <Route path="/compositeform" element={<Composite />}></Route>
                 <Route path="/my-organization" element={<MyOrganization/>}/>
                 <Route path="/profile" element={<Profile/>}/>
-            </Routes>
+            </Routes> 
+
         </Router>
+    
     );
 };
 
