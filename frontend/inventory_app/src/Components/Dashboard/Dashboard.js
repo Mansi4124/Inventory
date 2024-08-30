@@ -3,7 +3,7 @@ import { Container, Nav } from 'react-bootstrap';
 import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 
 import '../Dashboard/Dashboard.css';
-import HomeContent from '../HomeContent/HomeContent';
+import HomeContent from '../Homecontent/HomeContent';
 import InventoryContent from '../InventoryContent/InventoryContent';
 
 const Dashboard = () => {

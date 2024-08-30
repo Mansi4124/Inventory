@@ -37,10 +37,10 @@ const NavBar = () => {
       const userId = getCookie('userId');
       if (userId) {
         setLoggedIn(true);
-        const res = await axios.post("http://localhost:8000/get_organization_data/",{"user_id":userId})
-        if(res.data.success){
-          setOrgAdded(true)
-          setOrgName(res.data.org['orgName'])
+        const res = await axios.post("http://localhost:8000/get_organization_data/", { "user_id": userId });
+        if (res.data.success) {
+          setOrgAdded(true);
+          setOrgName(res.data.org['orgName']);
         }
       }
     };
@@ -65,7 +65,7 @@ const NavBar = () => {
       <h1 className="logo"><a href="/">InventoryLogo</a></h1>
       <ul className="nav-links">
         <li><a href="#features" onClick={() => scrollToSection('features')}>Features</a></li>
-        <li><a href="#contact">Contact Us</a></li>
+        <li><a href="#contact" onClick={() => scrollToSection('contact')}>Contact Us</a></li>
         {loggedIn && !orgAdded && <li><a href="/add-organization">Add organization</a></li>}
         {!loggedIn ? (
           <>
@@ -74,7 +74,7 @@ const NavBar = () => {
           </>
         ) : (
           <>
-           <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
             <li>
               <FaUserCircle
                 className="profile-icon"
@@ -88,7 +88,6 @@ const NavBar = () => {
                 </div>
               )}
             </li>
-           
           </>
         )}
       </ul>

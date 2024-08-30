@@ -48,37 +48,37 @@ const testimonials = [
 const about = [
   {
     name: "Mansi Patel",
-    contactNo: "CONTACT : ",
-    image: "review.png",
-    linkedin: "LinkedIn :",
+    contactNo: "7862053305",
+    image: "mansi.png",
+    linkedin: "https://www.linkedin.com/in/mansi-patel-942355270",
     backgroundColor: "#bbdeeb"
   },
   {
     name: "Avani Kathiriya",
-    contactNo: "CONTACT :",
-    image: "good-review.png",
-    linkedin: "LinkedIn :",
+    contactNo: "9737893602",
+    image: "avani.png",
+    linkedin: "https://www.linkedin.com/in/avani-kathiriya-200b24274/",
     backgroundColor: "#ebe1bb"
   },
   {
     name: "Ganpat Kumavat",
-    contactNo: "CONTACT :",
-    image: "review.png",
-    linkedin: "LinkedIn :",
+    contactNo: "9725370778",
+    image: "ganpat.png",
+    linkedin: "LinkedIn : https://www.linkedin.com/in/ganpat-kumawat-b51571302/",
     backgroundColor: "#e6e3f3"
   },
   {
     name: "Ketul Patel",
-    contactNo: "CONTACT :",
-    image: "review.png",
-    linkedin: "LinkedIn :",
+    contactNo: "6352050223",
+    image: "ketul.png",
+    linkedin: "LinkedIn :www.linkedin.com/in/ketul-patel-684899279",
     backgroundColor: "#d2f3f3"
   },
   {
-    name: "Arya Chaudhri",
-    contactNo: "CONTACT :",
-    image: "review.png",
-    linkedin: "LinkedIn :",
+    name: "Arya Chaudhary",
+    contactNo: "9510425699",
+    image: "arya.png",
+    linkedin: "LinkedIn :https://www.linkedin.com/in/arya-chaudhari-8b164b256/",
     backgroundColor: "#ffeeee"
   },
 ]
@@ -276,11 +276,11 @@ const HomePage = () => {
               className={`about-carousel-slide ${index === aboutCurrentSlide ? 'active' : ''}`}
               style={{ backgroundColor: person.backgroundColor }}
             >
-              <img src={person.image} alt={`About ${person.name}`} />
+              <img className = "about-img" src={person.image} alt={`About ${person.name}`} />
               <div className="about-details">
                 <h3>{person.name}</h3>
-                <p>{person.contactNo}</p>
-                <p>{person.linkedin}</p>
+                <p>Contact  : {person.contactNo}</p>
+                <p>LinkedIn: <a href={person.linkedin}>{person.linkedin}</a></p>
               </div>
             </div>
           );
@@ -299,6 +299,39 @@ const HomePage = () => {
         ))}
       </div>
     </section>
+
+    <section id="contact" className="contact-section">
+        <div className="contact-container">
+          <div className="contact-image">
+            <img src="contactusImage.png" alt="Contact Us" />
+          </div>
+          <div className="contact-details">
+          <h2>Contact Us</h2>
+
+            <form>
+              <div className="form-group">
+                <label htmlFor="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email:</label>
+                <input type="email" id="email" name="email" required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="contactNumber">Contact Number:</label>
+                <input type="tel" id="contactNumber" name="contactNumber" required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="message">Message:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+              </div>
+              <button type="submit" className="cta-button">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+
       <footer className="section-p1">
         <div className="col">
           <img className="logo" src="no/favicon.ico" alt="logo" />
