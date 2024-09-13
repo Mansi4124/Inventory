@@ -5,7 +5,7 @@ import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 import '../Dashboard/Dashboard.css';
 import HomeContent from '../Homecontent/HomeContent';
 import InventoryContent from '../InventoryContent/InventoryContent';
-
+import SalesOrder from '../SalesOrder/SalesOrder'
 const Dashboard = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -44,7 +44,7 @@ const Dashboard = () => {
                     <Nav className="flex-column">
                         <Nav.Link onClick={() => navigate('/dashboard')}>Home</Nav.Link>
                         <Nav.Link onClick={() => navigate('/dashboard/inventory')}>Inventory</Nav.Link>
-                        <Nav.Link onClick={() => navigate('/dashboard/sales')}>Sales</Nav.Link>
+                        <Nav.Link onClick={() => navigate('/dashboard/sales-order')}>Sales</Nav.Link>
                         <Nav.Link onClick={() => navigate('/dashboard/reports')}>Reports</Nav.Link>
                     </Nav>
                 </div>
@@ -52,11 +52,10 @@ const Dashboard = () => {
                     <Routes>
                         <Route path="/" element={<HomeContent />} />
                         <Route path="/inventory" element={<InventoryContent />} />
-                        <Route path="/sales" element={
-                            <div className="page-content">
-                                <h1>This is the Sales Page</h1>
-                                <p>Content for the sales page goes here.</p>
-                            </div>
+                        <Route path="/sales-order" element={
+                          
+                                <SalesOrder/>
+                           
                         } />
                         <Route path="/reports" element={
                             <div className="page-content">

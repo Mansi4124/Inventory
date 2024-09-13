@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import NavBar from './Components/Navbar/NavBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
+import SalesOrder from './Components/SalesOrder/SalesOrder'
 import AddOrganization from './Components/AddOrganization/Add_organization';
 import SignIn from './Components/Sign_in/Sign_in';
 import Home from './Components/Homepage/Homepage';
@@ -29,6 +29,7 @@ const App = () => {
                 <Route path="/compositeform" element={<Composite />}></Route>
                 <Route path="/my-organization" element={<MyOrganization/>}/>
                 <Route path="/profile" element={<Profile/>}/>
+                <Route path="/sales-order" element={<SalesOrder/>}/>
             </Routes> 
 
         </Router>
