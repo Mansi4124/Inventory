@@ -64,16 +64,19 @@ const NavBar = () => {
     <nav className="navbar">
       <h1 className="logo"><a href="/">InventoryLogo</a></h1>
       <ul className="nav-links">
-        <li><a href="#features" onClick={() => scrollToSection('features')}>Features</a></li>
-        <li><a href="#contact" onClick={() => scrollToSection('contact')}>Contact Us</a></li>
+        <li><a href="/contact_us">Contact Us</a></li>
         {loggedIn && !orgAdded && <li><a href="/add-organization">Add organization</a></li>}
         {!loggedIn ? (
           <>
+          <li><a href="#features" onClick={() => scrollToSection('features')}>Features</a></li>
+
             <li><a href="/sign_in">Sign In</a></li>
             <li><a href="/sign_up">Sign Up</a></li>
           </>
         ) : (
           <>
+            <li><a href="/features">Features</a></li>
+
             <li><a href="/dashboard">Dashboard</a></li>
             <li>
               <FaUserCircle
