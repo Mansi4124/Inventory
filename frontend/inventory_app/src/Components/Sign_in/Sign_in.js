@@ -10,32 +10,40 @@ function Sign_in() {
   });
 
   const [formErrors, setFormErrors] = useState({});
+  const navigate = useNavigate();
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUserDetails({ ...user, [name]: value });
   };
 
-  const navigate = useNavigate();
   const loginHandler = async (e) => {
-
     e.preventDefault();
 
-    const res = await axios.post("http://localhost:8000/sign_in/", user);
+    try {
+      const res = await axios.post("http://localhost:8000/sign_in/", user);
+      const data = res.data;
 
-    const data = await res.data;
+      if (data.success) {
+        const userId = data.user_id;
+        const userRole = data.role; // Get role from the response
 
-    if (data.success) {
-      const userId = data.user_id;
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + 30);
 
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + 30);
+        document.cookie = `userId=${userId}; expires=${expiryDate.toUTCString()}; path=/; secure; SameSite=Lax`;
 
-      document.cookie = `userId=${userId}; expires=${expiryDate.toUTCString()}; path=/; secure; SameSite=Lax`;
-
-      navigate('/dashboard')
-    } else {
-      setFormErrors(data)
+        // Redirect based on user role
+        if (userRole === "admin") {
+          navigate("/admin-dashboard");
+        } else {
+          navigate("/dashboard");
+        }
+      } else {
+        setFormErrors(data);
+      }
+    } catch (error) {
+      console.error("Login failed", error);
     }
   };
 
@@ -66,8 +74,9 @@ function Sign_in() {
             type="submit"
             className="button_common"
             onClick={loginHandler}
-            value="Sign in"
-          >Sign in</button>
+          >
+            Sign in
+          </button>
         </form>
         <a href="/sign_up">Not yet registered? Sign up Now</a>
       </div>

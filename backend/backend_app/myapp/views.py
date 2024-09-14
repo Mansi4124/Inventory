@@ -14,36 +14,27 @@ customer_collection = db.customers
 organization_collection = db.organization
 
 
+
 @csrf_exempt
 def sign_in(request):
     if request.method == "POST":
-
         data = json.loads(request.body)
         email = data["email"]
         password = data["password"]
 
-        regex = r"^[^\s+@]+@[^\s@]+\.[^\s@]{2,}$"
-
-        if not re.match(regex, email):
-            return JsonResponse(
-                {"email": "Invalid Email , please enter a valid email address"}
-            )
-
         user = customer_collection.find_one({"email": email})
-        if user != None:
+        if user is not None:
             if password != user["password"]:
                 return JsonResponse({"notMatch": "Password is invalid"})
-            pass
         else:
             return JsonResponse({"notMatch": "No such user with this email found"})
-        return JsonResponse(
-            {
-                "message": f"Welcome {email}",
-                "user_id": user["user_id"],
-                "success": True,
-            },
-            status=200,
-        )
+
+        return JsonResponse({
+            "message": f"Welcome {email}",
+            "user_id": user["user_id"],
+            "role": user["role"],  # Assuming you have a 'role' field in the user collection
+            "success": True,
+        }, status=200)
 
 
 @csrf_exempt
@@ -54,7 +45,7 @@ def sign_up(request):
         email = data["email"]
         password = data["password"]
         cpass = data["cpassword"]
-
+        role=data["role"]
         re_email = r"^[^\s+@]+@[^\s@]+\.[^\s@]{2,}$"
 
         if not re.match(re_email, email):
