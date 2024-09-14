@@ -302,7 +302,7 @@ const HomePage = () => {
       </div>
     </section>
 
-    <section id="contact" className="contact-section">
+    {/* <section id="contact" className="contact-section">
         <div className="contact-container">
           <div className="contact-image">
             <img src="contactusImage.png" alt="Contact Us" />
@@ -331,7 +331,7 @@ const HomePage = () => {
             </form>
           </div>
         </div>
-      </section>
+      </section> */}
 
 
       <footer className="section-p1">
