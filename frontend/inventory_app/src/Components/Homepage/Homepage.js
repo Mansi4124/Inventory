@@ -51,6 +51,7 @@ const about = [
     contactNo: "7862053305",
     image: "mansi.png",
     linkedin: "https://www.linkedin.com/in/mansi-patel-942355270",
+    instagram: "https://www.instagram.com/mansii___04/",
     backgroundColor: "#bbdeeb"
   },
   {
@@ -58,6 +59,7 @@ const about = [
     contactNo: "9737893602",
     image: "avani.png",
     linkedin: "https://www.linkedin.com/in/avani-kathiriya-200b24274/",
+    instagram: "https://www.instagram.com/avanikathiriya24/",
     backgroundColor: "#ebe1bb"
   },
   {
@@ -65,6 +67,7 @@ const about = [
     contactNo: "9725370778",
     image: "ganpat.png",
     linkedin: "LinkedIn : https://www.linkedin.com/in/ganpat-kumawat-b51571302/",
+    instagram: "https://www.instagram.com/ganpat_8_9_0_3/",
     backgroundColor: "#e6e3f3"
   },
   {
@@ -72,6 +75,7 @@ const about = [
     contactNo: "6352050223",
     image: "ketul.png",
     linkedin: "LinkedIn :www.linkedin.com/in/ketul-patel-684899279",
+    instagram: "https://www.instagram.com/ketul.234?igsh=OWpqbDM1YW9oYnZh",
     backgroundColor: "#d2f3f3"
   },
   {
@@ -79,6 +83,7 @@ const about = [
     contactNo: "9510425699",
     image: "arya.png",
     linkedin: "LinkedIn :https://www.linkedin.com/in/arya-chaudhari-8b164b256/",
+    instagram: "https://www.instagram.com/arya_.2378/",
     backgroundColor: "#ffeeee"
   },
 ]
@@ -282,7 +287,10 @@ const HomePage = () => {
               <div className="about-details">
                 <h3>{person.name}</h3>
                 <p>Contact  : {person.contactNo}</p>
-                <p>LinkedIn: <a href={person.linkedin}>{person.linkedin}</a></p>
+                <p>
+                <a href={person.instagram} target= "_blank"><img src='/instagram.png'></img></a>
+                <a href={person.linkedin} target= "_blank"><img src='/linkedin.png'></img></a>
+                </p>
               </div>
             </div>
           );
@@ -336,22 +344,27 @@ const HomePage = () => {
 
       <footer className="section-p1">
         <div className="col">
-          <img className="logo" src="no/favicon.ico" alt="logo" />
+          <img className="logo" src="InventoryIQ.png" alt="logo" />
+          <h4>Helps user to manage Inventory & grow.</h4>
+
         </div>
         <div className="col">
           <h4>Features</h4>
-          <a href="#">Order Management Software</a>
-          <a href="#">Inventory Management System</a>
-          <a href="#">Inventory Control</a>
-          <a href="#">Inventory Reports</a>
-          <a href="#">All features</a>
+          <a href="/dashboard">Dashboard</a>
+          <a href="/inventory">Inventory</a>
+          <a href="/contact_us">Contact Us</a>
+          <a href="/add-organization">Add Organization</a>
+
+          <a href="#/reports">Reports</a>
+          <a href="/reports">All features</a>
         </div>
         <div className="col">
           <h4>About</h4>
-          <a href="#">My Account</a>
-          <a href="#">Sign In</a>
-          <a href="#">View Inventory</a>
-          <a href="#">Get Support</a>
+          <a href="/profile">My Account</a>
+          <a href="/my-organization">My Organization</a>
+          <a href="/features">Features</a>
+          <a href="/sign_in">Sign In</a>
+          <a href="/contact_us">Get Support</a>
         </div>
         
       </footer>
