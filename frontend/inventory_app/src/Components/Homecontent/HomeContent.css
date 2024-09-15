@@ -1,29 +1,29 @@
-/* Your existing CSS styles */
+/* Existing styles */
 .title {
     color: #132F58;
     font-size: 26px;
 }
-.main-div{
+
+.main-div {
     margin-top: 65px;
 }
 
-.content-div{
+.content-div {
     margin-bottom: 50px;
 }
+
 .home-content {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
     background-color: #f9f9f9;
-    
     margin-left: -150px;
 }
 
 body, html {
     margin: 0;
     padding: 0;
-   
 }
 
 .content-div {
@@ -108,7 +108,7 @@ body, html {
     align-items: center;
 }
 
-.graph-title h2 {
+.graph-title h2,h3 {
     color: white;
     text-align: center;
     margin: 0; /* Remove default margin to ensure full coverage */
@@ -122,4 +122,69 @@ body, html {
     border: 1px dashed #ccc;
     border-radius: 10px;
     margin-top: 20px; /* Add some space between the title and placeholder */
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .home-content {
+        margin-left: -100px;
+    }
+    .card {
+        flex: 1 1 calc(50% - 20px);
+        max-width: 45%;
+    }
+}
+
+@media (max-width: 992px) {
+    .home-content {
+        margin-left: -170px;
+    }
+    .card {
+        flex: 1 1 calc(100% - 20px);
+        max-width: 100%;
+    }
+    .content-div {
+        margin-left: 0;
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-content {
+        padding: 10px;
+    }
+    .card {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+    .graph-placeholder {
+        height: 150px;
+    }
+    .bgp {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .home-content {
+        padding: 10px;
+        margin-left : -200px;
+        margin-right: 20px;
+    }
+    .title {
+        font-size: 22px;
+        padding: 5px;
+        margin-top: -20px;
+        margin: -10px -160px ;
+    }
+  
+    .home-title {
+        font-size: 20px;
+    }
+    .card p {
+        font-size: 15px;
+    }
+    .graph-placeholder {
+        height: 120px;
+    }
 }
