@@ -13,6 +13,7 @@ const NavBar = () => {
   const [orgAdded, setOrgAdded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [orgName, setOrgName] = useState('My Organization');
+  const [navMenuOpen, setNavMenuOpen] = useState(false); // State for responsive menu
   const location = useLocation();
 
   useEffect(() => {
@@ -60,23 +61,30 @@ const NavBar = () => {
     }
   };
 
+  // Debugging state toggle
+  const toggleNavMenu = () => {
+    console.log('Toggling menu');
+    setNavMenuOpen(prevState => !prevState);
+  };
+
   return (
     <nav className="navbar">
-      <h1 className="logo"><a href="/">InventoryLogo</a></h1>
-      <ul className="nav-links">
+      <h1 className="logo"><a href="/"><img src="InventoryIQ.png" alt="Logo" /></a></h1>
+      <button className="menu-toggle" onClick={toggleNavMenu}>
+        ☰
+      </button>
+      <ul className={`nav-links ${navMenuOpen ? 'active' : ''}`}>
         <li><a href="/contact_us">Contact Us</a></li>
         {loggedIn && !orgAdded && <li><a href="/add-organization">Add organization</a></li>}
         {!loggedIn ? (
           <>
-          <li><a href="#features" onClick={() => scrollToSection('features')}>Features</a></li>
-
+            <li><a href="#features" onClick={() => scrollToSection('features')}>Features</a></li>
             <li><a href="/sign_in">Sign In</a></li>
             <li><a href="/sign_up">Sign Up</a></li>
           </>
         ) : (
           <>
             <li><a href="/features">Features</a></li>
-
             <li><a href="/dashboard">Dashboard</a></li>
             <li>
               <FaUserCircle

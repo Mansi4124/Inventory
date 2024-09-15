@@ -1,19 +1,32 @@
+/* Base styles for the navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: #333;
+  background-color: #132F58;
   color: white;
+  position: relative; /* Needed for profile menu positioning */
 }
-.logo{
+
+/* Logo styles */
+.logo {
   font-size: 1.5rem;
-  padding-top: 10px;
+  padding: 0px 20px;
 }
+
+.logo img {
+  height: 50px;
+  width: 90px;
+}
+
+/* Navigation links */
 .nav-links {
   list-style: none;
-  display: flex;
+  display: flex; /* Horizontal layout by default */
   gap: 1rem;
+  max-height: none; /* No height limit by default */
+  overflow: visible; /* Ensure overflow is visible */
 }
 
 .nav-links a {
@@ -21,17 +34,19 @@
   text-decoration: none;
 }
 
+/* Profile icon */
 .profile-icon {
   font-size: 1.5rem;
-  color: white; /* Set profile icon color to white */
+  color: white;
   cursor: pointer;
 }
 
+/* Profile menu */
 .profile-menu {
   position: absolute;
-  right: -0.5rem;
+  right: 0;
   top: 3.5rem;
-  background-color:var(--dark);
+  background-color: #132F58; /* Use a darker color for the dropdown */
   color: rgb(245, 241, 241);
   border: 1px solid #ccc;
   border-radius: 0.2rem;
@@ -56,11 +71,61 @@
   background-color: #f0f0f0;
 }
 
+/* Menu toggle button (for small screens) */
+.menu-toggle {
+  display: none; /* Hidden by default */
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+  background: none;
+  border: none;
+  margin-right: 20px;
+}
 
+/* Responsive styles */
+@media (max-width: 768px) {
+  .nav-links {
+    display: flex;
+    flex-direction: column; /* Vertical layout on small screens */
+    gap: 0;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #132F58;
+    width: 100%;
+    max-height: 0; /* Hide by default */
+    overflow: hidden; /* Prevent scrollbars */
+    transition: max-height 0.3s ease; /* Smooth transition */
+  }
 
+  .nav-links.active {
+    max-height: 500px; /* Adjust based on the content height */
+    display: flex; /* Show nav links when active */
+  }
 
+  .nav-links a {
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid #132F58;
+  }
 
+  .nav-links a:first-child {
+    border-top: none;
+  }
 
+  .profile-icon {
+    display: none; /* Hide profile icon on smaller screens */
+  }
 
+  .menu-toggle {
+    display: block; /* Show menu toggle button on smaller screens */
+  }
+}
 
-
+/* Ensure profile menu is still properly positioned on smaller screens */
+@media (max-width: 768px) {
+  .profile-menu {
+    right: 1rem; /* Adjust positioning for smaller screens */
+    top: 60px;
+  }
+}
