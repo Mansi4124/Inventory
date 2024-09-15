@@ -1,10 +1,56 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import "../CompositeItem/Composite_item.css";
+import axios from 'axios';
 
 function MyForm1() {
-  const [rows, setRows] = useState([{ quantity: '', sellingPrice: '', costPrice: '' }]);
+  const [rows, setRows] = useState([{ name: '', quantity: 0, sellingPrice: '', costPrice: '' }]);
+  const [items, setItems] = useState([]);
+  const [newName, setNewName] = useState('');
+  const [sellingPrice, setSellingPrice] = useState(0);
+  const [costPrice, setCostPrice] = useState(0);
 
-  // Handle input change
+  const getCookie = (name) => {
+    const cookieName = `${name}=`;
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookies = decodedCookie.split(';');
+
+    for (let i = 0; i < cookies.length; i++) {
+      let cookie = cookies[i];
+      while (cookie.charAt(0) === ' ') {
+        cookie = cookie.substring(1);
+      }
+      if (cookie.indexOf(cookieName) === 0) {
+        return cookie.substring(cookieName.length, cookie.length);
+      }
+    }
+    return null;
+  };
+
+  const calculateTotal = useCallback((type) => {
+    return rows.reduce((acc, row) => {
+      const quantity = parseFloat(row.quantity) || 0;
+      const price = parseFloat(row[type]) || 0;
+      return acc + quantity * price;
+    }, 0).toFixed(2);
+  }, [rows]);
+
+
+  const updateSelect = useCallback(async () => {
+    const userId = getCookie('userId');
+    const res = await axios.post("http://localhost:8000/get_items/", { 'user_id': userId });
+    const items = res.data.success ? res.data.user_items.products : [];
+    setItems(items);
+  }, []);
+
+  useEffect(() => {
+    updateSelect();
+  }, [updateSelect]);
+
+  useEffect(() => {
+    setSellingPrice(calculateTotal('sellingPrice'));
+    setCostPrice(calculateTotal('costPrice'));
+  }, [rows, calculateTotal]);
+
   const handleInputChange = (index, event) => {
     const { name, value } = event.target;
     const newRows = [...rows];
@@ -12,66 +58,92 @@ function MyForm1() {
     setRows(newRows);
   };
 
-  // Handle adding a new row
   const addNewRow = (event) => {
     event.preventDefault();
-    setRows([...rows, { quantity: '', sellingPrice: '', costPrice: '' }]);
+    setRows([...rows, { name: '', quantity: 0, sellingPrice: '', costPrice: '' }]);
   };
 
-  // Handle removing a row
   const removeRow = (index) => {
     const newRows = [...rows];
     newRows.splice(index, 1);
     setRows(newRows);
   };
 
-  // Restrict input to numbers only and prevent entering zero
-  const handleKeyPress = (event) => {
-    const charCode = event.which ? event.which : event.keyCode;
-    if (
-      (charCode < 48 || charCode > 57) && // Not a number
-      charCode !== 46 && // Not a period (for decimals)
-      charCode !== 8 &&  // Not backspace
-      charCode !== 9     // Not tab
-    ) {
-      event.preventDefault();
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const handleCompositeSave = async (e) => {
+    const userId = getCookie('userId');
+    const month = new Date().getMonth()
+    const month_text = monthNames[month]
+    const year = new Date().getFullYear()
+    const month_year = month_text + "-" + year
+    const quantities = {}
+    for (var row of rows) {
+      quantities[row.name] = row.quantity
     }
+    const data = {
+      'user_id': userId,
+      'product_details': {
+        'product_name': newName,
+        'category': "Composite",
+        'selling_price': parseInt(sellingPrice),
+        'cost_price': parseInt(costPrice),
+        'quantities': quantities,
+        'month-year': month_year
+      }
+    }
+
+    if (newName) {
+      await axios.post("http://localhost:8000/add_item/", data);
+    }
+  }
+
+  const handleItemSelect = (index, event) => {
+    const selectedItem = items.find(item => item.product_name === event.target.value);
+    const newRows = [...rows];
+    newRows[index] = {
+      ...newRows[index],
+      name: selectedItem.product_name,
+      sellingPrice: selectedItem.selling_price,
+      costPrice: selectedItem.cost_price
+    };
+    setRows(newRows);
   };
 
-  // Restrict input for quantity to disallow zero
   const handleQuantityKeyPress = (event) => {
-    handleKeyPress(event);
     if (event.target.value === '' && event.which === 48) {
-      event.preventDefault(); // Prevent entering 0 as the first digit
+      event.preventDefault(); 
     }
-  };
-
-  // Calculate totals
-  const calculateTotal = (type) => {
-    return rows.reduce((acc, row) => {
-      const quantity = parseFloat(row.quantity) || 0;
-      const price = parseFloat(row[type]) || 0;
-      return acc + quantity * price;
-    }, 0).toFixed(2);
   };
 
   return (
     <>
       <form className="myform-container">
         <fieldset className="myform-fieldset">
-         <legend className="myform-legend">Composite Product</legend> 
-        
+          <legend className="myform-legend">Composite Product</legend>
+
           <table className="myform-table">
             <tbody>
               <tr className="myform-row">
                 <td className="myform-label">
-                  <label htmlFor="name" className="myform-label">Name:</label>
+                  <label htmlFor="name" className="myform-label" required>Name:</label>
                 </td>
                 <td>
-                  <input type="text" id="name" name="name" className="myform-input myform-input-full-width" required />
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    className="myform-input myform-input-full-width"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    required
+                  />
                 </td>
               </tr>
-             
+
               <tr>
                 <td colSpan="2">
                   <label htmlFor="name" className="myform-label">Associate items:</label>
@@ -88,7 +160,15 @@ function MyForm1() {
                     <tbody>
                       {rows.map((row, index) => (
                         <tr key={index}>
-                          <td><input type="text" name="item" className="myform-input" /></td>
+                          <td>
+                            <select name='name' className="myform-input" value={row.name} onChange={event => handleItemSelect(index, event)}>
+                              <option value='' hidden>Select Items</option>
+                              {items.length === 0 && <option disabled>No Items Found</option>}
+                              {items.map((item, idx) => (
+                                <option value={item.product_name} key={idx}>{item.product_name}</option>
+                              ))}
+                            </select>
+                          </td>
                           <td>
                             <input
                               type="number"
@@ -108,7 +188,6 @@ function MyForm1() {
                               value={row.sellingPrice}
                               className="myform-input"
                               onChange={event => handleInputChange(index, event)}
-                              onKeyPress={handleKeyPress}
                               min="1"
                               step="1" // Step set to 1 for selling price
                             />
@@ -120,9 +199,8 @@ function MyForm1() {
                               value={row.costPrice}
                               className="myform-input"
                               onChange={event => handleInputChange(index, event)}
-                              onKeyPress={handleKeyPress}
                               min="1"
-                              step="1" // Step set to 1 for cost price
+                              step="1"
                             />
                           </td>
                           <td>
@@ -135,13 +213,13 @@ function MyForm1() {
                       <tr>
                         <td>
                           <div className="pt-2">
-                            <a href="#" className="myform-add-row-button" onClick={addNewRow}>
+                            <button className="myform-add-row-button" onClick={addNewRow}>
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="icon icon-sm text-open fill-azure-blue align-middle">
                                 <path d="M256 15C122.9 15 15 122.9 15 256s107.9 241 241 241 241-107.9 241-241S389.1 15 256 15zm122 263H278v100c0 12.2-9.8 22-22 22s-22-9.8-22-22V278H134c-12.2 0-22-9.8-22-22s9.8-22 22-22h100V134c0-12.2 9.8-22 22-22s22 9.8 22 22v100h100c12.2 0 22-9.8 22-22s-9.8-22-22-22z"></path>
                                 <path fill="#FFF" d="M378 234H278V134c0-12.2-9.8-22-22-22s-22 9.8-22 22v100H134c-12.2 0-22 9.8-22 22s9.8 22 22 22h100v100c0 12.2 9.8 22 22 22s22-9.8 22-22V256h100c12.2 0 22-9.8 22-22s-9.8-22-22-22z"></path>
                               </svg>
                               <span>Add New Row</span>
-                            </a>
+                            </button>
                           </div>
                         </td>
                         <td className="myform-button-cell">Total:</td>
@@ -151,6 +229,7 @@ function MyForm1() {
                       </tr>
                     </tbody>
                   </table>
+                  {items.length === 0 && <div className='no-items alert alert-danger'>No items Found , Please add some first!</div>}
                 </td>
               </tr>
               <tr>
@@ -159,15 +238,15 @@ function MyForm1() {
               </tr>
               <tr>
 
-              <td colSpan="2" className="myform-button-cell">
-                <button type="submit" className="myform-button myform-button-save">
-                  Save
-                </button>
-                <button type="button" className="myform-button myform-button-cancel">
-                  Cancel
-                </button>
-              </td>
-            </tr>
+                <td colSpan="2" className="myform-button-cell">
+                  <button type="submit" className="myform-button myform-button-save" onClick={handleCompositeSave}>
+                    Save
+                  </button>
+                  <button type="button" className="myform-button myform-button-cancel">
+                    Cancel
+                  </button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </fieldset>

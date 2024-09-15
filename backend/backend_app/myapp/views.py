@@ -6,13 +6,16 @@ import re
 from pymongo import MongoClient
 import uuid
 from bson import ObjectId
-
+from django.core.mail import send_mail
 client = MongoClient("mongodb://localhost:27017/")
 
 db = client.my_database
 customer_collection = db.customers
 organization_collection = db.organization
-
+items_collection=db.items
+# Add this to your existing code to create a MongoDB collection
+contact_collection = db.contact
+sales_collection=db.sales
 
 
 @csrf_exempt
@@ -226,3 +229,188 @@ def update_profile(request):
         return JsonResponse(
             {"message": "Profile updated successfully", "success": True}, status=200
         )
+
+
+@csrf_exempt
+def contact_us(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            name = data.get("fullName")
+            email = data.get("email")
+            message = data.get("message")
+
+            # Perform some basic validation (optional)
+            if not name or not email or not message:
+                return JsonResponse({"error": "All fields are required"}, status=400)
+
+            # Save the contact message to MongoDB with reply status set to false
+            contact_id = contact_collection.insert_one({
+                "fullName": name,
+                "email": email,
+                "message": message,
+                "reply_sent": False  # Initially, no reply has been sent
+            }).inserted_id
+
+            return JsonResponse({"message": "Thank you for contacting us!", "contact_id": str(contact_id)}, status=201)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def get_contact_queries(request):
+    if request.method == "GET":
+        try:
+            # Fetch all the contact queries from MongoDB
+            queries = list(contact_collection.find({}))
+            
+            # Convert ObjectId to string for JSON serialization
+            for query in queries:
+                query["_id"] = str(query["_id"])
+                
+            return JsonResponse({"queries": queries, "success": True}, status=200)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def send_email(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            print(email)
+            message = data.get("message")
+            contact_id = data.get("contact_id")  # The ID of the contact message being replied to
+
+            if not email or not message or not contact_id:
+                return JsonResponse({"error": "Missing email, message, or contact_id"}, status=400)
+             # Format the email message
+            formatted_message = (
+                f"Dear {data.get('fullName', 'Customer')},\n\n"
+                f"Thank you for contacting us.\n\n"
+               
+              
+                f"{message}\n\n"
+                f"Best regards,\nInventoryIQ"
+            )
+
+            # Sending the email (adjust the subject, from email, and your SMTP settings)
+            send_mail(
+                subject='Reply to Your Contact Us Query',
+                message=formatted_message,
+                from_email='mansipatel9898.mp@gmail.com',  # Replace with your own email
+                recipient_list=[email],
+                fail_silently=False,
+            )
+
+            # Update the contact document to include the reply and indicate that a reply has been sent
+            result = contact_collection.update_one(
+                {"_id": ObjectId(contact_id)},
+                {"$set": {"reply": message, "reply_sent": True}}
+            )
+
+            if result.matched_count > 0:
+                return JsonResponse({"message": "Reply sent successfully", "success": True}, status=200)
+            else:
+                return JsonResponse({"error": "Contact not found"}, status=404)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+@csrf_exempt
+def add_item(request):
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+        user_items = items_collection.find_one({"user_id": data["user_id"]})
+
+        if user_items:
+            for item in user_items["products"]:
+                if item["product_name"].lower() == data["product_details"]["product_name"].lower():
+                    return JsonResponse(
+                        {"error": "Item name must be unique!", "success": False }
+                    )
+            user_items["products"].append(data["product_details"])
+            items_collection.update_one(
+                {"user_id": data["user_id"]},
+                {"$set": {"products": user_items["products"]}},
+            )
+        else:
+            insert_data = {
+                "user_id": data["user_id"],
+                "products": [data["product_details"]],
+            }
+            items_collection.insert_one(insert_data)
+
+        return JsonResponse(
+            {
+                "message": "Item added successfully",
+                "success": True,
+            },
+            status=201,
+        )
+    else:
+        return JsonResponse({"message": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def get_items(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        if data:
+            user_items = items_collection.find_one({"user_id": data["user_id"]})
+
+            if user_items:
+                user_items["_id"] = str(user_items["_id"])
+                return JsonResponse(
+                    {
+                        "message": "Item added successfully",
+                        "success": True,
+                        "user_items": user_items,
+                    },
+                    status=201,
+                )
+            else:
+                return JsonResponse({"message": "Error adding item", "success": False})
+        else:
+            return JsonResponse({"message": "Error adding item", "success": False})
+
+
+@csrf_exempt
+def add_sales(request):
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+        user_sales = sales_collection.find_one({"user_id": data["user_id"]})
+
+        if user_sales:
+            user_id = data["user_id"]
+            del data["user_id"]
+            user_sales["sales"].append(data)
+            sales_collection.update_one(
+                {"user_id": user_id},
+                {"$set": {"sales": user_sales["sales"]}},
+            )
+        else:
+            user_id = data["user_id"]
+            del data["user_id"]
+            insert_data = {
+                "user_id": user_id,
+                "sales": [data],
+            }
+            sales_collection.insert_one(insert_data)
+
+        return JsonResponse(
+            {
+                "message": "Item added successfully",
+                "success": True,
+            },
+            status=201,
+        )
+    else:
+        return JsonResponse({"message": "Invalid request method"}, status=405)
