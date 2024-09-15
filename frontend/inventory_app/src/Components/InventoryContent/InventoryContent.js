@@ -43,7 +43,19 @@ const InventoryContent = () => {
         </div>
 
         {/* View Low Stock Item Card */}
-        
+        <div className="card inventory-card">
+          <div className="backgrounddiv">
+            <h2>Manage Items</h2>
+          </div>
+          <div className="">
+            <i className="bi bi-box-seam" style={{ fontSize: "2rem" }}></i>
+            <p>Click the button below to manage your items.</p>
+            <Button className="inv-btn" onClick={() => navigate("/manage-item-form")}>
+              Manage Items
+            </Button>
+          </div>
+        </div>
+
       </div>
     </div>
   );

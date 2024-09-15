@@ -8,7 +8,7 @@ function MyForm1() {
   const [newName, setNewName] = useState('');
   const [sellingPrice, setSellingPrice] = useState(0);
   const [costPrice, setCostPrice] = useState(0);
-
+  const [error, setError] = useState('');
   const getCookie = (name) => {
     const cookieName = `${name}=`;
     const decodedCookie = decodeURIComponent(document.cookie);
@@ -75,6 +75,7 @@ function MyForm1() {
   ];
 
   const handleCompositeSave = async (e) => {
+    e.preventDefault();
     const userId = getCookie('userId');
     const month = new Date().getMonth()
     const month_text = monthNames[month]
@@ -97,7 +98,19 @@ function MyForm1() {
     }
 
     if (newName) {
-      await axios.post("http://localhost:8000/add_item/", data);
+      const res=await axios.post("http://localhost:8000/add_item/", data);
+
+      if (res.data.success === false) {
+        setError(res.data.error)
+      } else {
+        setError('')
+        setNewName('');
+        setRows([{ name: '', quantity: 0, sellingPrice: '', costPrice: '' }]);
+        setSellingPrice(0);
+        setCostPrice(0);
+        updateSelect();        
+        alert('Form submitted!');
+      }
     }
   }
 
@@ -115,7 +128,7 @@ function MyForm1() {
 
   const handleQuantityKeyPress = (event) => {
     if (event.target.value === '' && event.which === 48) {
-      event.preventDefault(); 
+      event.preventDefault();
     }
   };
 
@@ -141,6 +154,7 @@ function MyForm1() {
                     onChange={(e) => setNewName(e.target.value)}
                     required
                   />
+                  {error !== "" && <p style={{ color: 'red' }}>{error}</p>}
                 </td>
               </tr>
 

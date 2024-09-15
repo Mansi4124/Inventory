@@ -39,7 +39,6 @@
 }
 
 .inventory-card {
-    height: 500px;
     gap: 20px; /* This gap is within the card itself */
 }
 

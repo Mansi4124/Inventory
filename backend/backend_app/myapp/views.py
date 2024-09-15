@@ -384,6 +384,7 @@ def get_items(request):
             return JsonResponse({"message": "Error adding item", "success": False})
 
 
+
 @csrf_exempt
 def add_sales(request):
     if request.method == "POST":
@@ -435,3 +436,117 @@ def add_sales(request):
         )
     else:
         return JsonResponse({"message": "Invalid request method"}, status=405)
+@csrf_exempt
+def edit_item(request, product_name):
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        user_id = data.get("user_id")
+        product_details = data.get("product_details")
+        new_product_name = product_details.get("product_name")
+
+        if not user_id or not product_details:
+            return JsonResponse({"message": "Invalid request data", "success": False}, status=400)
+
+        user_items = items_collection.find_one({"user_id": user_id})
+
+        if user_items:
+            updated_products = []
+            item_found = False  # Add a flag to check if the item is found
+            for product in user_items["products"]:
+                if product["product_name"] == product_name:
+                    updated_products.append(product_details)  # Replace with updated details
+                    item_found = True  # Item is found and updated
+                else:
+                    updated_products.append(product)  # Keep other products unchanged
+
+            if not item_found:
+                return JsonResponse({"message": "Item not found", "success": False}, status=404)
+
+            items_collection.update_one(
+                {"user_id": user_id},
+                {"$set": {"products": updated_products}},
+            )
+
+            return JsonResponse(
+                {
+                    "message": "Item updated successfully",
+                    "success": True,
+                },
+                status=200,
+            )
+        else:
+            return JsonResponse({"message": "User not found", "success": False}, status=404)
+    else:
+        return JsonResponse({"message": "Invalid request method", "success": False}, status=405)
+
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        user_id = data.get("user_id")
+        product_details = data.get("product_details")
+        new_product_name = product_details.get("product_name")
+
+        if not user_id or not product_details:
+            return JsonResponse({"message": "Invalid request data", "success": False}, status=400)
+
+        user_items = items_collection.find_one({"user_id": user_id})
+
+        if user_items:
+            updated_products = []
+            for i in range(len(user_items["products"])):
+                if user_items["products"][i]["product_name"] == new_product_name:
+                    user_items["products"][i] = product_details
+                    print("*"*30)                    
+
+            # if not item_found:
+            #     print("*********************************************************")
+            #     return JsonResponse({"message": "Item not found", "success": False}, status=404)
+
+            items_collection.update_one(
+                {"user_id": user_id},
+                {"$set": {"products": updated_products}},
+            )
+
+            return JsonResponse(
+                {
+                    "message": "Item updated successfully",
+                    "success": True,
+                },
+                status=200,
+            )
+        else:
+            return JsonResponse({"message": "User not found", "success": False}, status=404)
+    else:
+        return JsonResponse({"message": "Invalid request method", "success": False}, status=405)
+
+@csrf_exempt
+def delete_item(request, product_name):
+    if request.method == "DELETE":
+        try:
+            data = json.loads(request.body)
+            user_id = data.get("user_id")
+            print(user_id)
+            if not user_id:
+                return JsonResponse({"message": "Invalid request data", "success": False}, status=400)
+
+            user_items = items_collection.find_one({"user_id": user_id})
+            
+            if user_items:
+                updated_products = [item for item in user_items["products"] if item["product_name"].lower() != product_name.lower()]
+
+                if len(updated_products) == len(user_items["products"]):
+                    return JsonResponse({"message": "Item not found", "success": False}, status=404)
+
+                items_collection.update_one(
+                    {"user_id": user_id},
+                    {"$set": {"products": updated_products}}
+                )
+
+                return JsonResponse({"message": "Item deleted successfully", "success": True}, status=200)
+            else:
+                return JsonResponse({"message": "User not found", "success": False}, status=404)
+        except json.JSONDecodeError:
+            return JsonResponse({"message": "Invalid JSON format", "success": False}, status=400)
+        except Exception as e:
+            return JsonResponse({"message": f"Error occurred: {str(e)}", "success": False}, status=500)
+    else:
+        return JsonResponse({"message": "Invalid request method", "success": False}, status=405)
