@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./Sign_up.css";
-import axios from "axios"
+import axios from "axios";
 
 function Sign_up() {
   const [formErrors, setFormErrors] = useState({});
 
+  // Add 'role' to the user state with a default value of 'customer'
   const [user, setUserDetails] = useState({
     fname: "",
     lname: "",
     email: "",
     password: "",
     cpassword: "",
+    role: "customer", // Default value
   });
 
   const changeHandler = (e) => {
@@ -45,7 +47,6 @@ function Sign_up() {
       setFormErrors({ message: 'An error occurred. Please try again.' });
     }
   };
-
 
   return (
     <>
@@ -100,7 +101,9 @@ function Sign_up() {
               className="button_common"
               onClick={signupHandler}
               value="Sign up"
-            >Sign up</button>
+            >
+              Sign up
+            </button>
           </form>
           <p className="error">{formErrors.accountFound}</p>
           <a href="/sign_in">Already registered? Sign in</a>
@@ -109,4 +112,5 @@ function Sign_up() {
     </>
   );
 }
+
 export default Sign_up;

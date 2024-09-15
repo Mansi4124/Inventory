@@ -1,0 +1,149 @@
+/* AdminDashboard.css */
+
+.admin-title {
+    font-size: 28px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--dark); /* Ensure --dark is defined in your CSS variables */
+}
+
+.admin-dashboard {
+    padding: 20px;
+    background-color: white;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: var(--dark);
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tab-button.active {
+    background-color: var(--dark);
+    color: white;
+}
+
+.tab-button:hover {
+    background-color: #ddd;
+}
+
+.queries-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between cards */
+    justify-content: flex-start; /* Align cards to the start of the container */
+}
+/* AdminDashboard.css */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+  }
+  
+
+.query-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes the textarea and button to the bottom */
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: calc(33.333% - 20px); /* Adjust for gap */
+    background-color: rgb(230, 236, 240);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box; /* Ensure padding and borders are included in the width */
+}
+
+.query-card ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    max-height: 120px; /* Adjust based on content length */
+    width: 100%; /* Make sure the ul takes up the full width of its parent */
+    overflow-y: auto; /* Scroll if content exceeds max-height */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.query-card:hover {
+    transform: scale(1.01); /* Slightly scales up the card */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+}
+
+.query-card h3 {
+    margin: 0 0 10px;
+    font-size: 1.25rem;
+    color: var(--dark);
+}
+
+.query-card p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: var(--dark);
+}
+
+.query-card li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.query-card textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    box-sizing: border-box;
+    resize: vertical; /* Allow vertical resizing */
+    color: var(--dark);
+}
+
+.query-card textarea:focus {
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.reply-button {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 4px;
+    background-color: var(--dark); /* Ensure --dark is defined in your CSS variables */
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.reply-button:hover {
+    background-color: var(--link); /* Ensure --link is defined in your CSS variables */
+}
+
+.reply-button:active {
+    transform: scale(0.98); /* Slightly scales down when active */
+}
+
+.reply-button:focus {
+    outline: none;
+}

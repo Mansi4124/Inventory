@@ -144,3 +144,8 @@
   width: 80px; /* Adjust the width as needed */
   text-align: center; /* Center-align text */
 }
+
+.no-items {
+  text-align: center;
+  font-size: 18px;
+}
