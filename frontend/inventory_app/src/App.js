@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import NavBar from './Components/Navbar/NavBar';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import AddOrganization from './Components/AddOrganization/Add_organization';
 import SignIn from './Components/Sign_in/Sign_in';
 import Home from './Components/Homepage/Homepage';
 import SignUp from './Components/Sign_up/Sign_up';
-import SalesOrder from './Components/SalesOrder/SalesOrder'
+import SalesOrder from './Components/SalesOrder/SalesOrder';
 import Dashboard from './Components/Dashboard/Dashboard';
 import Profile from "./Components/Profile/Profile"
 import ItemForm from './Components/ItemForm/ItemForm';
