@@ -331,9 +331,12 @@ def add_item(request):
 
         if user_items:
             for item in user_items["products"]:
-                if item["product_name"].lower() == data["product_details"]["product_name"].lower():
+                if (
+                    item["product_name"].lower()
+                    == data["product_details"]["product_name"].lower()
+                ):
                     return JsonResponse(
-                        {"error": "Item name must be unique!", "success": False }
+                        {"error": "Item name must be unique!", "success": False}
                     )
             user_items["products"].append(data["product_details"])
             items_collection.update_one(
@@ -387,9 +390,28 @@ def add_sales(request):
 
         data = json.loads(request.body)
         user_sales = sales_collection.find_one({"user_id": data["user_id"]})
+        user_id = data["user_id"]
+        user_items = items_collection.find_one({"user_id": user_id})
+        user_items = user_items["products"]
+        for item in data["items"]:
+            if item['category']!="Composite":
+                for i1 in range(len(user_items)):
+                    if item["name"] == user_items[i1]["product_name"]:
+                        user_items[i1]["sold_quantity"] += int(item["quantity"])
+                        user_items[i1]["remaining_stock"] -= int(item["quantity"])
+            else:
+                for i1 in range(len(user_items)):
+                    if item["name"] == user_items[i1]["product_name"]:
+                        for i2 in user_items[i1]['quantities']:
+                            for i3 in range(len(user_items)):
+                                if user_items[i3]['product_name']==i2:
+                                    user_items[i3]['sold_quantity']+=(int(item['quantity'])*int(user_items[i1]['quantities'][i2]))
+                                    user_items[i3]['remaining_stock']-=(int(item['quantity'])*int(user_items[i1]['quantities'][i2]))
 
+        items_collection.update_one(
+            {"user_id": user_id}, {"$set": {"products": user_items}}
+        )
         if user_sales:
-            user_id = data["user_id"]
             del data["user_id"]
             user_sales["sales"].append(data)
             sales_collection.update_one(
@@ -397,7 +419,6 @@ def add_sales(request):
                 {"$set": {"sales": user_sales["sales"]}},
             )
         else:
-            user_id = data["user_id"]
             del data["user_id"]
             insert_data = {
                 "user_id": user_id,

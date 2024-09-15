@@ -25,7 +25,7 @@ function MyForm4() {
   };
 
   const getCookie = (name) => {
-    const cookieName =`${name}=`;
+    const cookieName = `${name}=`;
     const decodedCookie = decodeURIComponent(document.cookie);
     const cookies = decodedCookie.split(';');
 
@@ -108,7 +108,8 @@ function MyForm4() {
       ...newRows[index],
       name: selectedItem.product_name,
       sellingPrice: selectedItem.selling_price,
-      costPrice: selectedItem.cost_price
+      costPrice: selectedItem.cost_price,
+      category:selectedItem.category
     };
     setRows(newRows);
   };
