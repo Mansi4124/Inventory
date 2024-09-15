@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import NavBar from './Components/Navbar/NavBar';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-
 import AddOrganization from './Components/AddOrganization/Add_organization';
 import SignIn from './Components/Sign_in/Sign_in';
 import Home from './Components/Homepage/Homepage';

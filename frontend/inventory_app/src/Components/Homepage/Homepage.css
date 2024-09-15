@@ -754,6 +754,8 @@ footer .col {
 
 footer .logo {
   margin-bottom: 30px;
+  height: 100px;
+  width: auto;
 }
 
 footer h4 {
@@ -863,6 +865,14 @@ footer a:hover {
   color: #132F58;
   text-align:initial;
 }
+
+.about-details img{
+  height: 20px;
+  width: 20px;
+  margin: 10px;
+  margin-left:60px;
+}
+
 
 .prev-arrow, .next-arrow {
   background: none;
