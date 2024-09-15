@@ -109,7 +109,7 @@ function MyForm4() {
       name: selectedItem.product_name,
       sellingPrice: selectedItem.selling_price,
       costPrice: selectedItem.cost_price,
-      category:selectedItem.category
+      category: selectedItem.category
     };
     setRows(newRows);
   };
@@ -122,6 +122,11 @@ function MyForm4() {
     e.preventDefault();
     const data = { 'customer_name': customerName, 'grand_total': calculateGrandTotal(), 'items': rows, 'user_id': getCookie('userId') }
     await axios.post("http://localhost:8000/add_sales/", data);
+    alert("Form Submitted");
+    setRows([{ quantity: '', amount: '', category: '', sellingPrice: '', costPrice: '', name: '' }])
+    setCustomerName('')
+    setApplyGST('no')
+    setDiscount('')
   }
 
   return (
