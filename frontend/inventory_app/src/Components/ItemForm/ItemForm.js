@@ -79,11 +79,6 @@ function MyForm() {
 
   };
 
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
   const getCookie = (name) => {
     const cookieName = `${name}=`;
     const decodedCookie = decodeURIComponent(document.cookie);
@@ -104,10 +99,6 @@ function MyForm() {
   const handleSave = async (e) => {
     e.preventDefault();
     const userId = getCookie('userId');
-    const month = new Date().getMonth()
-    const month_text = monthNames[month]
-    const year = new Date().getFullYear()
-    const month_year = month_text + "-" + year
 
     const data = {
       'user_id': userId,
@@ -124,7 +115,6 @@ function MyForm() {
         'sold_quantity': 0,
         'invested_amount': 0,
         'profit_amount': 0,
-        'month-year': month_year
       }
     }
 

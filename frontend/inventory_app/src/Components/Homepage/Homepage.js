@@ -63,10 +63,10 @@ const about = [
     backgroundColor: "#ebe1bb"
   },
   {
-    name: "Ganpat Kumavat",
+    name: "Ganpat Kumawat",
     contactNo: "9725370778",
     image: "ganpat.png",
-    linkedin: "LinkedIn : https://www.linkedin.com/in/ganpat-kumawat-b51571302/",
+    linkedin: "https://www.linkedin.com/in/ganpat-kumawat-b51571302/",
     instagram: "https://www.instagram.com/ganpat_8_9_0_3/",
     backgroundColor: "#e6e3f3"
   },
@@ -74,7 +74,7 @@ const about = [
     name: "Ketul Patel",
     contactNo: "6352050223",
     image: "ketul.png",
-    linkedin: "LinkedIn :www.linkedin.com/in/ketul-patel-684899279",
+    linkedin: "https://www.linkedin.com/in/ketul-patel-684899279",
     instagram: "https://www.instagram.com/ketul.234?igsh=OWpqbDM1YW9oYnZh",
     backgroundColor: "#d2f3f3"
   },
@@ -82,7 +82,7 @@ const about = [
     name: "Arya Chaudhary",
     contactNo: "9510425699",
     image: "arya.png",
-    linkedin: "LinkedIn :https://www.linkedin.com/in/arya-chaudhari-8b164b256/",
+    linkedin: "https://www.linkedin.com/in/arya-chaudhari-8b164b256/",
     instagram: "https://www.instagram.com/arya_.2378/",
     backgroundColor: "#ffeeee"
   },

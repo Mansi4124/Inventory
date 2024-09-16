@@ -70,21 +70,12 @@ function MyForm1() {
     setRows(newRows);
   };
 
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
   const handleCompositeSave = async (e) => {
-    if (newName == "") {
+    if (newName === "") {
       setError("Item name cannot be empty!")
     }
     e.preventDefault();
     const userId = getCookie('userId');
-    const month = new Date().getMonth()
-    const month_text = monthNames[month]
-    const year = new Date().getFullYear()
-    const month_year = month_text + "-" + year
     const quantities = {}
     const cost_prices = {}
     const selling_prices = {}
@@ -103,7 +94,6 @@ function MyForm1() {
         'quantities': quantities,
         'cost_prices': cost_prices,
         'selling_prices': selling_prices,
-        'month-year': month_year
       }
     }
 

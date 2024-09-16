@@ -13,6 +13,7 @@
 
 .myform-legend {
   font-size: 1.5rem;
+  
 }
 
 .myform-label {
@@ -50,7 +51,7 @@
 
 .myform-remove-row-button {
   color: red;
-  font-size: 1.2rem;
+  font-size: 30px;
 }
 
 .myform-add-row-button {
@@ -147,4 +148,5 @@
 .no-items {
   text-align: center;
   font-size: 18px;
+  
 }

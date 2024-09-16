@@ -18,6 +18,7 @@ import ContactUs from './Components/ContactUs/ContactUs';
 import Features from './Components/Features/Features';
 import AdminDashboard from './Components/AdminDashboard/AdminDashboard';
 import ManageItemForm from './Components/ManageItemForm/ManageItemForm';
+import ReviewForm from './Components/ReviewForm/ReviewForm';
 const AppContent = () => {
     const location = useLocation(); // Get the current path
 
@@ -42,6 +43,7 @@ const AppContent = () => {
                 <Route path="/item-orders" element={<ItemOrder />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/manage-item-form" element={<ManageItemForm />} />
+                <Route path="/review" element={<ReviewForm/>}/>
             </Routes>
         </>
     );

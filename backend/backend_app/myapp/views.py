@@ -7,6 +7,9 @@ from pymongo import MongoClient
 import uuid
 from bson import ObjectId
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
+
+from backend_app import settings
 
 client = MongoClient("mongodb://localhost:27017/")
 
@@ -408,19 +411,30 @@ def add_sales(request):
         data = json.loads(request.body)
         user_sales = sales_collection.find_one({"user_id": data["user_id"]})
         user_id = data["user_id"]
+        customer_name = data.get("customer_name", "N/A")
+        customer_email = data.get("customer_email", None)
+        items = data["items"]
+        
+        gst = data.get("gst")  # GST if applied
+        discount = data.get("discount", 0)  # Discount if applied
+        total =data.get("grand_total")
+        sub_total=data.get("sub_total")
         user_items = items_collection.find_one({"user_id": user_id})
         user_items = user_items["products"]
-        for item in data["items"]:
+
+        # Process each item
+        for item in items:
             if item["category"] != "Composite":
                 for i1 in range(len(user_items)):
                     if item["name"] == user_items[i1]["product_name"]:
                         if int(item["quantity"]) > user_items[i1]["remaining_stock"]:
-                            return JsonResponse({"error": "Not enough items in stock!",'success':False})
+                            return JsonResponse({"error": "Not enough items in stock!", 'success': False})
                         user_items[i1]["sold_quantity"] += int(item["quantity"])
                         user_items[i1]["remaining_stock"] -= int(item["quantity"])
                         user_items[i1]["profit_amount"] = int(
                             user_items[i1]["sold_quantity"]
                         ) * int(user_items[i1]["profit_margin"])
+                      
             else:
                 for i1 in range(len(user_items)):
                     if item["name"] == user_items[i1]["product_name"]:
@@ -428,7 +442,7 @@ def add_sales(request):
                             for i3 in range(len(user_items)):
                                 if user_items[i3]["product_name"] == i2:
                                     if (int(item['quantity'])*int(user_items[i1]['quantities'][i2])) > int(user_items[i3]["remaining_stock"]):
-                                        return JsonResponse({"error": "Not enough items in stock!",'success':False})
+                                        return JsonResponse({"error": "Not enough items in stock!", 'success': False})
                                     user_items[i3]["sold_quantity"] += int(
                                         item["quantity"]
                                     ) * int(user_items[i1]["quantities"][i2])
@@ -438,9 +452,16 @@ def add_sales(request):
                                     user_items[i3]["profit_amount"] = int(
                                         user_items[i3]["sold_quantity"]
                                     ) * int(user_items[i3]["profit_margin"])
+                                  
+
+     
+
+        # Update items collection after changes
         items_collection.update_one(
             {"user_id": user_id}, {"$set": {"products": user_items}}
         )
+
+        # Handle sales collection
         if user_sales:
             del data["user_id"]
             user_sales["sales"].append(data)
@@ -456,6 +477,31 @@ def add_sales(request):
             }
             sales_collection.insert_one(insert_data)
 
+        # Generate the HTML email content
+        email_body = render_to_string('sales_email_template.html', {
+            'customer_name': customer_name,
+            'customer_email': customer_email,
+            'items': items,
+           
+            'subtotal':sub_total,
+            'gst': gst,
+            'discount': discount,
+            'total': total
+        })
+       
+        # Send email if customer email exists
+        if customer_email:
+            subject = 'Bill'
+            recipient_list = [customer_email]  # Send to the customer
+            send_mail(
+                subject, 
+                '',  # Plain text version, leave blank for HTML
+                'mansipatel9898.mp@gmail.com',  # Sender email
+                recipient_list, 
+                fail_silently=False,
+                html_message=email_body  # Send HTML message
+            )
+
         return JsonResponse(
             {
                 "message": "Item added successfully",
@@ -465,7 +511,6 @@ def add_sales(request):
         )
     else:
         return JsonResponse({"message": "Invalid request method"}, status=405)
-
 
 @csrf_exempt
 def edit_item(request, product_name):
@@ -617,3 +662,29 @@ def add_item_order(request):
         )
     else:
         return JsonResponse({"message": "Invalid request method"}, status=405)
+
+
+def send_sales_order_email(customer_name, customer_email, rows, subtotal, gst, discount, grand_total):
+    subject = 'Your Sales Order Details'
+    message = f'Dear {customer_name},\n\nThank you for your order. Here are the details:\n\n'
+    
+    # Format the table in the email
+    message += 'Item Name\tQuantity\tRate\tAmount\n'
+    for row in rows:
+        message += f"{row['name']}\t{row['quantity']}\t{row['sellingPrice']}\t{row['amount']}\n"
+    
+    # Add totals
+    message += f"\nSub Total: {subtotal}\n"
+    message += f"GST (18%): {gst}\n"
+    message += f"Discount: {discount}%\n"
+    message += f"Grand Total: {grand_total}\n"
+    message += '\nThank you for shopping with us!'
+
+    # Send the email
+    send_mail(
+        subject,
+        message,
+        settings.EMAIL_HOST_USER,
+        [customer_email],
+        fail_silently=False,
+    )
