@@ -133,7 +133,8 @@ function MyForm1() {
   };
 
   return (
-    <>
+    <section id="composite" className="composite-section">
+      <div className="composite-container">
       <form className="myform-container" onSubmit={handleCompositeSave}>
         <fieldset className="myform-fieldset">
           <legend className="myform-legend">Composite Product</legend>
@@ -265,7 +266,8 @@ function MyForm1() {
           </table>
         </fieldset>
       </form>
-    </>
+    </div>
+    </section>
   );
 }
 

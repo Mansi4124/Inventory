@@ -1,3 +1,25 @@
+#addorg{
+  background-color: #E5F6FF;
+  color: #132F58;
+  height: 700px;
+}
+.addorg-section {
+  display: flex;
+  align-items: center;
+  padding: 50px;
+  background-color: #f9f9f9;
+}
+
+.addorg-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+
+
 .myform-container {
   height: auto;
   width: 100%;

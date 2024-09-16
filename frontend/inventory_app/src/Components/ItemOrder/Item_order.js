@@ -126,7 +126,8 @@ export default function Item_orderForm() {
   }
 
   return (
-    <>
+    <section id='itemorder' className='itemorder-section'>
+      <div className='itemorder-container'>
       <form className="myform-container">
         <fieldset className="myform-fieldset">
           <legend className="myform-legend">Add Order Details</legend>
@@ -145,6 +146,7 @@ export default function Item_orderForm() {
                     className="myform-input myform-input-full-width"
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
+                    required
                   />
                   {error !== "" && <p style={{ color: 'red' }}>{error}</p>}
                 </td>
@@ -222,7 +224,7 @@ export default function Item_orderForm() {
                       </tr>
                     </tbody>
                   </table>
-                  {items.length === 0 && <div className='no-items alert alert-danger'>No items Found , Please add some first!</div>}
+                  {items.length === 0 && <div className='no-items alert alert-danger'>No itemsFound , Please add some first!</div>}
                 </td>
               </tr>
               <tr>
@@ -256,10 +258,10 @@ export default function Item_orderForm() {
                     </div>
                     <input
                       type="text"
-                      value="18%"
+                      value={applyGST === 'yes' ? '18%' : '0%'}
                       readOnly
                       className="gst-textbox"
-                    />
+                    /> 
                   </div>
                 </td>
               </tr>
@@ -279,6 +281,7 @@ export default function Item_orderForm() {
           </table>
         </fieldset>
       </form>
-    </>
+    </div>
+    </section>
   );
 }

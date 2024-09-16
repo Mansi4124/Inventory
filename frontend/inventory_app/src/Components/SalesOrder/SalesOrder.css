@@ -1,20 +1,56 @@
 /* General Styling */
+#salesorder{
+  background-color: #E5F6FF;
+  color: #132F58;
+  height: 700px;
+}
+.salesorder-section {
+  display: flex;
+  align-items: center;
+  padding: 50px;
+  background-color: #f9f9f9;
+}
+
+.salesorder-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+
+
 .myform-container {
- margin-left: -100px;
-  position: relative;
-  top:0px
+  height: auto;
+  width: 100%;
+  height: 100vh;
+  margin-top: -30px;
+       
+  }
   
-}
-
-.myform-fieldset {
-  border: none;
-  padding: 0;
-}
-
-.myform-legend {
-  font-size: 1.5rem;
+  .myform-fieldset {
+    background-color: #FFF;
+    border: 1px solid #ccc;
+    padding: 30px;
+    border-radius: 20px;
+    margin: 30px auto;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
   
-}
+  .myform-legend {
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .myform-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
 
 .myform-label {
   font-weight: bold;
