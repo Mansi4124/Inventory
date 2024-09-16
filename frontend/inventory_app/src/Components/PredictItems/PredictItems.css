@@ -1,0 +1,36 @@
+.predicted-div button{
+    margin: auto;
+    padding: 10px 20px;
+    width: 300px;
+    font-weight: 600;
+    background-color: var(--dark);
+    color:white;
+    border-radius: 10px;
+}
+
+.predictedBtnDiv{
+    display: flex;
+    justify-content: center;
+    margin: 60px 0px;
+}
+
+.get-suggestion-input{
+    width: 300px;
+    padding: 5px 10px;
+}
+
+.predicted-div th{
+    background-color: var(--dark);
+    color:white;
+    text-align: center;
+}
+
+.predicted-div h1{
+    font-weight: 700;
+    font-size: 32px;
+}
+
+.predicted-div h3{
+    font-weight: 600;
+    font-size: 24px;
+}

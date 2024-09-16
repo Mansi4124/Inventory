@@ -8,6 +8,7 @@ import InventoryContent from '../InventoryContent/InventoryContent';
 import SalesOrder from '../SalesOrder/SalesOrder'
 import ItemOrder from '../ItemOrder/Item_order'
 import Reports from '../Reports/Reports'
+import PredictItems from '../PredictItems/PredictItems';
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -50,6 +51,7 @@ const Dashboard = () => {
                         <Nav.Link onClick={() => navigate('/dashboard/sales-order')}>Sales</Nav.Link>
                         <Nav.Link onClick={() => navigate('/dashboard/reports')}>Reports</Nav.Link>
                         <Nav.Link onClick={() => navigate('/dashboard/item-orders')}>Item Orders</Nav.Link>
+                        <Nav.Link onClick={() => navigate('/dashboard/predict-items')}>Suugested Inventory</Nav.Link>
                     </Nav>
                 </div>
                 <div className="content">
@@ -59,6 +61,7 @@ const Dashboard = () => {
                         <Route path="/sales-order" element={<SalesOrder />} />
                         <Route path="/reports" element={<Reports />} />
                         <Route path="/item-orders" element={<ItemOrder />} />
+                        <Route path="/predict-items" element={<PredictItems />} />
                     </Routes>
                 </div>
             </div>
