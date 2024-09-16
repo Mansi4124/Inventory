@@ -136,6 +136,14 @@ const Dashboard = () => {
                 Item Orders
               </Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                onClick={() => navigate("/dashboard/predict")}
+                className={location.pathname === "/dashboard/predict" ? "active" : ""}
+              >
+                Predict Items
+              </Nav.Link>
+            </Nav.Item>
           </Nav>
 
           <div className="content">
@@ -145,6 +153,7 @@ const Dashboard = () => {
               <Route path="/salescontent" element={<SalesContent />} />
               <Route path="/reports" element={<Reports />} />
               <Route path="/itemcontent" element={<ItemOrderContent />} />
+              <Route path="/predict" element={<PredictItems/>}/>
             </Routes>
           </div>
         </div>

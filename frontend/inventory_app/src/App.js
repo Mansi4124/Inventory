@@ -21,6 +21,7 @@ import ManageItemForm from './Components/ManageItemForm/ManageItemForm';
 import ReviewForm from './Components/ReviewForm/ReviewForm';
 import SalesContent from './Components/SalesContent/SalesContent';
 import ItemOrderContent from './Components/ItemOrderContent/ItemOrderContent';
+import PredictItems from './Components/PredictItems/PredictItems';
 const AppContent = () => {
     const location = useLocation(); // Get the current path
 
@@ -48,6 +49,7 @@ const AppContent = () => {
                 <Route path="/review" element={<ReviewForm/>}/>
                 <Route path="/salescontent" element={<SalesContent/>}/>
                 <Route path='/itemorder' element={<ItemOrderContent/>}/>
+                <Route path='/predict' element={<PredictItems/>}/>
             </Routes>
         </>
     );
