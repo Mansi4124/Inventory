@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Homepage/Homepage.css';
 import { Navbar } from 'react-bootstrap';
-
+import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 const testimonials = [
   {
     content: "Zoho Inventory is one of the most easy to implement inventory management solution we have come across, with frequent updates that add more features with each iteration.",
@@ -89,8 +89,37 @@ const about = [
 ]
 
 const HomePage = () => {
+  
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [aboutCurrentSlide, setAboutCurrentSlide] = useState(0); // Renamed state variables
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // New state to track login status
+const navigate = useNavigate();
+  const location = useLocation();
 
+  useEffect(() => {
+    // Check if the user is logged in
+    const getCookie = (name) => {
+      const cookieName = `${name}=`;
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookies = decodedCookie.split(';');
+
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i];
+        while (cookie.charAt(0) === ' ') {
+          cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(cookieName) === 0) {
+          return cookie.substring(cookieName.length, cookie.length);
+        }
+      }
+      return null;
+    };
+
+    const user = getCookie("userId");
+    setIsLoggedIn(!!user);
+
+    
+  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -99,7 +128,6 @@ const HomePage = () => {
 
     return () => clearInterval(intervalId);
   }, []);
- 
 
   const nextSlide = () => {
     setCurrentSlide((currentSlide + 1) % testimonials.length);
@@ -112,8 +140,6 @@ const HomePage = () => {
   const setSlide = (index) => {
     setCurrentSlide(index);
   };
-
-  const [aboutCurrentSlide, setAboutCurrentSlide] = useState(1); // Renamed state variables
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -135,21 +161,28 @@ const HomePage = () => {
     setAboutCurrentSlide(index);
   };
 
+  const handleGetStartedClick = () => {
+    if (isLoggedIn) {
+      navigate('/dashboard');
+    } else {
+      navigate('/sign_in');
+    }
+  };
+
   const getVisibleAboutSlides = () => {
     const prevIndex = (aboutCurrentSlide - 1 + about.length) % about.length;
     const nextIndex = (aboutCurrentSlide + 1) % about.length;
     return [prevIndex, aboutCurrentSlide, nextIndex];
   };
 
-
   return (
     <>
       <div className="home-container">
         <section>
           <header className="hero">
-            <h1>Inventory management software designed for small businesses</h1>
-            <p>Manage orders. Track inventory. Handle GST billing. Oversee warehouses. One inventory management software to run all your inventory operations.</p>
-            <button className="cta-button">Get Started</button>
+            <h1>Inventory Management Software Designed For Small Businesses</h1>
+            <p>Manage orders. Track inventory. Handle GST billing. One inventory management software to run all your inventory operations.</p>
+            <button className="cta-button" onClick={handleGetStartedClick}>Get Started</button>
           </header>
 
           <div className="ratings-section">
@@ -349,17 +382,17 @@ const HomePage = () => {
 
         </div>
         <div className="col">
-          <h4>Features</h4>
+          <h3>Features</h3>
           <a href="/dashboard">Dashboard</a>
           <a href="/inventory">Inventory</a>
           <a href="/contact_us">Contact Us</a>
           <a href="/add-organization">Add Organization</a>
 
           <a href="#/reports">Reports</a>
-          <a href="/reports">All features</a>
+        
         </div>
         <div className="col">
-          <h4>About</h4>
+          <h3>About</h3>
           <a href="/profile">My Account</a>
           <a href="/my-organization">My Organization</a>
           <a href="/features">Features</a>

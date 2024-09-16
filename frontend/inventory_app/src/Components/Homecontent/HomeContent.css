@@ -1,11 +1,16 @@
 /* Existing styles */
-.title {
+.h-title {
     color: #132F58;
     font-size: 26px;
+    text-align: left;
 }
-
+.b-title{
+    color: #132F58;
+    font-size: 20px;
+    text-align: left;
+}
 .main-div {
-    margin-top: 65px;
+    margin-top: 0px;
 }
 
 .content-div {
@@ -171,13 +176,18 @@ body, html {
         margin-left : -200px;
         margin-right: 20px;
     }
-    .title {
+    .h-title {
         font-size: 22px;
         padding: 5px;
         margin-top: -20px;
         margin: -10px -160px ;
     }
-  
+    .b-title {
+        font-size: 22px;
+        padding: 5px;
+     
+        margin: 20px -160px ;
+    }
     .home-title {
         font-size: 20px;
     }

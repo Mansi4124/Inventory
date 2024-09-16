@@ -73,7 +73,7 @@ body {
   padding: 100px;
 }
 .hero h1 {
-  font-size: 52px;
+ 
   margin-top: 90px;
   margin-bottom: 30px;
 }
@@ -755,8 +755,9 @@ footer .logo {
   width: auto;
 }
 
-footer h4 {
-  font-size: 16px;
+footer h3 {
+  font-size: 26px;
+  font-weight: bold;
   padding-bottom: 10px;
 }
 
