@@ -126,6 +126,7 @@
 /* Ensure profile menu is still properly positioned on smaller screens */
 @media (max-width: 768px) {
   .profile-menu {
+    position: fixed;
     right: 1rem; /* Adjust positioning for smaller screens */
     top: 60px;
   }

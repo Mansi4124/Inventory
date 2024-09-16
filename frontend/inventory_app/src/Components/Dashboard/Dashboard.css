@@ -1,67 +1,80 @@
-/* Existing Styles */
-.sidebar {
-    background-color: #f5f9fb;
-    
-    text-align: left;
-    padding-left: 20px;
-    font-weight: bold;
-    height: 100vh;
-    position: fixed;
-    top: 60px; /* Ensure the sidebar starts at the top */
-    left: 0;
-    width: 200px;
-    z-index: 1000; /* Increased z-index to ensure it's above other content */
-    transition: transform 0.3s ease; /* Smooth transition for sliding effect */
-}
-.sidebar-l{
-    margin-top: -400px;
-    position: fixed;
-}
-.sidebar .nav-link {
-   
-    margin-bottom: 15px;
-    cursor: pointer;
+/* Overall title and layout styling */
+.container-title {
     color: #132F58;
+    margin-left: 3rem;
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  
+  .h-title {
+    font-size: 1.1rem;
+   
+  }
+  .nav-link{
+    color:var(--dark);
+    font-weight:500;
+
+  }
+  /* Highlight active tab */
+.nav-link.active {
+  color:white !important;
+  background-color:var(--dark) !important; /* Bootstrap's primary blue */
+  border-color: #0e0f0f;
 }
 
-.content {
-    margin-left: 400px; 
-    padding-left: 20px; /* Adjusted padding to match the sidebar */
-    position: relative;
-    padding-top: 100px;
-}
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: -200px; /* Hide sidebar off-screen by default */
-        width: 200px;
-        height: 100%;
-        transform: translateX(-100%);
+  .b-title {
+    font-size: 1.1rem;
+   
+    color: black;
+  }
+  
+  /* Dashboard content container */
+  .dashboard-content {
+    padding-top: 1rem;
+  }
+  
+  /* Content area styling */
+  .content {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+  }
+  
+  /* Navigation tabs */
+  .links-tab {
+    margin-left: 1rem;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .container-title {
+      margin-left: 0rem;
+      padding-top: 1rem;
+      display: flex;
+      align-items: center;
     }
-
-    .sidebar-open {
-        transform: translateX(0); /* Show sidebar when toggled */
+  
+    .dashboard-content {
+      padding-top: 3rem;
     }
-
+  
     .content {
-        margin-left: 0; /* No margin needed for content when sidebar is hidden */
-        padding-left: 20px; /* Adjusted padding to fit content better */
+      padding: 0.5rem;
     }
-
-    /* Add styles for the hamburger menu icon */
-    .navbar-toggler {
-        display: block; /* Show hamburger icon on smaller screens */
+  
+    .links-tab {
+      margin-left: 0;
+      font-size: 0.85rem;
     }
-}
-
-/* Styles for the hamburger menu icon */
-.navbar-toggler {
-    display: none; /* Hidden by default */
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 1100; /* Ensure it's above the sidebar */
-}
+  }
+  
+  @media (min-width: 769px) {
+    .content {
+      max-width: 1200px;
+    }
+  }
+  

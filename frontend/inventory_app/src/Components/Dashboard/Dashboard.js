@@ -1,69 +1,155 @@
-import React, { useEffect } from 'react';
-import { Container, Nav } from 'react-bootstrap';
-import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
-
-import '../Dashboard/Dashboard.css';
-import HomeContent from '../HomeContent/HomeContent';
-import InventoryContent from '../InventoryContent/InventoryContent';
-import SalesOrder from '../SalesOrder/SalesOrder'
-import ItemOrder from '../ItemOrder/Item_order'
-import Reports from '../Reports/Reports'
+import React, { useState, useEffect } from "react";
+import { Container, Nav } from "react-bootstrap";
+import { useLocation, useNavigate, Routes, Route } from "react-router-dom";
+import axios from "axios";
+import "../Dashboard/Dashboard.css";
+import HomeContent from "../Homecontent/HomeContent";
+import InventoryContent from "../InventoryContent/InventoryContent";
+import Reports from "../Reports/Reports";
+import SalesContent from "../SalesContent/SalesContent";
+import ItemOrderContent from "../ItemOrderContent/ItemOrderContent";
 
 const Dashboard = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation(); // Get current path
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [orgData, setOrgData] = useState({ orgName: "" });
 
-    useEffect(() => {
-        const getCookie = (name) => {
-            const cookieName = `${name}=`;
-            const decodedCookie = decodeURIComponent(document.cookie);
-            const cookies = decodedCookie.split(';');
+  useEffect(() => {
+    const getCookie = (name) => {
+      const cookieName = `${name}=`;
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookies = decodedCookie.split(";");
 
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i];
-                while (cookie.charAt(0) === ' ') {
-                    cookie = cookie.substring(1);
-                }
-                if (cookie.indexOf(cookieName) === 0) {
-                    return cookie.substring(cookieName.length, cookie.length);
-                }
-            }
-            return null;
-        };
-
-        const user = getCookie("userId");
-        if (!user) {
-            navigate("/sign_in");
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(cookieName)) {
+          return cookie.substring(cookieName.length);
         }
-    }, [navigate]);
+      }
+      return null;
+    };
 
-    // Determine if the current route is the dashboard home route
-    const isDashboardHome = location.pathname === '/dashboard';
+    const user = getCookie("userId");
+    if (!user) {
+      navigate("/sign_in");
+    }
+  }, [navigate]);
 
-    return (
-        <Container fluid>
-            <div className='dashboard-content'>
-                <div className="sidebar">
-                    <Nav className="flex-column">
-                        <Nav.Link onClick={() => navigate('/dashboard')}>Home</Nav.Link>
-                        <Nav.Link onClick={() => navigate('/dashboard/inventory')}>Inventory</Nav.Link>
-                        <Nav.Link onClick={() => navigate('/dashboard/sales-order')}>Sales</Nav.Link>
-                        <Nav.Link onClick={() => navigate('/dashboard/reports')}>Reports</Nav.Link>
-                        <Nav.Link onClick={() => navigate('/dashboard/item-orders')}>Item Orders</Nav.Link>
-                    </Nav>
-                </div>
-                <div className="content">
-                    <Routes>
-                        <Route path="/" element={<HomeContent />} />
-                        <Route path="/inventory" element={<InventoryContent />} />
-                        <Route path="/sales-order" element={<SalesOrder />} />
-                        <Route path="/reports" element={<Reports />} />
-                        <Route path="/item-orders" element={<ItemOrder />} />
-                    </Routes>
-                </div>
-            </div>
-        </Container>
-    );
+  useEffect(() => {
+    const fetchData = async () => {
+      const userId = getCookie("userId");
+      if (userId) {
+        try {
+          const [userResponse, orgResponse] = await Promise.all([
+            axios.post("http://localhost:8000/get_customer_data/", { user_id: userId }),
+            axios.post("http://localhost:8000/get_organization_data/", { user_id: userId }),
+          ]);
+          
+          if (userResponse.data.user) setData(userResponse.data.user);
+          if (orgResponse.data.success){
+            setOrgData(orgResponse.data.org);
+          } 
+            
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          setData(null);
+        }
+      }
+      setLoading(false);
+    };
+
+    const getCookie = (name) => {
+      const cookieName = `${name}=`;
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookies = decodedCookie.split(";");
+
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(cookieName)) {
+          return cookie.substring(cookieName.length);
+        }
+      }
+      return null;
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!data) {
+    return <div>No data available</div>;
+  }
+
+  return (
+    <>
+      <div className="container-title">
+        <h2 className="h-title">Hello, {data.fname}</h2>
+        <h3 className="b-title">{orgData.orgName}</h3>
+      </div>
+
+      <Container fluid>
+        <div className="dashboard-content">
+          <Nav variant="tabs" className="justify-content-left links-tab">
+            <Nav.Item>
+              <Nav.Link
+                onClick={() => navigate("/dashboard")}
+                className={location.pathname === "/dashboard" ? "active" : ""}
+              >
+                Home
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                onClick={() => navigate("/dashboard/inventory")}
+                className={location.pathname === "/dashboard/inventory" ? "active" : ""}
+              >
+                Inventory
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                onClick={() => navigate("/dashboard/salescontent")}
+                className={location.pathname === "/dashboard/salescontent" ? "active" : ""}
+              >
+                Sales
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                onClick={() => navigate("/dashboard/reports")}
+                className={location.pathname === "/dashboard/reports" ? "active" : ""}
+              >
+                Reports
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                onClick={() => navigate("/dashboard/itemcontent")}
+                className={location.pathname === "/dashboard/itemcontent" ? "active" : ""}
+              >
+                Item Orders
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<HomeContent />} />
+              <Route path="/inventory" element={<InventoryContent />} />
+              <Route path="/salescontent" element={<SalesContent />} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/itemcontent" element={<ItemOrderContent />} />
+            </Routes>
+          </div>
+        </div>
+      </Container>
+    </>
+  );
 };
 
 export default Dashboard;

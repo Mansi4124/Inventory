@@ -1,0 +1,95 @@
+/* General styling for main div */
+.main-div2 {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Content Header */
+  .content-divv {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .text-muted {
+    font-size: 1rem;
+    color: #777;
+  }
+  
+  /* Sales content styling */
+  .sales-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  /* Individual card styles */
+  .card.sales-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    text-align: center;
+    flex: 1 1 calc(33.333% - 20px); /* Flexible basis for 3 columns */
+    min-width: 250px;
+  }
+  
+  .backgrounddivv {
+    
+    color:var(--dark);
+   
+    border-radius: 8px 8px 0 0;
+    font-size: 1.5rem;
+  }
+  .backgrounddivv h2{
+    font-size: 20px;
+    padding-top: 10px;
+  }
+  .bi {
+    
+   
+  }
+  
+  .sales-btn {
+    background-color:var(--dark);
+    color: white;
+    border: none;
+    padding-bottom: -10px;
+    width: 100%;
+  }
+  
+  .sales-btn:hover {
+    background-color:var(--link)
+  }
+  
+  /* Responsive Styles */
+  /* Tablets and smaller (less than 768px) */
+  @media (max-width: 768px) {
+    .sales-content {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .card.sales-card {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+  }
+  
+  /* Extra small devices (less than 576px) */
+  @media (max-width: 576px) {
+    .card.sales-card {
+      padding: 15px;
+    }
+  
+    .backgrounddivv {
+      font-size: 1.25rem;
+    }
+    .backgrounddivv img{
+      width: 70%;
+    }
+    .sales-btn {
+      font-size: 0.9rem;
+    }
+  }
+  
