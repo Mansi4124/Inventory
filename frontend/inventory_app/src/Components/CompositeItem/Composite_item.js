@@ -86,8 +86,12 @@ function MyForm1() {
     const year = new Date().getFullYear()
     const month_year = month_text + "-" + year
     const quantities = {}
+    const cost_prices = {}
+    const selling_prices = {}
     for (var row of rows) {
       quantities[row.name] = row.quantity
+      cost_prices[row.name] = row.costPrice
+      selling_prices[row.name] = row.sellingPrice
     }
     const data = {
       'user_id': userId,
@@ -97,6 +101,8 @@ function MyForm1() {
         'selling_price': parseInt(sellingPrice),
         'cost_price': parseInt(costPrice),
         'quantities': quantities,
+        'cost_prices': cost_prices,
+        'selling_prices': selling_prices,
         'month-year': month_year
       }
     }

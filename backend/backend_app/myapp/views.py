@@ -414,6 +414,8 @@ def add_sales(request):
             if item["category"] != "Composite":
                 for i1 in range(len(user_items)):
                     if item["name"] == user_items[i1]["product_name"]:
+                        if int(item["quantity"]) > user_items[i1]["remaining_stock"]:
+                            return JsonResponse({"error": "Not enough items in stock!",'success':False})
                         user_items[i1]["sold_quantity"] += int(item["quantity"])
                         user_items[i1]["remaining_stock"] -= int(item["quantity"])
                         user_items[i1]["profit_amount"] = int(
@@ -425,6 +427,8 @@ def add_sales(request):
                         for i2 in user_items[i1]["quantities"]:
                             for i3 in range(len(user_items)):
                                 if user_items[i3]["product_name"] == i2:
+                                    if (int(item['quantity'])*int(user_items[i1]['quantities'][i2])) > int(user_items[i3]["remaining_stock"]):
+                                        return JsonResponse({"error": "Not enough items in stock!",'success':False})
                                     user_items[i3]["sold_quantity"] += int(
                                         item["quantity"]
                                     ) * int(user_items[i1]["quantities"][i2])
@@ -433,7 +437,7 @@ def add_sales(request):
                                     ) * int(user_items[i1]["quantities"][i2])
                                     user_items[i3]["profit_amount"] = int(
                                         user_items[i3]["sold_quantity"]
-                                    ) * int(user_items[i3]["porfit_margin"])
+                                    ) * int(user_items[i3]["profit_margin"])
         items_collection.update_one(
             {"user_id": user_id}, {"$set": {"products": user_items}}
         )

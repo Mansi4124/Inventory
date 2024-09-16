@@ -8,6 +8,7 @@ function MyForm4() {
   const [applyGST, setApplyGST] = useState('no');
   const [discount, setDiscount] = useState('');
   const [items, setItems] = useState([]);
+  const [error, setError] = useState('');
 
   const handleInputChange = (index, event) => {
     const { name, value } = event.target;
@@ -121,12 +122,17 @@ function MyForm4() {
   const handleSalesSave = async (e) => {
     e.preventDefault();
     const data = { 'customer_name': customerName, 'grand_total': calculateGrandTotal(), 'items': rows, 'user_id': getCookie('userId') }
-    await axios.post("http://localhost:8000/add_sales/", data);
-    alert("Form Submitted");
-    setRows([{ quantity: '', amount: '', category: '', sellingPrice: '', costPrice: '', name: '' }])
-    setCustomerName('')
-    setApplyGST('no')
-    setDiscount('')
+    const res = await axios.post("http://localhost:8000/add_sales/", data);
+    if (!res.data.success) {
+      setError(res.data.error)
+    }else{
+      alert("Form Submitted");
+      setRows([{ quantity: '', amount: '', category: '', sellingPrice: '', costPrice: '', name: '' }])
+      setCustomerName('')
+      setApplyGST('no')
+      setDiscount('')
+      setError('')
+    }
   }
 
   return (
@@ -295,6 +301,11 @@ function MyForm4() {
                 <tr>
                   {items.length === 0 && <div className='no-items alert alert-danger'>No items Found , Please add some first!</div>}
                 </tr>
+                {error !== "" &&
+                  <tr className='no-items' style={{color:'red'}}>
+                    {error}
+                  </tr>
+                }
                 <tr>
                   <td colSpan="2" className="myform-button-cell">
                     <button type="submit" className="myform-button myform-button-save" onClick={handleSalesSave}>Save</button>
