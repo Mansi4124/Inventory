@@ -63,6 +63,8 @@ function Add_organization() {
     };
 
     return (
+    <section id="addorg" className="addorg-section">
+      <div className="addorg-container">
         <form className="myform-container">
             <fieldset className="myform-fieldset">
                 <legend className="myform-legend">Organization Details</legend>
@@ -158,6 +160,8 @@ function Add_organization() {
                 </table>
             </fieldset>
         </form>
+        </div>
+        </section>
     );
 }
 

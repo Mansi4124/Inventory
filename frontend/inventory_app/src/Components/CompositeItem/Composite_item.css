@@ -1,5 +1,26 @@
-.myform-container {
+#composite{
   background-color: #E5F6FF;
+  color: #132F58;
+  height: 700px;
+}
+.composite-section {
+  display: flex;
+  align-items: center;
+  padding: 50px;
+  background-color: #f9f9f9;
+}
+
+.composite-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+
+
+.myform-container {
   padding: 20px;
   display: flex;
   justify-content: center;
@@ -177,7 +198,7 @@
   background-color: transparent;
   border: none;
   color: red;
-  font-size: 20px;
+  font-size: 30px;
   cursor: pointer;
 }
 

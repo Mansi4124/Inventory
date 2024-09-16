@@ -179,8 +179,8 @@ function MyForm4() {
 
 
   return (
-    <>
-      <div>
+    <section id="salesorder" className="salesorder-section">
+      <div className="salesorder-container">
         <form className="myform-container">
           <fieldset className="myform-fieldset">
             <legend className="myform-legend">Sales Order</legend>
@@ -381,11 +381,11 @@ function MyForm4() {
                                         </label>
                                       </div>
                                       <input
-                                        type="text"
-                                        value="18%"
-                                        readOnly
-                                        className="gst-textbox"
-                                      />
+                                            type="text"
+                                            value={applyGST === 'yes' ? '18%' : '0%'}
+                                            readOnly
+                                            className="gst-textbox"
+                                          /> 
                                     </div>
                                   </td>
                                 </tr>
@@ -447,8 +447,8 @@ function MyForm4() {
             </table>
           </fieldset>
         </form>
-      </div>
-    </>
+        </div>
+      </section>
   );
 }
 

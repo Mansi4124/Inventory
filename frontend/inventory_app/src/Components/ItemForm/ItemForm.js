@@ -3,12 +3,6 @@ import '../ItemForm/Item_form.css';
 import axios from 'axios';
 
 function MyForm() {
-  const [manufacturers, setManufacturers] = useState([]);
-  const [brands, setBrands] = useState([]);
-  const [selectedManufacturer, setSelectedManufacturer] = useState('');
-  const [newManufacturer, setNewManufacturer] = useState('');
-  const [selectedBrand, setSelectedBrand] = useState('');
-  const [newBrand, setNewBrand] = useState('');
   const [sellingPrice, setSellingPrice] = useState('');
   const [costPrice, setCostPrice] = useState('');
   const [name, setName] = useState('');
@@ -17,43 +11,6 @@ function MyForm() {
   const [category, setCategory] = useState('');
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const storedManufacturers = localStorage.getItem('manufacturers');
-    const storedBrands = localStorage.getItem('brands');
-    if (storedManufacturers) {
-      setManufacturers(JSON.parse(storedManufacturers));
-    } else {
-      setManufacturers(['Manufacturer 1', 'Manufacturer 2']);
-    }
-    if (storedBrands) {
-      setBrands(JSON.parse(storedBrands));
-    } else {
-      setBrands(['Brand 1', 'Brand 2']);
-    }
-  }, []);
-
-  const handleSelectChange = (e) => {
-    setSelectedManufacturer(e.target.value);
-    if (e.target.value === 'add-new') {
-      setNewManufacturer('');
-    }
-  };
-
-  const handleSelectChange1 = (e) => {
-    setSelectedBrand(e.target.value);
-    if (e.target.value === 'add-new1') {
-      setNewBrand('');
-    }
-  };
-
-  const handleInputChange = (e) => {
-    setNewManufacturer(e.target.value);
-  };
-
-  const handleInputChange1 = (e) => {
-    setNewBrand(e.target.value);
-  };
-
   const handlePriceChange = (e, setPrice) => {
     const value = e.target.value;
     if (/^\d*\.?\d*$/.test(value) && value >= 0) {
@@ -61,23 +18,6 @@ function MyForm() {
     }
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-
-    if (newManufacturer && !manufacturers.includes(newManufacturer)) {
-      const updatedManufacturers = [...manufacturers, newManufacturer];
-      setManufacturers(updatedManufacturers);
-      localStorage.setItem('manufacturers', JSON.stringify(updatedManufacturers));
-    }
-
-    if (newBrand && !brands.includes(newBrand)) {
-      const updatedBrands = [...brands, newBrand];
-      setBrands(updatedBrands);
-      localStorage.setItem('brands', JSON.stringify(updatedBrands));
-    }
-
-
-  };
 
   const getCookie = (name) => {
     const cookieName = `${name}=`;
@@ -124,10 +64,6 @@ function MyForm() {
       setError(res.data.error)
     } else {
       setError('')
-      setSelectedManufacturer('');
-      setNewManufacturer('');
-      setSelectedBrand('');
-      setNewBrand('');
       setSellingPrice('');
       setCostPrice('');
       setName('');
@@ -138,7 +74,9 @@ function MyForm() {
   }
 
   return (
-    <form className="myform-container" onSubmit={handleFormSubmit}>
+    <section id="itemform" className="itemform-section">
+      <div className="itemform-container">
+    <form className="myform-container">
       <fieldset className="myform-fieldset">
         <legend className="myform-legend">Product Information</legend>
 
@@ -199,73 +137,7 @@ function MyForm() {
                   </select>
                 </div>
               </td>
-            </tr>
-
-            {/* Manufacturer Row */}
-            <tr>
-              <td className="myform-label-cell">
-                <label htmlFor="manufacturer" className="myform-label">Manufacturer:</label>
-              </td>
-              <td className="myform-input-cell">
-                <select
-                  id="manufacturer"
-                  name="manufacturer"
-                  value={selectedManufacturer}
-                  onChange={handleSelectChange}
-                  className="myform-input"
-                >
-                  <option value="">Select a manufacturer</option>
-                  {manufacturers.map((manufacturer, index) => (
-                    <option key={index} value={manufacturer}>
-                      {manufacturer}
-                    </option>
-                  ))}
-                  <option value="add-new">Add new manufacturer</option>
-                </select>
-                {selectedManufacturer === 'add-new' && (
-                  <input
-                    type="text"
-                    placeholder="Enter new manufacturer"
-                    value={newManufacturer}
-                    onChange={handleInputChange}
-                    className="myform-input myform-new-entry"
-                  />
-                )}
-              </td>
-            </tr>
-
-            {/* Brand Row */}
-            <tr>
-              <td className="myform-label-cell">
-                <label htmlFor="brand" className="myform-label">Brand:</label>
-              </td>
-              <td className="myform-input-cell">
-                <select
-                  id="brand"
-                  name="brand"
-                  value={selectedBrand}
-                  onChange={handleSelectChange1}
-                  className="myform-input"
-                >
-                  <option value="">Select a brand</option>
-                  {brands.map((brand, index) => (
-                    <option key={index} value={brand}>
-                      {brand}
-                    </option>
-                  ))}
-                  <option value="add-new1">Add new brand</option>
-                </select>
-                {selectedBrand === 'add-new1' && (
-                  <input
-                    type="text"
-                    placeholder="Enter new brand"
-                    value={newBrand}
-                    onChange={handleInputChange1}
-                    className="myform-input myform-new-entry"
-                  />
-                )}
-              </td>
-            </tr>
+            </tr>           
 
             {/* Selling Price Row */}
             <tr>
@@ -320,6 +192,8 @@ function MyForm() {
         </table>
       </fieldset>
     </form>
+    </div>
+    </section>
   );
 }
 
