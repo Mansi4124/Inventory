@@ -8,6 +8,7 @@ import InventoryContent from "../InventoryContent/InventoryContent";
 import Reports from "../Reports/Reports";
 import SalesContent from "../SalesContent/SalesContent";
 import ItemOrderContent from "../ItemOrderContent/ItemOrderContent";
+import PredictItems from '../PredictItems/PredictItems';
 
 const Dashboard = () => {
   const navigate = useNavigate();

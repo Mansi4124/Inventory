@@ -148,7 +148,7 @@ function MyForm4() {
       sub_total: calculateSubtotal(),
       grand_total: calculateGrandTotal(),
       items: rows,
-      gst: gstValue, // Store GST value
+      gst: gstValue,
       discount: discount,
       user_id: getCookie("userId"),
       date: new Date()

@@ -8,6 +8,10 @@ import uuid
 from bson import ObjectId
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
 
 from backend_app import settings
 
@@ -414,36 +418,49 @@ def add_sales(request):
         customer_name = data.get("customer_name", "N/A")
         customer_email = data.get("customer_email", None)
         items = data["items"]
-        
+
         gst = data.get("gst")  # GST if applied
         discount = data.get("discount", 0)  # Discount if applied
-        total =data.get("grand_total")
-        sub_total=data.get("sub_total")
+        total = data.get("grand_total")
+        sub_total = data.get("sub_total")
         user_items = items_collection.find_one({"user_id": user_id})
         user_items = user_items["products"]
+        date = data["date"]
 
-        # Process each item
         for item in items:
             if item["category"] != "Composite":
                 for i1 in range(len(user_items)):
                     if item["name"] == user_items[i1]["product_name"]:
                         if int(item["quantity"]) > user_items[i1]["remaining_stock"]:
-                            return JsonResponse({"error": f"Not enough items in stock for item: {item['name']}", 'success': False})
+                            return JsonResponse(
+                                {
+                                    "error": f"Not enough items in stock for item: {item['name']}",
+                                    "success": False,
+                                }
+                            )
                         user_items[i1]["sold_quantity"] += int(item["quantity"])
                         user_items[i1]["remaining_stock"] -= int(item["quantity"])
                         user_items[i1]["profit_amount"] = int(
                             user_items[i1]["sold_quantity"]
                         ) * int(user_items[i1]["profit_margin"])
-                      
+
             else:
                 for i1 in range(len(user_items)):
                     if item["name"] == user_items[i1]["product_name"]:
                         for i2 in user_items[i1]["quantities"]:
                             for i3 in range(len(user_items)):
                                 if user_items[i3]["product_name"] == i2:
-                                    if (int(item['quantity'])*int(user_items[i1]['quantities'][i2])) > int(user_items[i3]["remaining_stock"]):
+                                    if (
+                                        int(item["quantity"])
+                                        * int(user_items[i1]["quantities"][i2])
+                                    ) > int(user_items[i3]["remaining_stock"]):
 
-                                        return JsonResponse({"error": f"Not enough items in stock for item: {user_items[i3]['product_name']}", 'success': False})
+                                        return JsonResponse(
+                                            {
+                                                "error": f"Not enough items in stock for item: {user_items[i3]['product_name']}",
+                                                "success": False,
+                                            }
+                                        )
                                     user_items[i3]["sold_quantity"] += int(
                                         item["quantity"]
                                     ) * int(user_items[i1]["quantities"][i2])
@@ -453,9 +470,7 @@ def add_sales(request):
                                     user_items[i3]["profit_amount"] = int(
                                         user_items[i3]["sold_quantity"]
                                     ) * int(user_items[i3]["profit_margin"])
-                                  
 
-    
         # Update items collection after changes
         items_collection.update_one(
             {"user_id": user_id}, {"$set": {"products": user_items}}
@@ -471,35 +486,34 @@ def add_sales(request):
             )
         else:
             del data["user_id"]
-            insert_data = {
-                "user_id": user_id,
-                "sales": [data],
-            }
+            insert_data = {"user_id": user_id, "sales": [data], "date": date}
             sales_collection.insert_one(insert_data)
 
         # Generate the HTML email content
-        email_body = render_to_string('sales_email_template.html', {
-            'customer_name': customer_name,
-            'customer_email': customer_email,
-            'items': items,
-           
-            'subtotal':sub_total,
-            'gst': gst,
-            'discount': discount,
-            'total': total
-        })
-       
+        email_body = render_to_string(
+            "sales_email_template.html",
+            {
+                "customer_name": customer_name,
+                "customer_email": customer_email,
+                "items": items,
+                "subtotal": sub_total,
+                "gst": gst,
+                "discount": discount,
+                "total": total,
+            },
+        )
+
         # Send email if customer email exists
         if customer_email:
-            subject = 'Bill'
+            subject = "Bill"
             recipient_list = [customer_email]  # Send to the customer
             send_mail(
-                subject, 
-                '',  # Plain text version, leave blank for HTML
-                'mansipatel9898.mp@gmail.com',  # Sender email
-                recipient_list, 
+                subject,
+                "",  # Plain text version, leave blank for HTML
+                "mansipatel9898.mp@gmail.com",  # Sender email
+                recipient_list,
                 fail_silently=False,
-                html_message=email_body  # Send HTML message
+                html_message=email_body,  # Send HTML message
             )
 
         return JsonResponse(
@@ -511,6 +525,7 @@ def add_sales(request):
         )
     else:
         return JsonResponse({"message": "Invalid request method"}, status=405)
+
 
 @csrf_exempt
 def edit_item(request, product_name):
@@ -664,21 +679,25 @@ def add_item_order(request):
         return JsonResponse({"message": "Invalid request method"}, status=405)
 
 
-def send_sales_order_email(customer_name, customer_email, rows, subtotal, gst, discount, grand_total):
-    subject = 'Your Sales Order Details'
-    message = f'Dear {customer_name},\n\nThank you for your order. Here are the details:\n\n'
-    
+def send_sales_order_email(
+    customer_name, customer_email, rows, subtotal, gst, discount, grand_total
+):
+    subject = "Your Sales Order Details"
+    message = (
+        f"Dear {customer_name},\n\nThank you for your order. Here are the details:\n\n"
+    )
+
     # Format the table in the email
-    message += 'Item Name\tQuantity\tRate\tAmount\n'
+    message += "Item Name\tQuantity\tRate\tAmount\n"
     for row in rows:
         message += f"{row['name']}\t{row['quantity']}\t{row['sellingPrice']}\t{row['amount']}\n"
-    
+
     # Add totals
     message += f"\nSub Total: {subtotal}\n"
     message += f"GST (18%): {gst}\n"
     message += f"Discount: {discount}%\n"
     message += f"Grand Total: {grand_total}\n"
-    message += '\nThank you for shopping with us!'
+    message += "\nThank you for shopping with us!"
 
     # Send the email
     send_mail(
@@ -696,6 +715,7 @@ def get_sales(request):
     if request.method == "POST":
         user_id = data["user_id"]
         user_sales = sales_collection.find_one({"user_id": user_id})
+        date = user_sales["date"]
         if user_sales:
             user_sales = user_sales["sales"]
             return JsonResponse(
@@ -703,6 +723,7 @@ def get_sales(request):
                     "message": "Sales Feteched successfully",
                     "sales": user_sales,
                     "success": True,
+                    "date": date,
                 },
                 status=200,
             )
@@ -711,9 +732,135 @@ def get_sales(request):
                 {
                     "message": "Sales Feteched successfully",
                     "sales": user_sales,
+                    "date": date,
                     "success": False,
                 },
                 status=200,
+            )
+    else:
+        return JsonResponse({"message": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def get_suggestions(request):
+    data = json.loads(request.body)
+    if request.method == "POST":
+        user_id = data["user_id"]
+        days_diff = int(data["days_diff"])
+        budget = data["budget"]
+        if budget == "":
+            return JsonResponse(
+                {
+                    "error": "Budget cannot be empty!",
+                    "success": False,
+                },
+                status=200,
+            )
+        budget = int(data["budget"])
+        if budget <= 0:
+            return JsonResponse(
+                {
+                    "error": "Budget cannot be negative or zero!",
+                    "success": False,
+                },
+                status=200,
+            )
+        if days_diff < 28:
+            return JsonResponse(
+                {
+                    "error": "Atleast data of a month is required for Predictions. Try Later",
+                    "success": False,
+                },
+                status=200,
+            )
+
+        user_items = items_collection.find_one({"user_id": user_id})
+        if user_items:
+            user_items = user_items["products"]
+            data = {
+                "cost_price": [],
+                "selling_price": [],
+                "bought_quantity": [],
+                "sold_quantity": [],
+                "profit_margin": [],
+                "remaining_stock": [],
+                "invested_amount": [],
+                "profit_amount": [],
+            }
+
+            for item in user_items:
+                if item["category"] != "Composite":
+                    data["cost_price"].append(item.get("cost_price", 0))
+                    data["selling_price"].append(item.get("selling_price", 0))
+                    data["bought_quantity"].append(item.get("bought_quantity", 0))
+                    data["sold_quantity"].append(item.get("sold_quantity", 0))
+                    data["profit_margin"].append(item.get("profit_margin", 0))
+                    data["remaining_stock"].append(item.get("remaining_stock", 0))
+                    data["invested_amount"].append(item.get("invested_amount", 0))
+                    data["profit_amount"].append(item.get("profit_amount", 0))
+
+            df = pd.DataFrame(data)
+
+            X = df.drop(columns=["bought_quantity"])
+            y = df["bought_quantity"]
+
+            X_train, X_test, y_train, y_test = train_test_split(
+                X, y, test_size=0.2, random_state=42
+            )
+
+            model = LinearRegression()
+            model.fit(X_train, y_train)
+
+            def predict_bought_quantities(model, features, budget, prices):
+                predictions = model.predict(features)
+
+                total_cost = predictions * prices
+
+                print("Initial Predictions:", predictions)
+                print("Total Cost:", total_cost)
+
+                if total_cost.sum() == budget:
+                    return predictions
+
+                scaling_factor = budget / total_cost.sum()
+                feasible_quantities = predictions * scaling_factor
+
+                print("Scaling Factor:", scaling_factor)
+                print("Feasible Quantities after Scaling:", feasible_quantities)
+
+                return feasible_quantities
+
+            next_month_features = pd.DataFrame(
+                {
+                    "cost_price": df["cost_price"].values,
+                    "selling_price": df["selling_price"].values,
+                    "sold_quantity": df["sold_quantity"].values,
+                    "profit_margin": df["profit_margin"].values,
+                    "remaining_stock": df["remaining_stock"].values,
+                    "invested_amount": df["invested_amount"].values,
+                    "profit_amount": df["profit_amount"].values,
+                }
+            )
+
+            cost_prices = next_month_features["cost_price"].values
+            predicted_quantities = predict_bought_quantities(
+                model, next_month_features, budget, cost_prices
+            )
+
+            x = predicted_quantities.tolist()
+
+            return JsonResponse(
+                {
+                    "message": "Items Feteched successfully",
+                    "success": True,
+                    "data": x,
+                    "user_items": user_items,
+                },
+                status=200,
+            )
+        else:
+            return JsonResponse(
+                {"message": "No tems found", "success": False}, status=200
             )
     else:
         return JsonResponse({"message": "Invalid request method"}, status=405)
