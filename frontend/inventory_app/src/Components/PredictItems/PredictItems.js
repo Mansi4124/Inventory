@@ -5,6 +5,7 @@ import "./PredictItems.css"
 const PredictItems = () => {
 
     const [budget, setBudget] = useState('');
+    const [error, setError] = useState('');
     const [items, setItems] = useState([]);
     const [userItems, setUserItems] = useState([]);
 
@@ -25,26 +26,53 @@ const PredictItems = () => {
         return null;
     };
 
-    const fetchSuggestions = async () => {
-        const res = await axios.post("http://localhost:8000/get_suggestions/", { 'user_id': getCookie("userId"), 'budget': budget });
+    const fetchSuggestions = async (e) => {
+        e.preventDefault();
+
+        const date_res = await axios.post("http://localhost:8000/get_sales/", { 'user_id': getCookie("userId") });
+
+        const salesDate = new Date(date_res.data.date);
+
+        const today = new Date();
+
+        const timeDiff = today - salesDate;
+
+        const days_diff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+        console.log(days_diff)
+
+        const res = await axios.post("http://localhost:8000/get_suggestions/", {
+            'user_id': getCookie("userId"),
+            'budget': budget,
+            'days_diff': days_diff
+        });
+
         if (res.data.success) {
             setItems(res.data.data);
             setUserItems(res.data.user_items.filter((item) => item['category'] !== 'Composite'));
+            setBudget('')
+            setError('')
+        } else {
+            setError(res.data.error)
         }
     };
+
 
     return (
         <div className="predicted-div">
             <h1 className="text-center">Have a budget in mind?</h1>
             <h3 style={{ color: 'black', marginTop: '20px' }}>Get suggested inventory</h3>
-            <div className="d-flex justify-content-center mt-5">
-                <input className="get-suggestion-input" type="number" value={budget} onChange={(e) => setBudget(e.target.value)} placeholder="Enter your Budget"/>
+            <div className="predicted-input-div">
+                <div>
+                    <input className="get-suggestion-input" type="number" value={budget} onChange={(e) => setBudget(e.target.value)} placeholder="Enter your Budget" required />
+                </div>
+                {error !== '' && <div className="predicted-error-div">{error}</div>}
             </div>
             <div className="predictedBtnDiv">
                 <button className="get-suggestions-btn" onClick={fetchSuggestions}>Get Suggestions</button>
             </div>
             <div className="mt-4">
-                {items.length!==0 &&
+                {items.length !== 0 &&
                     <table className="table table-bordered">
                         <thead>
                             <tr>

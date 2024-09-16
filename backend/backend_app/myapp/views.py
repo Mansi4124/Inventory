@@ -425,8 +425,8 @@ def add_sales(request):
         sub_total = data.get("sub_total")
         user_items = items_collection.find_one({"user_id": user_id})
         user_items = user_items["products"]
+        date = data["date"]
 
-        # Process each item
         for item in items:
             if item["category"] != "Composite":
                 for i1 in range(len(user_items)):
@@ -486,10 +486,7 @@ def add_sales(request):
             )
         else:
             del data["user_id"]
-            insert_data = {
-                "user_id": user_id,
-                "sales": [data],
-            }
+            insert_data = {"user_id": user_id, "sales": [data], "date": date}
             sales_collection.insert_one(insert_data)
 
         # Generate the HTML email content
@@ -718,6 +715,7 @@ def get_sales(request):
     if request.method == "POST":
         user_id = data["user_id"]
         user_sales = sales_collection.find_one({"user_id": user_id})
+        date = user_sales["date"]
         if user_sales:
             user_sales = user_sales["sales"]
             return JsonResponse(
@@ -725,6 +723,7 @@ def get_sales(request):
                     "message": "Sales Feteched successfully",
                     "sales": user_sales,
                     "success": True,
+                    "date": date,
                 },
                 status=200,
             )
@@ -733,6 +732,7 @@ def get_sales(request):
                 {
                     "message": "Sales Feteched successfully",
                     "sales": user_sales,
+                    "date": date,
                     "success": False,
                 },
                 status=200,
@@ -746,7 +746,34 @@ def get_suggestions(request):
     data = json.loads(request.body)
     if request.method == "POST":
         user_id = data["user_id"]
+        days_diff = int(data["days_diff"])
+        budget = data["budget"]
+        if budget == "":
+            return JsonResponse(
+                {
+                    "error": "Budget cannot be empty!",
+                    "success": False,
+                },
+                status=200,
+            )
         budget = int(data["budget"])
+        if budget <= 0:
+            return JsonResponse(
+                {
+                    "error": "Budget cannot be negative or zero!",
+                    "success": False,
+                },
+                status=200,
+            )
+        if days_diff < 28:
+            return JsonResponse(
+                {
+                    "error": "Atleast data of a month is required for Predictions. Try Later",
+                    "success": False,
+                },
+                status=200,
+            )
+
         user_items = items_collection.find_one({"user_id": user_id})
         if user_items:
             user_items = user_items["products"]
@@ -771,7 +798,6 @@ def get_suggestions(request):
                     data["remaining_stock"].append(item.get("remaining_stock", 0))
                     data["invested_amount"].append(item.get("invested_amount", 0))
                     data["profit_amount"].append(item.get("profit_amount", 0))
-
 
             df = pd.DataFrame(data)
 
@@ -824,10 +850,17 @@ def get_suggestions(request):
             x = predicted_quantities.tolist()
 
             return JsonResponse(
-                {"message": "Items Feteched successfully", "success": True, "data": x,'user_items':user_items},
+                {
+                    "message": "Items Feteched successfully",
+                    "success": True,
+                    "data": x,
+                    "user_items": user_items,
+                },
                 status=200,
             )
         else:
-            return JsonResponse({"message": "No tems found",'success':False}, status=200)    
+            return JsonResponse(
+                {"message": "No tems found", "success": False}, status=200
+            )
     else:
         return JsonResponse({"message": "Invalid request method"}, status=405)
