@@ -7,15 +7,16 @@ from pymongo import MongoClient
 import uuid
 from bson import ObjectId
 from django.core.mail import send_mail
+
 client = MongoClient("mongodb://localhost:27017/")
 
 db = client.my_database
 customer_collection = db.customers
 organization_collection = db.organization
-items_collection=db.items
-# Add this to your existing code to create a MongoDB collection
+items_collection = db.items
 contact_collection = db.contact
-sales_collection=db.sales
+sales_collection = db.sales
+orders_collection = db.orders
 
 
 @csrf_exempt
@@ -32,12 +33,17 @@ def sign_in(request):
         else:
             return JsonResponse({"notMatch": "No such user with this email found"})
 
-        return JsonResponse({
-            "message": f"Welcome {email}",
-            "user_id": user["user_id"],
-            "role": user["role"],  # Assuming you have a 'role' field in the user collection
-            "success": True,
-        }, status=200)
+        return JsonResponse(
+            {
+                "message": f"Welcome {email}",
+                "user_id": user["user_id"],
+                "role": user[
+                    "role"
+                ],  # Assuming you have a 'role' field in the user collection
+                "success": True,
+            },
+            status=200,
+        )
 
 
 @csrf_exempt
@@ -48,7 +54,7 @@ def sign_up(request):
         email = data["email"]
         password = data["password"]
         cpass = data["cpassword"]
-        role=data["role"]
+        role = data["role"]
         re_email = r"^[^\s+@]+@[^\s@]+\.[^\s@]{2,}$"
 
         if not re.match(re_email, email):
@@ -214,7 +220,7 @@ def update_profile(request):
                         "message": "Invalid New Password, please use a password of 8 or more characters having at least 1 symbol, 1 capital letter & 1 number"
                     },
                 )
-            
+
             updated_data["password"] = new_password
             updated_data["cpassword"] = confirm_password
         result = customer_collection.update_one(
@@ -222,9 +228,7 @@ def update_profile(request):
         )
 
         if result.matched_count == 0:
-            return JsonResponse(
-                {"message": "User not found or no changes made"}
-            )
+            return JsonResponse({"message": "User not found or no changes made"})
 
         return JsonResponse(
             {"message": "Profile updated successfully", "success": True}, status=200
@@ -245,14 +249,22 @@ def contact_us(request):
                 return JsonResponse({"error": "All fields are required"}, status=400)
 
             # Save the contact message to MongoDB with reply status set to false
-            contact_id = contact_collection.insert_one({
-                "fullName": name,
-                "email": email,
-                "message": message,
-                "reply_sent": False  # Initially, no reply has been sent
-            }).inserted_id
+            contact_id = contact_collection.insert_one(
+                {
+                    "fullName": name,
+                    "email": email,
+                    "message": message,
+                    "reply_sent": False,  # Initially, no reply has been sent
+                }
+            ).inserted_id
 
-            return JsonResponse({"message": "Thank you for contacting us!", "contact_id": str(contact_id)}, status=201)
+            return JsonResponse(
+                {
+                    "message": "Thank you for contacting us!",
+                    "contact_id": str(contact_id),
+                },
+                status=201,
+            )
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
     return JsonResponse({"error": "Invalid request method"}, status=405)
@@ -264,11 +276,11 @@ def get_contact_queries(request):
         try:
             # Fetch all the contact queries from MongoDB
             queries = list(contact_collection.find({}))
-            
+
             # Convert ObjectId to string for JSON serialization
             for query in queries:
                 query["_id"] = str(query["_id"])
-                
+
             return JsonResponse({"queries": queries, "success": True}, status=200)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
@@ -283,25 +295,27 @@ def send_email(request):
             email = data.get("email")
             print(email)
             message = data.get("message")
-            contact_id = data.get("contact_id")  # The ID of the contact message being replied to
+            contact_id = data.get(
+                "contact_id"
+            )  # The ID of the contact message being replied to
 
             if not email or not message or not contact_id:
-                return JsonResponse({"error": "Missing email, message, or contact_id"}, status=400)
-             # Format the email message
+                return JsonResponse(
+                    {"error": "Missing email, message, or contact_id"}, status=400
+                )
+            # Format the email message
             formatted_message = (
                 f"Dear {data.get('fullName', 'Customer')},\n\n"
                 f"Thank you for contacting us.\n\n"
-               
-              
                 f"{message}\n\n"
                 f"Best regards,\nInventoryIQ"
             )
 
             # Sending the email (adjust the subject, from email, and your SMTP settings)
             send_mail(
-                subject='Reply to Your Contact Us Query',
+                subject="Reply to Your Contact Us Query",
                 message=formatted_message,
-                from_email='mansipatel9898.mp@gmail.com',  # Replace with your own email
+                from_email="mansipatel9898.mp@gmail.com",  # Replace with your own email
                 recipient_list=[email],
                 fail_silently=False,
             )
@@ -309,11 +323,13 @@ def send_email(request):
             # Update the contact document to include the reply and indicate that a reply has been sent
             result = contact_collection.update_one(
                 {"_id": ObjectId(contact_id)},
-                {"$set": {"reply": message, "reply_sent": True}}
+                {"$set": {"reply": message, "reply_sent": True}},
             )
 
             if result.matched_count > 0:
-                return JsonResponse({"message": "Reply sent successfully", "success": True}, status=200)
+                return JsonResponse(
+                    {"message": "Reply sent successfully", "success": True}, status=200
+                )
             else:
                 return JsonResponse({"error": "Contact not found"}, status=404)
 
@@ -321,6 +337,7 @@ def send_email(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
 
 @csrf_exempt
 def add_item(request):
@@ -384,7 +401,6 @@ def get_items(request):
             return JsonResponse({"message": "Error adding item", "success": False})
 
 
-
 @csrf_exempt
 def add_sales(request):
     if request.method == "POST":
@@ -395,20 +411,33 @@ def add_sales(request):
         user_items = items_collection.find_one({"user_id": user_id})
         user_items = user_items["products"]
         for item in data["items"]:
-            if item['category']!="Composite":
+            if item["category"] != "Composite":
                 for i1 in range(len(user_items)):
                     if item["name"] == user_items[i1]["product_name"]:
+                        if int(item["quantity"]) > user_items[i1]["remaining_stock"]:
+                            return JsonResponse({"error": "Not enough items in stock!",'success':False})
                         user_items[i1]["sold_quantity"] += int(item["quantity"])
                         user_items[i1]["remaining_stock"] -= int(item["quantity"])
+                        user_items[i1]["profit_amount"] = int(
+                            user_items[i1]["sold_quantity"]
+                        ) * int(user_items[i1]["profit_margin"])
             else:
                 for i1 in range(len(user_items)):
                     if item["name"] == user_items[i1]["product_name"]:
-                        for i2 in user_items[i1]['quantities']:
+                        for i2 in user_items[i1]["quantities"]:
                             for i3 in range(len(user_items)):
-                                if user_items[i3]['product_name']==i2:
-                                    user_items[i3]['sold_quantity']+=(int(item['quantity'])*int(user_items[i1]['quantities'][i2]))
-                                    user_items[i3]['remaining_stock']-=(int(item['quantity'])*int(user_items[i1]['quantities'][i2]))
-
+                                if user_items[i3]["product_name"] == i2:
+                                    if (int(item['quantity'])*int(user_items[i1]['quantities'][i2])) > int(user_items[i3]["remaining_stock"]):
+                                        return JsonResponse({"error": "Not enough items in stock!",'success':False})
+                                    user_items[i3]["sold_quantity"] += int(
+                                        item["quantity"]
+                                    ) * int(user_items[i1]["quantities"][i2])
+                                    user_items[i3]["remaining_stock"] -= int(
+                                        item["quantity"]
+                                    ) * int(user_items[i1]["quantities"][i2])
+                                    user_items[i3]["profit_amount"] = int(
+                                        user_items[i3]["sold_quantity"]
+                                    ) * int(user_items[i3]["profit_margin"])
         items_collection.update_one(
             {"user_id": user_id}, {"$set": {"products": user_items}}
         )
@@ -436,6 +465,8 @@ def add_sales(request):
         )
     else:
         return JsonResponse({"message": "Invalid request method"}, status=405)
+
+
 @csrf_exempt
 def edit_item(request, product_name):
     if request.method == "PUT":
@@ -445,7 +476,9 @@ def edit_item(request, product_name):
         new_product_name = product_details.get("product_name")
 
         if not user_id or not product_details:
-            return JsonResponse({"message": "Invalid request data", "success": False}, status=400)
+            return JsonResponse(
+                {"message": "Invalid request data", "success": False}, status=400
+            )
 
         user_items = items_collection.find_one({"user_id": user_id})
 
@@ -454,13 +487,17 @@ def edit_item(request, product_name):
             item_found = False  # Add a flag to check if the item is found
             for product in user_items["products"]:
                 if product["product_name"] == product_name:
-                    updated_products.append(product_details)  # Replace with updated details
+                    updated_products.append(
+                        product_details
+                    )  # Replace with updated details
                     item_found = True  # Item is found and updated
                 else:
                     updated_products.append(product)  # Keep other products unchanged
 
             if not item_found:
-                return JsonResponse({"message": "Item not found", "success": False}, status=404)
+                return JsonResponse(
+                    {"message": "Item not found", "success": False}, status=404
+                )
 
             items_collection.update_one(
                 {"user_id": user_id},
@@ -475,48 +512,14 @@ def edit_item(request, product_name):
                 status=200,
             )
         else:
-            return JsonResponse({"message": "User not found", "success": False}, status=404)
-    else:
-        return JsonResponse({"message": "Invalid request method", "success": False}, status=405)
-
-    if request.method == "PUT":
-        data = json.loads(request.body)
-        user_id = data.get("user_id")
-        product_details = data.get("product_details")
-        new_product_name = product_details.get("product_name")
-
-        if not user_id or not product_details:
-            return JsonResponse({"message": "Invalid request data", "success": False}, status=400)
-
-        user_items = items_collection.find_one({"user_id": user_id})
-
-        if user_items:
-            updated_products = []
-            for i in range(len(user_items["products"])):
-                if user_items["products"][i]["product_name"] == new_product_name:
-                    user_items["products"][i] = product_details
-                    print("*"*30)                    
-
-            # if not item_found:
-            #     print("*********************************************************")
-            #     return JsonResponse({"message": "Item not found", "success": False}, status=404)
-
-            items_collection.update_one(
-                {"user_id": user_id},
-                {"$set": {"products": updated_products}},
-            )
-
             return JsonResponse(
-                {
-                    "message": "Item updated successfully",
-                    "success": True,
-                },
-                status=200,
+                {"message": "User not found", "success": False}, status=404
             )
-        else:
-            return JsonResponse({"message": "User not found", "success": False}, status=404)
     else:
-        return JsonResponse({"message": "Invalid request method", "success": False}, status=405)
+        return JsonResponse(
+            {"message": "Invalid request method", "success": False}, status=405
+        )
+
 
 @csrf_exempt
 def delete_item(request, product_name):
@@ -526,27 +529,91 @@ def delete_item(request, product_name):
             user_id = data.get("user_id")
             print(user_id)
             if not user_id:
-                return JsonResponse({"message": "Invalid request data", "success": False}, status=400)
-
-            user_items = items_collection.find_one({"user_id": user_id})
-            
-            if user_items:
-                updated_products = [item for item in user_items["products"] if item["product_name"].lower() != product_name.lower()]
-
-                if len(updated_products) == len(user_items["products"]):
-                    return JsonResponse({"message": "Item not found", "success": False}, status=404)
-
-                items_collection.update_one(
-                    {"user_id": user_id},
-                    {"$set": {"products": updated_products}}
+                return JsonResponse(
+                    {"message": "Invalid request data", "success": False}, status=400
                 )
 
-                return JsonResponse({"message": "Item deleted successfully", "success": True}, status=200)
+            user_items = items_collection.find_one({"user_id": user_id})
+
+            if user_items:
+                updated_products = [
+                    item
+                    for item in user_items["products"]
+                    if item["product_name"].lower() != product_name.lower()
+                ]
+
+                if len(updated_products) == len(user_items["products"]):
+                    return JsonResponse(
+                        {"message": "Item not found", "success": False}, status=404
+                    )
+
+                items_collection.update_one(
+                    {"user_id": user_id}, {"$set": {"products": updated_products}}
+                )
+
+                return JsonResponse(
+                    {"message": "Item deleted successfully", "success": True},
+                    status=200,
+                )
             else:
-                return JsonResponse({"message": "User not found", "success": False}, status=404)
+                return JsonResponse(
+                    {"message": "User not found", "success": False}, status=404
+                )
         except json.JSONDecodeError:
-            return JsonResponse({"message": "Invalid JSON format", "success": False}, status=400)
+            return JsonResponse(
+                {"message": "Invalid JSON format", "success": False}, status=400
+            )
         except Exception as e:
-            return JsonResponse({"message": f"Error occurred: {str(e)}", "success": False}, status=500)
+            return JsonResponse(
+                {"message": f"Error occurred: {str(e)}", "success": False}, status=500
+            )
     else:
-        return JsonResponse({"message": "Invalid request method", "success": False}, status=405)
+        return JsonResponse(
+            {"message": "Invalid request method", "success": False}, status=405
+        )
+
+
+@csrf_exempt
+def add_item_order(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_orders = orders_collection.find_one({"user_id": data["user_id"]})
+        user_items = items_collection.find_one({"user_id": data["user_id"]})
+        user_items = user_items["products"]
+
+        print(data["order_details"]["items"])
+        for item in data["order_details"]["items"]:
+            for i1 in range(len(user_items)):
+                if item["name"] == user_items[i1]["product_name"]:
+                    user_items[i1]["bought_quantity"] += int(item["quantity"])
+                    user_items[i1]["invested_amount"] += int(item["quantity"]) * int(
+                        user_items[i1]["cost_price"]
+                    )
+                    user_items[i1]["remaining_stock"] += int(item["quantity"])
+        items_collection.update_one(
+            {"user_id": data["user_id"]},
+            {"$set": {"products": user_items}},
+        )
+
+        if user_orders:
+            user_orders["orders"].append(data["order_details"])
+            orders_collection.update_one(
+                {"user_id": data["user_id"]},
+                {"$set": {"orders": user_orders["orders"]}},
+            )
+        else:
+            insert_data = {
+                "user_id": data["user_id"],
+                "orders": [data["order_details"]],
+            }
+            orders_collection.insert_one(insert_data)
+
+        return JsonResponse(
+            {
+                "message": "Order added successfully",
+                "success": True,
+            },
+            status=201,
+        )
+    else:
+        return JsonResponse({"message": "Invalid request method"}, status=405)

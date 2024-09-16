@@ -15,8 +15,8 @@ from .views import (
     get_items,
     add_sales,
     edit_item,
-    delete_item
-    
+    delete_item,
+    add_item_order
 )
 
 urlpatterns = [
@@ -34,6 +34,7 @@ urlpatterns = [
     path("add_item/", add_item),
     path("get_items/", get_items),
     path("add_sales/", add_sales),
+    path("add_item_order/", add_item_order),
     path("edit_item/<str:product_name>/", edit_item), 
     path("delete_item/<str:product_name>/", delete_item)
 ]

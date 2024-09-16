@@ -46,7 +46,7 @@ const AdminDashboard = () => {
   
     axios.post('http://localhost:8000/send_email/', { email, message, contact_id: contactId })
       .then((response) => {
-        console.log('Server response:', response.data); // Debugging line
+        console.log('Server response:', response.data);
         
         // Check if the response indicates success
         if (response.data.success) {

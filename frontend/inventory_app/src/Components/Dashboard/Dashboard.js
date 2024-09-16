@@ -6,6 +6,8 @@ import '../Dashboard/Dashboard.css';
 import HomeContent from '../Homecontent/HomeContent';
 import InventoryContent from '../InventoryContent/InventoryContent';
 import SalesOrder from '../SalesOrder/SalesOrder'
+import ItemOrder from '../ItemOrder/Item_order'
+
 const Dashboard = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -46,23 +48,21 @@ const Dashboard = () => {
                         <Nav.Link onClick={() => navigate('/dashboard/inventory')}>Inventory</Nav.Link>
                         <Nav.Link onClick={() => navigate('/dashboard/sales-order')}>Sales</Nav.Link>
                         <Nav.Link onClick={() => navigate('/dashboard/reports')}>Reports</Nav.Link>
+                        <Nav.Link onClick={() => navigate('/dashboard/item-orders')}>Item Orders</Nav.Link>
                     </Nav>
                 </div>
                 <div className="content">
                     <Routes>
                         <Route path="/" element={<HomeContent />} />
                         <Route path="/inventory" element={<InventoryContent />} />
-                        <Route path="/sales-order" element={
-                          
-                                <SalesOrder/>
-                           
-                        } />
+                        <Route path="/sales-order" element={<SalesOrder />} />
                         <Route path="/reports" element={
                             <div className="page-content">
                                 <h1>This is the Reports Page</h1>
                                 <p>Content for the reports page goes here.</p>
                             </div>
                         } />
+                        <Route path="/item-orders" element={<ItemOrder />} />
                     </Routes>
                 </div>
             </div>

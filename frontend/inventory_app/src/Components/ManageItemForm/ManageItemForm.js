@@ -60,77 +60,77 @@ const Item_Management = () => {
         const { name, value } = event.target;
         setCurrentItem({ ...currentItem, [name]: value });
     };
-// Function to check if the item name already exists
-const isItemNameTaken = (product_name) => {
-    return items.some(item => item.product_name.toLowerCase() === product_name.toLowerCase());
-};
+    // Function to check if the item name already exists
+    const isItemNameTaken = (product_name) => {
+        return items.some(item => item.product_name.toLowerCase() === product_name.toLowerCase());
+    };
 
-const handleEditItem = async () => {
-    if (currentItem && currentItem.product_name) {
-        const originalProductName = currentItem.originalProductName || currentItem.product_name;
+    const handleEditItem = async () => {
+        if (currentItem && currentItem.product_name) {
+            const originalProductName = currentItem.originalProductName || currentItem.product_name;
 
-        // Check if the new product name is already taken, excluding the original name
-        if (currentItem.product_name.toLowerCase() !== originalProductName.toLowerCase() && isItemNameTaken(currentItem.product_name)) {
-            setErrorMessage('Item name already exists. Please choose a different name.');
-            return; // Exit the function to prevent the update
-        }
-
-        try {
-            const response = await axios.put(`http://localhost:8000/edit_item/${originalProductName}/`, {
-                user_id: userId,
-                product_details: currentItem
-            });
-
-            if (response.data.message === "Item updated successfully") {
-                setItems(items.map(item =>
-                    item.product_name.toLowerCase() === originalProductName.toLowerCase() ? { ...currentItem } : item
-                ));
-                setCurrentItem(null);
-                setErrorMessage('');
-            } else {
-                setErrorMessage(response.data.message);
+            // Check if the new product name is already taken, excluding the original name
+            if (currentItem.product_name.toLowerCase() !== originalProductName.toLowerCase() && isItemNameTaken(currentItem.product_name)) {
+                setErrorMessage('Item name already exists. Please choose a different name.');
+                return; // Exit the function to prevent the update
             }
-        } catch (error) {
-            setErrorMessage('Error updating item');
-        }
-    }
-};
-const handleEditCompositeItem = async () => {
-    if (currentComposite && currentComposite.product_name) {
-        const originalProductName = currentComposite.originalProductName || currentComposite.product_name;
 
-        // Check if the new composite name is already taken, excluding the original name
-        if (currentComposite.product_name.toLowerCase() !== originalProductName.toLowerCase() && isItemNameTaken(currentComposite.product_name)) {
-            setErrorMessage('Composite item name already exists. Please choose a different name.');
-            return; // Exit the function to prevent the update
-        }
+            try {
+                const response = await axios.put(`http://localhost:8000/edit_item/${originalProductName}/`, {
+                    user_id: userId,
+                    product_details: currentItem
+                });
 
-        // Log to check the payload being sent
-        console.log("Editing Composite Item:", currentComposite);
-
-        try {
-            const response = await axios.put(`http://localhost:8000/edit_item/${originalProductName}/`, {
-                user_id: userId,
-                product_details: currentComposite // Ensure new product_name is here
-            });
-
-            console.log("API Response:", response);
-
-            if (response.data.success) {
-                setItems(items.map(item =>
-                    item.product_name.toLowerCase() === originalProductName.toLowerCase() ? { ...currentComposite } : item
-                ));
-                setCurrentComposite(null);
-                setErrorMessage('');
-            } else {
-                setErrorMessage(response.data.message);
+                if (response.data.message === "Item updated successfully") {
+                    setItems(items.map(item =>
+                        item.product_name.toLowerCase() === originalProductName.toLowerCase() ? { ...currentItem } : item
+                    ));
+                    setCurrentItem(null);
+                    setErrorMessage('');
+                } else {
+                    setErrorMessage(response.data.message);
+                }
+            } catch (error) {
+                setErrorMessage('Error updating item');
             }
-        } catch (error) {
-            console.error("Error updating composite item:", error);
-            setErrorMessage('Error updating composite item');
         }
-    }
-};
+    };
+    const handleEditCompositeItem = async () => {
+        if (currentComposite && currentComposite.product_name) {
+            const originalProductName = currentComposite.originalProductName || currentComposite.product_name;
+
+            // Check if the new composite name is already taken, excluding the original name
+            if (currentComposite.product_name.toLowerCase() !== originalProductName.toLowerCase() && isItemNameTaken(currentComposite.product_name)) {
+                setErrorMessage('Composite item name already exists. Please choose a different name.');
+                return; // Exit the function to prevent the update
+            }
+
+            // Log to check the payload being sent
+            console.log("Editing Composite Item:", currentComposite);
+
+            try {
+                const response = await axios.put(`http://localhost:8000/edit_item/${originalProductName}/`, {
+                    user_id: userId,
+                    product_details: currentComposite // Ensure new product_name is here
+                });
+
+                console.log("API Response:", response);
+
+                if (response.data.success) {
+                    setItems(items.map(item =>
+                        item.product_name.toLowerCase() === originalProductName.toLowerCase() ? { ...currentComposite } : item
+                    ));
+                    setCurrentComposite(null);
+                    setErrorMessage('');
+                } else {
+                    setErrorMessage(response.data.message);
+                }
+            } catch (error) {
+                console.error("Error updating composite item:", error);
+                setErrorMessage('Error updating composite item');
+            }
+        }
+    };
 
 
     const handleEditClick = (item) => {
@@ -183,14 +183,36 @@ const handleEditCompositeItem = async () => {
     };
 
     const handleCompositeQuantities = (key, value) => {
+        const updatedQuantities = {
+            ...currentComposite.quantities,
+            [key]: value,
+        };
+    
+        let newCostPrice = 0;
+        let newSellingPrice = 0;
+    
+        const costPrices = currentComposite.cost_prices || {};
+        const sellingPrices = currentComposite.selling_prices || {};
+    
+        Object.entries(updatedQuantities).forEach(([quantityKey, quantityValue]) => {
+            const quantity = parseFloat(quantityValue) || 0;
+    
+            const costPerUnit = costPrices[quantityKey] || 0;
+            const sellingPerUnit = sellingPrices[quantityKey] || 0;
+    
+            newCostPrice += costPerUnit * quantity;
+            newSellingPrice += sellingPerUnit * quantity;
+        });
+    
         setCurrentComposite({
             ...currentComposite,
-            quantities: {
-                ...currentComposite.quantities, // Spread existing quantities
-                [key]: value // Update the specific key in quantities
-            }
+            quantities: updatedQuantities,
+            cost_price: newCostPrice,
+            selling_price: newSellingPrice,
         });
     };
+    
+    
 
 
     return (
