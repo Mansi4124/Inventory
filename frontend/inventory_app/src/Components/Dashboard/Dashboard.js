@@ -3,10 +3,11 @@ import { Container, Nav } from 'react-bootstrap';
 import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 
 import '../Dashboard/Dashboard.css';
-import HomeContent from '../Homecontent/HomeContent';
+import HomeContent from '../HomeContent/HomeContent';
 import InventoryContent from '../InventoryContent/InventoryContent';
 import SalesOrder from '../SalesOrder/SalesOrder'
 import ItemOrder from '../ItemOrder/Item_order'
+import Reports from '../Reports/Reports'
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -56,12 +57,7 @@ const Dashboard = () => {
                         <Route path="/" element={<HomeContent />} />
                         <Route path="/inventory" element={<InventoryContent />} />
                         <Route path="/sales-order" element={<SalesOrder />} />
-                        <Route path="/reports" element={
-                            <div className="page-content">
-                                <h1>This is the Reports Page</h1>
-                                <p>Content for the reports page goes here.</p>
-                            </div>
-                        } />
+                        <Route path="/reports" element={<Reports />} />
                         <Route path="/item-orders" element={<ItemOrder />} />
                     </Routes>
                 </div>

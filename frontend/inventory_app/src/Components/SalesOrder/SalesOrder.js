@@ -4,16 +4,16 @@ import axios from "axios";
 
 function MyForm4() {
 
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(function() {
-      var noItemsElement = document.querySelector('.no-items');
-      if (noItemsElement) {
-        noItemsElement.style.display = 'none'; // Hide the element
-      }
-    }, 7000) // 7000 milliseconds = 7 seconds
-  })
-</script>
+  // <script>
+  //   document.addEventListener('DOMContentLoaded', function() {
+  //     setTimeout(function () {
+  //       var noItemsElement = document.querySelector('.no-items');
+  //       if (noItemsElement) {
+  //         noItemsElement.style.display = 'none'; // Hide the element
+  //       }
+  //     }, 7000) // 7000 milliseconds = 7 seconds
+  //   })
+  // </script>
   const [rows, setRows] = useState([{ quantity: "", amount: "" }]);
   const [customerName, setCustomerName] = useState("");
   const [applyGST, setApplyGST] = useState("no");
@@ -106,15 +106,15 @@ function MyForm4() {
     const subtotal = parseFloat(calculateSubtotal());
     const gstRate = 0.18; // 18%
     const discountPercentage = parseFloat(discount) || 0;
-  
+
     let grandTotal = subtotal;
-  
+
     if (applyGST === "yes") {
       grandTotal += subtotal * gstRate;
     }
-  
+
     grandTotal -= (grandTotal * discountPercentage) / 100;
-  
+
     return grandTotal.toFixed(2);
   };
 
@@ -138,22 +138,22 @@ function MyForm4() {
   }, [updateSelect]);
 
   const handleSalesSave = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const gstValue = applyGST === "yes" ? 18 : 0; // Set GST value based on applyGST
+    const gstValue = applyGST === "yes" ? 18 : 0; // Set GST value based on applyGST
 
-  const data = {
-    customer_name: customerName,
-    customer_email: customerEmail,
-    sub_total:calculateSubtotal(),
-    grand_total: calculateGrandTotal(),
-    items: rows,
-    gst: gstValue, // Store GST value
-    discount: discount,
-    user_id: getCookie("userId"),
-  };
+    const data = {
+      customer_name: customerName,
+      customer_email: customerEmail,
+      sub_total: calculateSubtotal(),
+      grand_total: calculateGrandTotal(),
+      items: rows,
+      gst: gstValue, // Store GST value
+      discount: discount,
+      user_id: getCookie("userId"),
+      date: new Date()
+    };
 
-  try {
     const res = await axios.post("http://localhost:8000/add_sales/", data);
     if (!res.data.success) {
       setError(res.data.error);
@@ -175,10 +175,7 @@ function MyForm4() {
       setError("");
       setCustomerEmail("")
     }
-  } catch (error) {
-    setError("An error occurred while submitting the form.");
-  }
-};
+  };
 
 
   return (
@@ -223,7 +220,6 @@ function MyForm4() {
                       value={customerEmail}
                       onChange={(e) => setCustomerEmail(e.target.value)}
                       className="myform-input myform-input-full-width"
-                     
                     />
                   </td>
                 </tr>
