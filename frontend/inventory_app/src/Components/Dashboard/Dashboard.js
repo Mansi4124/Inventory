@@ -3,7 +3,7 @@ import { Container, Nav } from "react-bootstrap";
 import { useLocation, useNavigate, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import "../Dashboard/Dashboard.css";
-import HomeContent from "../Homecontent/HomeContent";
+import HomeContent from "../HomeContent/HomeContent";
 import InventoryContent from "../InventoryContent/InventoryContent";
 import Reports from "../Reports/Reports";
 import SalesContent from "../SalesContent/SalesContent";
@@ -141,7 +141,7 @@ const Dashboard = () => {
                 onClick={() => navigate("/dashboard/predict")}
                 className={location.pathname === "/dashboard/predict" ? "active" : ""}
               >
-                Predict Items
+                Budget Optimization
               </Nav.Link>
             </Nav.Item>
           </Nav>

@@ -52,7 +52,6 @@ def sign_in(request):
             status=200,
         )
 
-
 @csrf_exempt
 def sign_up(request):
     if request.method == "POST":

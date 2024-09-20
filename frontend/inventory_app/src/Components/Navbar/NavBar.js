@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import '../Navbar/NavBar.css';
 import axios from 'axios';
 import logo from '../../assets/InventoryIQ.png'
+
 function deleteCookie(name) {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; secure; SameSite=Lax`;
 }

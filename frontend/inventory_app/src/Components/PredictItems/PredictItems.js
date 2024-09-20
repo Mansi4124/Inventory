@@ -78,11 +78,9 @@ const PredictItems = () => {
                             <tr>
                                 <th>Item Name</th>
                                 <th>Category</th>
-                                <th>Weight</th>
-                                <th>Selling Price</th>
-                                <th>Cost Price</th>
+                                <th>Remaining Stock</th>
                                 <th>Profit Margin</th>
-                                <th>Predicted Items</th>
+                                <th>Predicted Quantity</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,9 +88,7 @@ const PredictItems = () => {
                                 <tr key={index}>
                                     <td>{userItem.product_name}</td>
                                     <td>{userItem.category}</td>
-                                    <td>{userItem.weight}</td>
-                                    <td>{userItem.selling_price}</td>
-                                    <td>{userItem.cost_price}</td>
+                                    <td>{userItem.remaining_stock}</td>
                                     <td>{userItem.profit_margin}</td>
                                     <td>{Math.round(items[index])}</td>
                                 </tr>
