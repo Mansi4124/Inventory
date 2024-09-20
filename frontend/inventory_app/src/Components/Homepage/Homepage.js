@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Homepage/Homepage.css';
 import { Navbar } from 'react-bootstrap';
+import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 
 const testimonials = [
   {
@@ -135,6 +136,13 @@ const HomePage = () => {
     setAboutCurrentSlide(index);
   };
 
+  const handleGetStartedClick = () => {
+    if (isLoggedIn) {
+      navigate('/dashboard');
+    } else {
+      navigate('/sign_in');
+    }
+  };
   const getVisibleAboutSlides = () => {
     const prevIndex = (aboutCurrentSlide - 1 + about.length) % about.length;
     const nextIndex = (aboutCurrentSlide + 1) % about.length;
@@ -149,8 +157,8 @@ const HomePage = () => {
           <header className="hero">
             <h1>Inventory management software designed for small businesses</h1>
             <p>Manage orders. Track inventory. Handle GST billing. Oversee warehouses. One inventory management software to run all your inventory operations.</p>
-            <button className="cta-button">Get Started</button>
-          </header>
+            <button className="cta-button" onClick={handleGetStartedClick}>Get Started</button>
+                      </header>
 
           <div className="ratings-section">
             <div className="rating-1 rating-block">
@@ -355,7 +363,7 @@ const HomePage = () => {
           <a href="/contact_us">Contact Us</a>
           <a href="/add-organization">Add Organization</a>
 
-          <a href="#/reports">Reports</a>
+          <a href="/reports">Reports</a>
           <a href="/reports">All features</a>
         </div>
         <div className="col">
