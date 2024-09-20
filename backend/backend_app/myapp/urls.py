@@ -18,7 +18,9 @@ from .views import (
     delete_item,
     add_item_order,
     get_sales,
-    get_suggestions
+    get_suggestions,
+    add_review,
+    get_reviews
 )
 
 urlpatterns = [
@@ -41,4 +43,6 @@ urlpatterns = [
     path("delete_item/<str:product_name>/", delete_item),
     path("get_sales/", get_sales),
     path("get_suggestions/", get_suggestions),
+    path("review/", add_review),
+    path("get_reviews/", get_reviews)
 ]

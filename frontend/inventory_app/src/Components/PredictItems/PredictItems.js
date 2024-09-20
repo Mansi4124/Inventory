@@ -31,29 +31,34 @@ const PredictItems = () => {
 
         const date_res = await axios.post("http://localhost:8000/get_sales/", { 'user_id': getCookie("userId") });
 
-        const salesDate = new Date(date_res.data.date);
+        if (date_res.data.success) {
 
-        const today = new Date();
+            const salesDate = new Date(date_res.data.date);
 
-        const timeDiff = today - salesDate;
+            const today = new Date();
 
-        const days_diff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const timeDiff = today - salesDate;
 
-        console.log(days_diff)
+            const days_diff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
-        const res = await axios.post("http://localhost:8000/get_suggestions/", {
-            'user_id': getCookie("userId"),
-            'budget': budget,
-            'days_diff': days_diff
-        });
+            console.log(days_diff)
 
-        if (res.data.success) {
-            setItems(res.data.data);
-            setUserItems(res.data.user_items.filter((item) => item['category'] !== 'Composite'));
-            setBudget('')
-            setError('')
-        } else {
-            setError(res.data.error)
+            const res = await axios.post("http://localhost:8000/get_suggestions/", {
+                'user_id': getCookie("userId"),
+                'budget': budget,
+                'days_diff': days_diff
+            });
+
+            if (res.data.success) {
+                setItems(res.data.data);
+                setUserItems(res.data.user_items.filter((item) => item['category'] !== 'Composite'));
+                setBudget('')
+                setError('')
+            } else {
+                setError(res.data.error)
+            }
+        }else{
+            setError("No sales found, Please try again later.")
         }
     };
 

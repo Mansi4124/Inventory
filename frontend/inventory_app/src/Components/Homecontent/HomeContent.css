@@ -104,9 +104,7 @@
 
 /* Responsive Styles */
 @media (max-width: 1200px) {
-    .home-content {
-        margin-left: -300px;
-    }
+
     .card {
         flex: 1 1 calc(50% - 20px);
         max-width: 45%;
@@ -114,9 +112,7 @@
 }
 
 @media (max-width: 992px) {
-    .home-content {
-        margin-left: -170px;
-    }
+
     .card {
         flex: 1 1 calc(100% - 20px);
         max-width: 100%;
