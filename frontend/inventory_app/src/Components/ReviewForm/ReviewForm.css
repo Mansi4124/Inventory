@@ -1,0 +1,125 @@
+.review-screen{
+    height: auto;
+    padding: 80px;
+    background-color:var(--light);
+    
+}
+
+#review {
+    background-color:var(--light);
+    color: #333;
+    padding: 20px;
+    border:1px solid black;
+}
+
+.review-section {
+    max-width: 1000px;
+    margin: auto auto;
+    position: relative;
+    top:-40px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.review-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.review-container .form-group {
+    margin-bottom: 15px;
+}
+
+.review-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.review-container input,
+.review-container select,
+.review-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.review-container button.cta-button {
+    background-color:var(--dark);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.review-container button.cta-button:hover {
+    background-color:var(--link);
+}
+
+.error-message {
+    color: #dc3545;
+    margin-top: 10px;
+}
+
+.success-message {
+    color: #28a745;
+    margin-top: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .review-section {
+        padding: 20px;
+    }
+
+    .review-container h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .review-container .form-group {
+        margin-bottom: 15px;
+    }
+
+    .review-container input,
+    .review-container select,
+    .review-container textarea {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .review-container button.cta-button {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .review-section {
+        padding: 15px;
+    }
+
+    .review-container h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .review-container .form-group {
+        margin-bottom: 10px;
+    }
+
+    .review-container input,
+    .review-container select,
+    .review-container textarea {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .review-container button.cta-button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}

@@ -3,7 +3,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import '../Navbar/NavBar.css';
 import axios from 'axios';
-import logo from '../../InventoryIQ.png';
+import logo from '../../assets/InventoryIQ.png'
 
 function deleteCookie(name) {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; secure; SameSite=Lax`;
@@ -86,7 +86,11 @@ const NavBar = () => {
         ) : (
           <>
             <li><a href="/features">Features</a></li>
+            <li><a href="/review">Review</a></li>
             <li><a href="/dashboard">Dashboard</a></li>
+            
+          
+
             <li>
               <FaUserCircle
                 className="profile-icon"

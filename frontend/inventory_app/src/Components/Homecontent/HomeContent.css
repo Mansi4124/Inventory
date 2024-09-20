@@ -1,16 +1,9 @@
-/* Existing styles */
-.title {
-    color: #132F58;
-    font-size: 26px;
-}
 
 .main-div {
-    margin-top: 65px;
+    margin-top: 0px;
 }
 
-.content-div {
-    margin-bottom: 50px;
-}
+
 
 .home-content {
     display: flex;
@@ -18,21 +11,7 @@
     gap: 20px;
     padding: 20px;
     background-color: #f9f9f9;
-    margin-left: -150px;
-}
-
-body, html {
-    margin: 0;
-    padding: 0;
-}
-
-.content-div {
-    width: 100%;
-    height: 60%;
-    color: #132F58;
-    margin-left: -130px;
-    margin-bottom: 30px;
-    margin-top: -65px;
+   
 }
 
 .card {
@@ -48,22 +27,21 @@ body, html {
 .home-title {
     border-radius: 20px;
     text-align: center;
-    margin-bottom: 40px;
-    margin-top: 7px;
-    font-size: 25px;
+   margin-top:4px;
+    font-size: 20px;
     color: white;
     align-items: center;
 }
 
 .bgdiv {
     background-color: #132F58;
-    height: 50px;
+    height: 40px;
     border: 2px solid white;
     border-radius: 10px;
 }
 
 .card p {
-    margin-top: 20px;
+    margin-top: 15px;
     font-size: 17px;
     color: #132F58;
 }
@@ -127,7 +105,7 @@ body, html {
 /* Responsive Styles */
 @media (max-width: 1200px) {
     .home-content {
-        margin-left: -100px;
+        margin-left: -300px;
     }
     .card {
         flex: 1 1 calc(50% - 20px);
@@ -168,16 +146,21 @@ body, html {
 @media (max-width: 576px) {
     .home-content {
         padding: 10px;
-        margin-left : -200px;
+        margin-left : 0px;
         margin-right: 20px;
     }
-    .title {
+    .h-title {
         font-size: 22px;
         padding: 5px;
         margin-top: -20px;
         margin: -10px -160px ;
     }
-  
+    .b-title {
+        font-size: 22px;
+        padding: 5px;
+     
+        margin: 20px -160px ;
+    }
     .home-title {
         font-size: 20px;
     }

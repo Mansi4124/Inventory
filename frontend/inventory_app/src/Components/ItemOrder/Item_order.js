@@ -1,14 +1,54 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import "../CompositeItem/Composite_item.css";
+import React, { useState, useEffect, useCallback } from 'react';
+import "../ItemOrder/Item_order.css";
 import axios from 'axios';
 
-function MyForm1() {
-  const [rows, setRows] = useState([{ name: '', quantity: 0, sellingPrice: '', costPrice: '' }]);
+export default function Item_orderForm() {
+  const [rows, setRows] = useState([{ quantity: '', costPrice: '' }]);
   const [items, setItems] = useState([]);
-  const [newName, setNewName] = useState('');
-  const [sellingPrice, setSellingPrice] = useState(0);
-  const [costPrice, setCostPrice] = useState(0);
   const [error, setError] = useState('');
+  const [newName, setNewName] = useState('');
+  // Handle input change
+  const handleInputChange = (index, event) => {
+    const { name, value } = event.target;
+    const newRows = [...rows];
+    newRows[index][name] = value;
+    setRows(newRows);
+  };
+
+  // Handle adding a new row
+  const addNewRow = (event) => {
+    event.preventDefault();
+    setRows([...rows, { quantity: '', costPrice: '' }]);
+  };
+
+  // Handle removing a row
+  const removeRow = (index) => {
+    const newRows = [...rows];
+    newRows.splice(index, 1);
+    setRows(newRows);
+  };
+
+  // Restrict input to numbers only and prevent entering zero
+  const handleKeyPress = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (
+      (charCode < 48 || charCode > 57) && // Not a number
+      charCode !== 46 && // Not a period (for decimals)
+      charCode !== 8 &&  // Not backspace
+      charCode !== 9     // Not tab
+    ) {
+      event.preventDefault();
+    }
+  };
+  const [applyGST, setApplyGST] = useState('no');
+  // Restrict input for quantity to disallow zero
+  const handleQuantityKeyPress = (event) => {
+    handleKeyPress(event);
+    if (event.target.value === '' && event.which === 48) {
+      event.preventDefault(); // Prevent entering 0 as the first digit
+    }
+  };
+
   const getCookie = (name) => {
     const cookieName = `${name}=`;
     const decodedCookie = decodeURIComponent(document.cookie);
@@ -26,14 +66,21 @@ function MyForm1() {
     return null;
   };
 
-  const calculateTotal = useCallback((type) => {
-    return rows.reduce((acc, row) => {
+  // Calculate totals
+  const calculateTotal = () => {
+    const total = rows.reduce((acc, row) => {
       const quantity = parseFloat(row.quantity) || 0;
-      const price = parseFloat(row[type]) || 0;
+      const price = parseFloat(row['costPrice']) || 0;
       return acc + quantity * price;
-    }, 0).toFixed(2);
-  }, [rows]);
+    }, 0);
 
+    // Apply GST if required
+    if (applyGST === 'yes') {
+      return (total * 1.18).toFixed(2); // Adding 18% GST
+    }
+
+    return total.toFixed(2);
+  };
 
   const updateSelect = useCallback(async () => {
     const userId = getCookie('userId');
@@ -47,103 +94,49 @@ function MyForm1() {
     updateSelect();
   }, [updateSelect]);
 
-  useEffect(() => {
-    setSellingPrice(calculateTotal('sellingPrice'));
-    setCostPrice(calculateTotal('costPrice'));
-  }, [rows, calculateTotal]);
-
-  const handleInputChange = (index, event) => {
-    const { name, value } = event.target;
-    const newRows = [...rows];
-    newRows[index][name] = value;
-    setRows(newRows);
-  };
-
-  const addNewRow = (event) => {
-    event.preventDefault();
-    setRows([...rows, { name: '', quantity: 0, sellingPrice: '', costPrice: '' }]);
-  };
-
-  const removeRow = (index) => {
-    const newRows = [...rows];
-    newRows.splice(index, 1);
-    setRows(newRows);
-  };
-
-  const handleCompositeSave = async (e) => {
-    if (newName === "") {
-      setError("Item name cannot be empty!")
-    }
-    e.preventDefault();
-    const userId = getCookie('userId');
-    const quantities = {}
-    const cost_prices = {}
-    const selling_prices = {}
-    for (var row of rows) {
-      quantities[row.name] = row.quantity
-      cost_prices[row.name] = row.costPrice
-      selling_prices[row.name] = row.sellingPrice
-    }
-    const data = {
-      'user_id': userId,
-      'product_details': {
-        'product_name': newName,
-        'category': "Composite",
-        'selling_price': parseInt(sellingPrice),
-        'cost_price': parseInt(costPrice),
-        'quantities': quantities,
-        'cost_prices': cost_prices,
-        'selling_prices': selling_prices,
-      }
-    }
-
-    if (newName) {
-      const res = await axios.post("http://localhost:8000/add_item/", data);
-
-      if (res.data.success === false) {
-        setError(res.data.error)
-      } else {
-        setError('')
-        setNewName('');
-        setRows([{ name: '', quantity: 0, sellingPrice: '', costPrice: '' }]);
-        setSellingPrice(0);
-        setCostPrice(0);
-        updateSelect();
-        alert('Form submitted!');
-      }
-    }
-  }
-
   const handleItemSelect = (index, event) => {
     const selectedItem = items.find(item => item.product_name === event.target.value);
     const newRows = [...rows];
     newRows[index] = {
       ...newRows[index],
       name: selectedItem.product_name,
-      sellingPrice: selectedItem.selling_price,
       costPrice: selectedItem.cost_price
     };
     setRows(newRows);
   };
 
-  const handleQuantityKeyPress = (event) => {
-    if (event.target.value === '' && event.which === 48) {
-      event.preventDefault();
+  const handleItemOrder = async (e) => {
+    e.preventDefault();
+    const data = {
+      'user_id': getCookie('userId'),
+      'order_details': {
+        'manufacturer_name': newName,
+        'items': rows,
+        'total': calculateTotal()
+      }
     }
-  };
+
+    const res = await axios.post("http://localhost:8000/add_item_order/", data);
+    if (res.data.success) {
+      setRows([{ quantity: '', costPrice: '', name: '' }]);
+      setError('');
+      setNewName('');
+      setApplyGST('no')
+    }
+  }
 
   return (
-    <section id="composite" className="composite-section">
-      <div className="composite-container">
-      <form className="myform-container" onSubmit={handleCompositeSave}>
+    <section id='itemorder' className='itemorder-section'>
+      <div className='itemorder-container'>
+      <form className="myform-container">
         <fieldset className="myform-fieldset">
-          <legend className="myform-legend">Composite Product</legend>
+          <legend className="myform-legend">Add Order Details</legend>
 
           <table className="myform-table">
             <tbody>
               <tr className="myform-row">
                 <td className="myform-label">
-                  <label htmlFor="name" className="myform-label" required>Name:</label>
+                  <label htmlFor="name" className="myform-label" >Manufacturer Name:</label>
                 </td>
                 <td>
                   <input
@@ -167,7 +160,6 @@ function MyForm1() {
                       <tr>
                         <td>Item Details</td>
                         <td>Quantity</td>
-                        <td>Selling Price</td>
                         <td>Cost Price</td>
                         <td></td>
                       </tr>
@@ -194,17 +186,6 @@ function MyForm1() {
                               onKeyPress={handleQuantityKeyPress}
                               min="1"
                               step="1" // Step set to 1 for quantity
-                            />
-                          </td>
-                          <td>
-                            <input
-                              type="number"
-                              name="sellingPrice"
-                              value={row.sellingPrice}
-                              className="myform-input"
-                              onChange={event => handleInputChange(index, event)}
-                              min="1"
-                              step="1" // Step set to 1 for selling price
                             />
                           </td>
                           <td>
@@ -238,23 +219,57 @@ function MyForm1() {
                           </div>
                         </td>
                         <td className="myform-button-cell">Total:</td>
-                        <td className="myform-button-cell">{calculateTotal('sellingPrice')}</td>
                         <td className="myform-button-cell">{calculateTotal('costPrice')}</td>
                         <td></td>
                       </tr>
                     </tbody>
                   </table>
-                  {items.length === 0 && <div className='no-items alert alert-danger'>No items Found , Please add some first!</div>}
+                  {items.length === 0 && <div className='no-items alert alert-danger'>No itemsFound , Please add some first!</div>}
                 </td>
               </tr>
               <tr>
-                <td className="sales-info">Selling Price: {calculateTotal('sellingPrice')}</td>
                 <td className="purchase-info">Cost Price: {calculateTotal('costPrice')}</td>
+                <td>GST:</td>
+                <td>
+                  <div className="radio-group">
+                    <div className="radio-option">
+                      <input
+                        type="radio"
+                        id="yes"
+                        name="gst"
+                        value="yes"
+                        checked={applyGST === 'yes'}
+                        onChange={() => setApplyGST('yes')}
+                        className="form-check-input"
+                      />
+                      <label htmlFor="yes" className="form-check-label">Yes</label>
+                    </div>
+                    <div className="radio-option">
+                      <input
+                        type="radio"
+                        id="no"
+                        name="gst"
+                        value="no"
+                        checked={applyGST === 'no'}
+                        onChange={() => setApplyGST('no')}
+                        className="form-check-input"
+                      />
+                      <label htmlFor="no" className="form-check-label">No</label>
+                    </div>
+                    <input
+                      type="text"
+                      value={applyGST === 'yes' ? '18%' : '0%'}
+                      readOnly
+                      className="gst-textbox"
+                    /> 
+                  </div>
+                </td>
               </tr>
+
               <tr>
 
                 <td colSpan="2" className="myform-button-cell">
-                  <button type="submit" className="myform-button myform-button-save" onClick={handleCompositeSave}>
+                  <button type="submit" className="myform-button myform-button-save" onClick={handleItemOrder}>
                     Save
                   </button>
                   <button type="button" className="myform-button myform-button-cancel">
@@ -270,5 +285,3 @@ function MyForm1() {
     </section>
   );
 }
-
-export default MyForm1;

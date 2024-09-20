@@ -1,0 +1,238 @@
+/* Overall Container for Item Management */
+.item-management {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color:var(--light);
+    min-height: 91.5vh;
+  }
+  
+  .item-management-container {
+    
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1000px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header Style */
+  h2 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Search Section */
+  .search-item,
+  .search-composite-item {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 20px;
+  }
+  
+  .search-item input,
+  .search-composite-item input {
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Items List */
+  .items-list {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+  }
+  .items-table,
+  .composite-items-list {
+      max-height: 500px;
+      max-width: 800px;
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background-color: #fff;
+      overflow-y: auto; /* Enable vertical scrolling */
+      display: block; /* Ensures the table respects max-height */
+  }
+  
+  .items-table th,
+  .items-table td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .items-table th {
+    background-color: var(--dark);
+    color: #fff;
+  }
+
+  
+  .items-table tr:hover {
+    background-color: #ddd;
+  }
+  
+  /* Edit and Delete Buttons */
+  .edit,
+  .delete {
+    padding: 10px 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .edit {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .edit:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+  }
+  
+  .delete {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .delete:hover {
+    background-color: #c82333;
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+  }
+  
+  /* Error Message */
+  .error-message {
+    color: #dc3545;
+    font-weight: bold;
+  }
+  
+  /* Edit Item Styles */
+  .edit-item-container {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+  }
+  
+  .edit-item-fieldset {
+    background-color: #FFF;
+    border: 1px solid #ccc;
+    padding: 50px;
+    border-radius: 30px;
+    width: 100%;
+  }
+  .edit-item-fieldset legend {
+    text-align:center;
+    font-weight: 700;
+  }
+  .edit-item-legend {
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px; /* Increased font size for better visibility */
+    margin-bottom: 20px;
+  }
+  
+  .edit-item-table {
+    width: 100%;
+  }
+  
+  .edit-item-table td {
+    padding: 12px; /* Increased padding for better spacing */
+  }
+  
+  .edit-item-table label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+  }
+  
+  .edit-item-table input {
+    width: 100%;
+    padding: 10px; /* Increased padding for better usability */
+    border: 1px solid #ccc;
+    border-radius: 6px; /* Slightly rounded corners */
+    font-size: 16px; /* Larger font size for better readability */
+    transition: border-color 0.3s ease;
+  }
+  
+  .edit-item-table input:focus {
+    border-color: #007bff; /* Focus color for better indication */
+    outline: none;
+  }
+  
+  .edit-item-table input::placeholder {
+    color: #aaa; /* Lighter color for placeholder text */
+  }
+  .editSaveBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.editSaveBtn button{
+    background-color: var(--dark);
+    color: #fff;
+    margin: auto;
+    padding: 10px 50px;
+    border-radius: 5px;
+}
+.items-list h3,
+.composite-items-list h3 {
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.items-list{
+  margin-bottom: 80px;
+}
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .edit-item-fieldset {
+      padding: 30px;
+    }
+  
+    .items-table th,
+    .items-table td {
+      padding: 10px;
+    }
+  
+    .edit,
+    .delete {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+    }
+  
+    .edit-item-table td {
+      padding: 10px 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .edit-item-legend {
+      font-size: 18px;
+    }
+  
+    .items-table th,
+    .items-table td {
+      font-size: 14px;
+    }
+  
+    .edit,
+    .delete {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+  

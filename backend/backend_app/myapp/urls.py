@@ -13,8 +13,12 @@ from .views import (
     send_email,
     add_item,
     get_items,
-    add_sales
-    
+    add_sales,
+    edit_item,
+    delete_item,
+    add_item_order,
+    get_sales,
+    get_suggestions
 )
 
 urlpatterns = [
@@ -26,10 +30,15 @@ urlpatterns = [
     path("update_organization/", update_organization),
     path("get_profile/", get_profile),
     path("update_profile/", update_profile),
-     path("contact_us/", contact_us),
-     path('get_contact_queries/',get_contact_queries),
-      path('send_email/', send_email),
-      path("add_item/", add_item),
-path("get_items/", get_items),
-path("add_sales/", add_sales),
+    path("contact_us/", contact_us),
+    path('get_contact_queries/',get_contact_queries),
+    path('send_email/', send_email),
+    path("add_item/", add_item),
+    path("get_items/", get_items),
+    path("add_sales/", add_sales),
+    path("add_item_order/", add_item_order),
+    path("edit_item/<str:product_name>/", edit_item), 
+    path("delete_item/<str:product_name>/", delete_item),
+    path("get_sales/", get_sales),
+    path("get_suggestions/", get_suggestions),
 ]

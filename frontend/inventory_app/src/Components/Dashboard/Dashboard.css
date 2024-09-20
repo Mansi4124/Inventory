@@ -1,28 +1,80 @@
-.sidebar {
-    background-color: #f5f9fb;
-    padding-top:40px;
-    text-align: left;
-    padding-left: 20px;
-    font-weight: bold;
-    height: 1200px;
-    position: fixed;
-    top: 10; 
-    left: 0; 
-    width: 200px;
-    z-index: 0; 
-}
-
-
-.sidebar .nav-link {
-    margin-bottom: 15px;
-    cursor: pointer;
+/* Overall title and layout styling */
+.container-title {
     color: #132F58;
-    
+    margin-left: 3rem;
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  
+  .h-title {
+    font-size: 1.1rem;
+   
+  }
+  .nav-link{
+    color:var(--dark);
+    font-weight:500;
+
+  }
+  /* Highlight active tab */
+.nav-link.active {
+  color:white !important;
+  background-color:var(--dark) !important; /* Bootstrap's primary blue */
+  border-color: #0e0f0f;
 }
 
-.content {
-    margin-left: 200px; 
-    padding-left: 200px;
-    position: relative;
-    padding-top: 100px;
-}
+
+  .b-title {
+    font-size: 1.1rem;
+   
+    color: black;
+  }
+  
+  /* Dashboard content container */
+  .dashboard-content {
+    padding-top: 1rem;
+  }
+  
+  /* Content area styling */
+  .content {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+  }
+  
+  /* Navigation tabs */
+  .links-tab {
+    margin-left: 1rem;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .container-title {
+      margin-left: 0rem;
+      padding-top: 1rem;
+      display: flex;
+      align-items: center;
+    }
+  
+    .dashboard-content {
+      padding-top: 3rem;
+    }
+  
+    .content {
+      padding: 0.5rem;
+    }
+  
+    .links-tab {
+      margin-left: 0;
+      font-size: 0.85rem;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .content {
+      max-width: 1200px;
+    }
+  }
+  

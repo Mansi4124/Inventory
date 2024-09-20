@@ -1,0 +1,294 @@
+#itemorder{
+  background-color: #E5F6FF;
+  color: #132F58;
+  height: 700px;
+}
+.itemorder-section {
+  display: flex;
+  align-items: center;
+  padding: 50px;
+  background-color: #f9f9f9;
+}
+
+.itemorder-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+
+.myform-container {
+    background-color: #E5F6FF;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .myform-fieldset {
+    background-color: #FFF;
+    border: 1px solid #ccc;
+    padding: 30px;
+    border-radius: 20px;
+    margin: 30px auto;
+    max-width: 900px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .myform-legend {
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .myform-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .myform-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .myform-label1 {
+    text-align: center;
+    font-weight: bold;
+    flex: 0 0 200px; /* Adjust the width of the label */
+    margin-right: 20px; /* Space between label and input */
+  }
+  
+  .myform-label {
+    font-weight: bold;
+    flex: 0 0 200px; /* Adjust the width of the label */
+    margin-right: 20px; /* Space between label and input */
+  }
+  
+  
+  .myform-input, .myform-select {
+    flex: 1; /* Make the input take up the remaining space */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .myform-unit-select {
+    width: 70px;
+    margin-left: 10px;
+  }
+  
+  .myform-new-entry {
+    margin-top: 10px;
+  }
+  
+  .myform-textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-height: 100px;
+  }
+  
+  .myform-button-cell {
+    padding: 10px;
+    text-align: right;
+  }
+  
+  .myform-button {
+    padding: 5px 10px; /* Smaller button padding */
+    border: none;
+    font-size: 14px; /* Smaller font size */
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .btn-save {
+    background-color: #007bff;
+    color: #fff;
+    margin-right: 10px;
+  }
+  
+  .btn-cancel {
+    background-color: #6c757d;
+    color: #fff;
+  }
+  
+  .myform-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .table-bordered {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-bordered td, .table-bordered th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .pt-2 {
+    padding-top: 10px;
+  }
+  
+  .float-start {
+    float: left;
+  }
+  
+  .pe-3 {
+    padding-right: 1rem;
+  }
+  
+  .text-open {
+    color: #007bff;
+  }
+  
+  .fill-azure-blue {
+    fill: #007bff;
+  }
+  
+  .align-middle {
+    vertical-align: middle;
+  }
+  
+  .myform-add-row-button {
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    padding: 4px 8px;
+    border: 1px solid #007bff;
+    color: #007bff;
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .myform-add-row-button svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+  }
+  
+  .myform-add-row-button span {
+    font-size: 14px;
+  }
+  
+  .myform-input-full-width {
+    width: calc(100% - 20px); /* Full width with padding adjustment */
+  }
+  
+  .myform-button-save {
+    background-color: #007bff;
+    color: #fff;
+    margin-right: 10px;
+  }
+  
+  .myform-button-cancel {
+    background-color: #6c757d;
+    color: #fff;
+  }
+  .myform-remove-row-button {
+    background-color: transparent;
+    border: none;
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .myform-remove-row-button:hover {
+    color: darkred;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .myform-fieldset {
+      padding: 20px;
+      max-width: 100%; /* Full-width form on smaller screens */
+    }
+  
+    .myform-row {
+      flex-direction: column; /* Stack elements vertically */
+    }
+  
+    .myform-label, .myform-input, .myform-select {
+      width: 100%; /* Full-width elements */
+      margin: 5px 0; /* Add spacing between stacked elements */
+    }
+  
+    .myform-input-full-width {
+      width: 100%; /* Full width */
+    }
+  
+    .myform-buttons {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+  
+    .myform-button {
+      width: 100%; /* Full-width buttons on smaller screens */
+      margin-bottom: 10px; /* Add spacing between buttons */
+    }
+  
+    .myform-add-row-button {
+      width: 100%; /* Full-width button on smaller screens */
+      justify-content: center; /* Center-align button content */
+    }
+    .myform-remove-row-button {
+      font-size: 18px; /* Slightly smaller font size */
+    }
+  }
+  
+  
+  .table-responsive {
+    overflow-x: auto; /* Enable horizontal scroll */
+  }
+  
+  .table-responsive table {
+    width: 100%; /* Ensure table takes full width */
+    min-width: 600px; /* Set minimum width for the table */
+  }
+  
+  
+  
+  @media (max-width: 576px) {
+    .myform-container {
+      padding: 10px; /* Reduce padding for small screens */
+    }
+  
+    .myform-fieldset {
+      padding: 15px;
+    }
+  
+    .myform-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .myform-label, .myform-input, .myform-select {
+      width: 100%; /* Full-width elements */
+      margin-bottom: 10px;
+    }
+  
+    .myform-buttons {
+      flex-direction: column;
+      width: 100%;
+      margin-top: 15px;
+    }
+  
+    .myform-button {
+      width: 100%; /* Full-width buttons */
+      margin-bottom: 10px; /* Add space between buttons */
+    }
+  
+    .myform-remove-row-button {
+      font-size: 16px; /* Further reduce font size for very small screens */
+    }
+  }
+  

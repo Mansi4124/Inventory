@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Sales Summary</h2>
+
+    <p>Dear {{ customer_name }},</p>
+
+    <p>Here is the summary of your recent purchase:</p>
+
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.sellingPrice }}</td>
+            <td>{{ item.amount|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3" style="text-align: right;"><strong>Sub Total:</strong></td>
+            <td>{{ subtotal|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: right;"><strong>GST:</strong></td>
+            <td>{{ gst|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: right;"><strong>Discount:</strong></td>
+            <td>-{{ discount|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+            <td>{{ total|floatformat:2 }}</td>
+        </tr>
+    </table>
+
+    <p>Thank you for your purchase!</p>
+
+</body>
+</html>

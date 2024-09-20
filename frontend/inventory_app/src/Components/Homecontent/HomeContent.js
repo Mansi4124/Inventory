@@ -66,10 +66,7 @@ const HomeContent = () => {
 
   return (
     <div className="main-div">
-      <div className="content-div">
-        <h2 className="title">Hello, {data['fname']} </h2>
-        <h3 className="title">{orgData['orgName']}</h3>
-      </div>
+     
 
       <div className="home-content">
         {/* Inventory Summary */}

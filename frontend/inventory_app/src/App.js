@@ -9,15 +9,19 @@ import Home from './Components/Homepage/Homepage';
 import SignUp from './Components/Sign_up/Sign_up';
 import SalesOrder from './Components/SalesOrder/SalesOrder';
 import Dashboard from './Components/Dashboard/Dashboard';
+import ItemOrder from './Components/ItemOrder/Item_order';
 import Profile from "./Components/Profile/Profile";
 import ItemForm from './Components/ItemForm/ItemForm';
 import Composite from './Components/CompositeItem/Composite_item';
-import InventoryContent from './Components/InventoryContent/InventoryContent';
 import MyOrganization from './Components/MyOrganization/MyOrganization';
 import ContactUs from './Components/ContactUs/ContactUs';
 import Features from './Components/Features/Features';
 import AdminDashboard from './Components/AdminDashboard/AdminDashboard';
-
+import ManageItemForm from './Components/ManageItemForm/ManageItemForm';
+import ReviewForm from './Components/ReviewForm/ReviewForm';
+import SalesContent from './Components/SalesContent/SalesContent';
+import ItemOrderContent from './Components/ItemOrderContent/ItemOrderContent';
+import PredictItems from './Components/PredictItems/PredictItems';
 const AppContent = () => {
     const location = useLocation(); // Get the current path
 
@@ -39,7 +43,13 @@ const AppContent = () => {
                 <Route path="/contact_us" element={<ContactUs />} />
                 <Route path="/features" element={<Features />} />
                 <Route path="/sales-order" element={<SalesOrder />} />
+                <Route path="/item-orders" element={<ItemOrder />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route path="/manage-item-form" element={<ManageItemForm />} />
+                <Route path="/review" element={<ReviewForm/>}/>
+                <Route path="/salescontent" element={<SalesContent/>}/>
+                <Route path='/itemorder' element={<ItemOrderContent/>}/>
+                <Route path='/predict' element={<PredictItems/>}/>
             </Routes>
         </>
     );

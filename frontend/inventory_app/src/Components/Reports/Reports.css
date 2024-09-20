@@ -1,0 +1,25 @@
+.reports-div hr {
+    height: 0px;
+    border: 2px solid black;
+    opacity: 1;
+}
+
+.reports-div input {
+    padding: 10px 20px;
+    width: 40%;
+}
+
+.reports-div .input-div {
+    display: flex;
+    justify-content: center;
+}
+
+.reports-item {
+    margin: 100px 0px;
+}
+
+.reports-div h1{
+    text-align: center !important;
+    font-weight: 700;
+    text-decoration: underline;
+}
