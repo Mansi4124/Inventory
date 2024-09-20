@@ -89,9 +89,11 @@ const about = [
 ]
 
 const HomePage = () => {
-  
-  const [currentSlide, setCurrentSlide] = useState(0);
 
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [aboutCurrentSlide, setAboutCurrentSlide] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -257,7 +259,7 @@ const HomePage = () => {
               <h2>Order Management</h2>
             </div>
             <div className="feature-text">
-              
+
               <p>Handle all your sales and purchases activities, manage invoices and bills, and track payments. Our Inventory will help you to track everything.</p>
             </div>
           </div>
@@ -267,7 +269,7 @@ const HomePage = () => {
               <h2>Reports</h2>
             </div>
             <div className="feature-text">
-              
+
               <p>Know your inventory aging, vendor payments, sales details, and inventory valuation from a range of reports that can be generated, downloaded, and shared easily.</p>
             </div>
           </div>
@@ -276,46 +278,46 @@ const HomePage = () => {
 
 
       <section className="about-carousel-section">
-      <h1>About Us</h1>
-      <div className="about-carousel">
-        <button className="prev-arrow" onClick={moveToPrevAboutSlide}>&#10094;</button>
+        <h1>About Us</h1>
+        <div className="about-carousel">
+          <button className="prev-arrow" onClick={moveToPrevAboutSlide}>&#10094;</button>
 
-        {getVisibleAboutSlides().map((index) => {
-          const person = about[index];
-          return (
-            <div
-              key={index}
-              className={`about-carousel-slide ${index === aboutCurrentSlide ? 'active' : ''}`}
-              style={{ backgroundColor: person.backgroundColor }}
-            >
-              <img className = "about-img" src={person.image} alt={`About ${person.name}`} />
-              <div className="about-details">
-                <h3>{person.name}</h3>
-                <p>Contact  : {person.contactNo}</p>
-                <p>
-                <a href={person.instagram} target= "_blank"><img src='/instagram.png'></img></a>
-                <a href={person.linkedin} target= "_blank"><img src='/linkedin.png'></img></a>
-                </p>
+          {getVisibleAboutSlides().map((index) => {
+            const person = about[index];
+            return (
+              <div
+                key={index}
+                className={`about-carousel-slide ${index === aboutCurrentSlide ? 'active' : ''}`}
+                style={{ backgroundColor: person.backgroundColor }}
+              >
+                <img className="about-img" src={person.image} alt={`About ${person.name}`} />
+                <div className="about-details">
+                  <h3>{person.name}</h3>
+                  <p>Contact  : {person.contactNo}</p>
+                  <p>
+                    <a href={person.instagram} target="_blank"><img src='/instagram.png'></img></a>
+                    <a href={person.linkedin} target="_blank"><img src='/linkedin.png'></img></a>
+                  </p>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
 
-        <button className="next-arrow" onClick={moveToNextAboutSlide}>&#10095;</button>
-      </div>
+          <button className="next-arrow" onClick={moveToNextAboutSlide}>&#10095;</button>
+        </div>
 
-      <div className="about-carousel-dots">
-        {about.map((_, index) => (
-          <span
-            key={index}
-            className={`dot ${index === aboutCurrentSlide ? 'active' : ''}`}
-            onClick={() => setAboutSlide(index)}
-          ></span>
-        ))}
-      </div>
-    </section>
+        <div className="about-carousel-dots">
+          {about.map((_, index) => (
+            <span
+              key={index}
+              className={`dot ${index === aboutCurrentSlide ? 'active' : ''}`}
+              onClick={() => setAboutSlide(index)}
+            ></span>
+          ))}
+        </div>
+      </section>
 
-    {/* <section id="contact" className="contact-section">
+      {/* <section id="contact" className="contact-section">
         <div className="contact-container">
           <div className="contact-image">
             <img src="contactusImage.png" alt="Contact Us" />
@@ -361,7 +363,7 @@ const HomePage = () => {
           <a href="/add-organization">Add Organization</a>
 
           <a href="#/reports">Reports</a>
-        
+
         </div>
         <div className="col">
           <h3>About</h3>
@@ -371,7 +373,7 @@ const HomePage = () => {
           <a href="/sign_in">Sign In</a>
           <a href="/contact_us">Get Support</a>
         </div>
-        
+
       </footer>
     </>
   );
