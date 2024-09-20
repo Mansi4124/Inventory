@@ -4,7 +4,7 @@ import { Navbar } from 'react-bootstrap';
 import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 const testimonials = [
   {
-    content: "Zoho Inventory is one of the most easy to implement inventory management solution we have come across, with frequent updates that add more features with each iteration.",
+    content: "InventoryIQ Inventory is one of the most easy to implement inventory management solution we have come across, with frequent updates that add more features with each iteration.",
     name: "Ashish Verma",
     designation: "Operations & Logistics Manager, BOHECO",
     image: "review.png",
@@ -12,7 +12,7 @@ const testimonials = [
     backgroundColor: "#d2f3f3"
   },
   {
-    content: "The Zoho Inventory app has been really helpful in tracking the movement of key SKUs and the team has been very kind in providing us with solutions to our queries.",
+    content: "The InventoryIQ Inventory app has been really helpful in tracking the movement of key SKUs and the team has been very kind in providing us with solutions to our queries.",
     name: "Team OYO Homes",
     designation: "OYO Homes",
     image: "oyo-homes.png",
@@ -20,7 +20,7 @@ const testimonials = [
     backgroundColor: "#ffeeee"
   },
   {
-    content: "Zoho Inventory is an awesome software. It's automation feature is really nice. Most of the daily operations can be managed with the use of different APIs.",
+    content: "InventoryIQ  is an awesome software. It's automation feature is really nice. Most of the daily operations can be managed with the use of different APIs.",
     name: "Shubham Chopra",
     designation: "Owner, Chopra Lighthouse",
     image: "download--3--300.webp",
@@ -28,15 +28,15 @@ const testimonials = [
     backgroundColor: "#e6e3f3"
   },
   {
-    content: "We manage all our inventory, sales, and purchases using Zoho Inventory and Zoho Books. They are easy to learn, easy to apply, and the support team is very helpful. We like Zoho very much!.",
+    content: "We manage all our inventory, sales, and purchases using InventoryIQ Inventory. They are easy to learn, easy to apply, and the support team is very helpful. We like InventoryIQ very much!.",
     name: "Venkateswara Rao",
     designation: "Managing Director, Azole Rasayanas Pvt. Ltd.",
     image: "satisfaction.png",
-    summary: "Zoho Books integration",
+    summary: "InventoryIQ Books integration",
     backgroundColor: "#ebe1bb"
   },
   {
-    content: "Zoho Inventory has helped us to manage our inventory and customers efficiently and automate many of our business processes. Its effortless to navigate and its seamless integration with other Zoho products has proven to be very helpful.",
+    content: "InventoryIQ has helped us to manage our inventory and customers efficiently and automate many of our business processes. Its effortless to navigate and its seamless integration with other InventoryIQ products has proven to be very helpful.",
     name: "Sharad Nawalgaria",
     designation: "Director, Fida India",
     image: "good-review.png",
@@ -74,7 +74,7 @@ const about = [
     name: "Ketul Patel",
     contactNo: "6352050223",
     image: "ketul.png",
-    linkedin: "https://www.linkedin.com/in/ketul-patel-684899279",
+    linkedin: "www.linkedin.com/in/ketul-patel-684899279",
     instagram: "https://www.instagram.com/ketul.234?igsh=OWpqbDM1YW9oYnZh",
     backgroundColor: "#d2f3f3"
   },
@@ -91,35 +91,7 @@ const about = [
 const HomePage = () => {
   
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [aboutCurrentSlide, setAboutCurrentSlide] = useState(0); // Renamed state variables
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // New state to track login status
-const navigate = useNavigate();
-  const location = useLocation();
 
-  useEffect(() => {
-    // Check if the user is logged in
-    const getCookie = (name) => {
-      const cookieName = `${name}=`;
-      const decodedCookie = decodeURIComponent(document.cookie);
-      const cookies = decodedCookie.split(';');
-
-      for (let i = 0; i < cookies.length; i++) {
-        let cookie = cookies[i];
-        while (cookie.charAt(0) === ' ') {
-          cookie = cookie.substring(1);
-        }
-        if (cookie.indexOf(cookieName) === 0) {
-          return cookie.substring(cookieName.length, cookie.length);
-        }
-      }
-      return null;
-    };
-
-    const user = getCookie("userId");
-    setIsLoggedIn(!!user);
-
-    
-  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -191,7 +163,7 @@ const navigate = useNavigate();
                 <img src="capterra-logo.svg" alt="Capterra Review" width="88.8448px" />
               </span>
               <span className="rating-stars">
-                <img src="4dot5rating.svg" alt="Capterra Review - Zoho Inventory" width="88.8448px" />
+                <img src="4dot5rating.svg" alt="Capterra Review - InventoryIQ Inventory" width="88.8448px" />
               </span>
               <span className="rating-number">4.5/<small>5</small></span>
             </div>
@@ -201,7 +173,7 @@ const navigate = useNavigate();
                 <img src="g2-crowd.svg" alt="G2-Crowd Review" width="78px" />
               </span>
               <span className="rating-stars">
-                <img src="4dot5rating.svg" alt="G2-Crowd Review - Zoho Inventory" width="88.8448px" />
+                <img src="4dot5rating.svg" alt="G2-Crowd Review - InventoryIQ Inventory" width="88.8448px" />
               </span>
               <span className="rating-number">4.5/<small>5</small></span>
             </div>
@@ -211,13 +183,13 @@ const navigate = useNavigate();
                 <img src="software_advice.svg" alt="Software Advice Review" width="130px" height="30px" />
               </span>
               <span className="rating-stars">
-                <img src="4dot5rating.svg" alt="Software Advice Review - Zoho Inventory" width="88.8448px" />
+                <img src="4dot5rating.svg" alt="Software Advice Review - InventoryIQ Inventory" width="88.8448px" />
               </span>
               <span className="rating-number">4.7/<small>5</small></span>
             </div>
 
             <div className="header-img-section">
-              <img src="common-dashboard-1x.png" srcSet="common-dashboard-1x.png 1x, common-dashboard-2x.png 2x" alt="Inventory Management Software - Zoho Inventory" className="desktop-view" />
+              <img src="dash.jpeg" srcSet="common-dashboard-1x.png 1x, common-dashboard-2x.png 2x" alt="Inventory Management Software - InventoryIQ Inventory" className="desktop-view" />
               <a href="#">Watch the demo</a>
             </div>
           </div>
@@ -256,7 +228,7 @@ const navigate = useNavigate();
                 </div>
               </div>
               <div className="testimonial-summary responsive">
-                <h2>What they like about Zoho Inventory</h2>
+                <h2>What they like about InventoryIQ Inventory</h2>
                 <p>{testimonial.summary}</p>
               </div>
             </div>
