@@ -1,13 +1,38 @@
-import React, { useState } from "react";
-import "./ReviewForm.css"; // Assuming you have a CSS file for styles
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./ReviewForm.css";
 
 const ReviewForm = () => {
   const [name, setName] = useState("");
-  const [rating, setRating] = useState(1);
-  const [message, setMessage] = useState("");
+  const [review_message, setReview_message] = useState("");
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [userId, setUserId] = useState(null);
+
+  const getCookie = (name) => {
+    const cookieName = `${name}=`;
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookies = decodedCookie.split(';');
+
+    for (let i = 0; i < cookies.length; i++) {
+      let cookie = cookies[i];
+      while (cookie.charAt(0) === ' ') {
+        cookie = cookie.substring(1);
+      }
+      if (cookie.indexOf(cookieName) === 0) {
+        return cookie.substring(cookieName.length, cookie.length);
+      }
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    const fetchedUserId = getCookie('userId');
+    if (fetchedUserId) {
+      setUserId(fetchedUserId);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,23 +40,20 @@ const ReviewForm = () => {
     setSuccess("");
 
     try {
-      const response = await fetch("http://localhost:8000/review/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, rating, message }),
+      const response = await axios.post("http://localhost:8000/review/", {
+        user_id: userId,
+        name: name,
+        review_message: review_message,
+        msg: msg,
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccess(data.message);
+      if(response.data.success) {
+        setSuccess("Review submitted successfully");
         setName("");
-        setRating(1);
-        setMessage("");
-      } else {
-        setError(data.error || "Something went wrong");
+        setReview_message("");
+        setMsg("");
+        setTimeout(() => {
+          setSuccess("");
+        }, 2000);
       }
     } catch (err) {
       setError("Failed to send review");
@@ -55,33 +77,19 @@ const ReviewForm = () => {
                 required
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="rating">Rating:</label>
-              <select
-                id="rating"
-                name="rating"
-                value={rating}
-                onChange={(e) => setRating(Number(e.target.value))}
-                required
-              >
-                {[1, 2, 3, 4, 5].map((num) => (
-                  <option key={num} value={num}>
-                    {num}
-                  </option>
-                ))}
-              </select>
-            </div>
+
             <div className="form-group">
               <label htmlFor="message">Message:</label>
               <textarea
                 id="message"
                 name="message"
                 rows="4"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                value={review_message}
+                onChange={(e) => setReview_message(e.target.value)}
                 required
               ></textarea>
             </div>
+
             <div className="form-group">
               <label htmlFor="message-m">What You Like About InventoryIQ:</label>
               <textarea
@@ -89,10 +97,11 @@ const ReviewForm = () => {
                 name="message-m"
                 rows="1"
                 value={msg}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={(e) => setMsg(e.target.value)}
                 required
               ></textarea>
             </div>
+
             <button type="submit" className="cta-button">
               Submit Review
             </button>

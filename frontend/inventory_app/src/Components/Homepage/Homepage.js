@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../Homepage/Homepage.css';
 import { Navbar } from 'react-bootstrap';
 import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
+import axios from 'axios';
 const testimonials = [
   {
     content: "InventoryIQ Inventory is one of the most easy to implement inventory management solution we have come across, with frequent updates that add more features with each iteration.",
@@ -94,6 +95,26 @@ const HomePage = () => {
   const [aboutCurrentSlide, setAboutCurrentSlide] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate()
+
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/get_reviews/");
+        const data = response.data;
+
+        if (data.success) {
+          setReviews(data.reviews);
+        }
+      } catch (err) {
+        console.log("An error occurred while fetching reviews");
+      }
+    };
+
+    fetchReviews();
+    console.log(reviews)
+  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -211,27 +232,24 @@ const HomePage = () => {
 
       <section className="carousel-section">
         <div className="carousel">
-          {testimonials.map((testimonial, index) => (
+          {reviews.map((review, index) => (
             <div
               key={index}
               className={`carousel-content ${index === currentSlide ? 'active' : ''}`}
             >
               <div
                 className="testimonial-block"
-                style={{ backgroundColor: testimonial.backgroundColor }}
               >
-                <p className="testimonial-content">{testimonial.content}</p>
+                <p className="testimonial-content">{review.review_message}</p>
                 <div className="customer-section">
-                  <img src={testimonial.image} alt={`Customer ${testimonial.name}`} />
                   <div className="customer-details">
-                    <p className="customer-name">{testimonial.name}</p>
-                    <p className="customer-designation">{testimonial.designation}</p>
+                    <p className="customer-name">{review.name}</p>
                   </div>
                 </div>
               </div>
               <div className="testimonial-summary responsive">
                 <h2>What they like about InventoryIQ Inventory</h2>
-                <p>{testimonial.summary}</p>
+                <p>{review.msg}</p>
               </div>
             </div>
           ))}

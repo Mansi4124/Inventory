@@ -20,7 +20,9 @@ from .views import (
     get_sales_view,
     get_sales,
     get_suggestions,
-    get_item_order
+    get_item_order,
+    add_review,
+    get_reviews
 )
 
 urlpatterns = [
@@ -45,4 +47,6 @@ urlpatterns = [
     path("get_sales_view/", get_sales_view),
     path("get_sales/", get_sales),
     path("get_suggestions/", get_suggestions),
+    path("review/", add_review),
+    path("get_reviews/", get_reviews)
 ]
