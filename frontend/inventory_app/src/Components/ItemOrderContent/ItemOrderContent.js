@@ -39,7 +39,7 @@ const ItemOrderContent = () => {
           <div className="">
             <i className="bi bi-eye" style={{ fontSize: "2rem" }}></i>
             <p className="ptitle">Click the button below to view your item order data.</p>
-            <Button className="itemorder-btn" onClick={() => navigate("/view-item-orders")}>
+            <Button className="itemorder-btn" onClick={() => navigate("/view-itemorder")}>
               View Item Orders
             </Button>
           </div>

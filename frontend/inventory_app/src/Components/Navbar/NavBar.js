@@ -52,6 +52,7 @@ const NavBar = () => {
 
   const handleSignOut = () => {
     deleteCookie("userId");
+    deleteCookie("role");
     window.location.reload();
   };
 

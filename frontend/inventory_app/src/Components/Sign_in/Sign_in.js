@@ -33,6 +33,8 @@ function Sign_in() {
 
         document.cookie = `userId=${userId}; expires=${expiryDate.toUTCString()}; path=/; secure; SameSite=Lax`;
 
+        document.cookie = `role=${userRole}; expires=${expiryDate.toUTCString()}; path=/; secure; SameSite=Lax`;
+
         // Redirect based on user role
         if (userRole === "admin") {
           navigate("/admin-dashboard");

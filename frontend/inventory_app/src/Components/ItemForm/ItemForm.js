@@ -76,7 +76,7 @@ function MyForm() {
   return (
     <section id="itemform" className="itemform-section">
       <div className="itemform-container">
-    <form className="myform-container">
+    <form className="myform-container" onSubmit={handleSave}>
       <fieldset className="myform-fieldset">
         <legend className="myform-legend">Product Information</legend>
 
@@ -180,12 +180,10 @@ function MyForm() {
             {/* Action Buttons Row */}
             <tr>
               <td colSpan="2" className="myform-button-cell">
-                <button type="submit" className="myform-button myform-button-save" onClick={handleSave}>
+                <button type="submit" className="myform-button myform-button-save" >
                   Save
                 </button>
-                <button type="button" className="myform-button myform-button-cancel">
-                  Cancel
-                </button>
+                
               </td>
             </tr>
           </tbody>

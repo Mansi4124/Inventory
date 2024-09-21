@@ -12,7 +12,7 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-
+from bson.json_util import dumps
 from backend_app import settings
 
 client = MongoClient("mongodb://localhost:27017/")
@@ -44,9 +44,7 @@ def sign_in(request):
             {
                 "message": f"Welcome {email}",
                 "user_id": user["user_id"],
-                "role": user[
-                    "role"
-                ],  # Assuming you have a 'role' field in the user collection
+                "role": user["role"],  # Assuming you have a 'role' field in the user collection
                 "success": True,
             },
             status=200,
@@ -299,7 +297,7 @@ def send_email(request):
         try:
             data = json.loads(request.body)
             email = data.get("email")
-            print(email)
+                   
             message = data.get("message")
             contact_id = data.get(
                 "contact_id"
@@ -526,6 +524,7 @@ def add_sales(request):
         return JsonResponse({"message": "Invalid request method"}, status=405)
 
 
+
 @csrf_exempt
 def edit_item(request, product_name):
     if request.method == "PUT":
@@ -678,6 +677,25 @@ def add_item_order(request):
         return JsonResponse({"message": "Invalid request method"}, status=405)
 
 
+@csrf_exempt
+def get_item_order(request):
+    if request.method == "GET":
+        user_id = request.GET.get("user_id")
+        if not user_id:
+            return JsonResponse({"message": "User ID not provided"}, status=400)
+
+        user_orders = orders_collection.find_one({"user_id": user_id})
+
+        if not user_orders:
+            return JsonResponse({"message": "No orders found for this user"}, status=404)
+
+        return JsonResponse({
+            "orders": user_orders["orders"],
+            "success": True,
+        }, status=200)
+    else:
+        return JsonResponse({"message": "Invalid request method"}, status=405)
+
 def send_sales_order_email(
     customer_name, customer_email, rows, subtotal, gst, discount, grand_total
 ):
@@ -708,34 +726,38 @@ def send_sales_order_email(
     )
 
 
-@csrf_exempt
-def get_sales(request):
-    data = json.loads(request.body)
-    if request.method == "POST":
-        user_id = data["user_id"]
+def get_sales_view(request):
+    if request.method == "GET":
+        user_id = request.GET.get("user_id")  # Get user_id from the request query params
+        if not user_id:
+            return JsonResponse({"error": "user_id is required"}, status=400)
+
         user_sales = sales_collection.find_one({"user_id": user_id})
-        date = user_sales["date"]
-        if user_sales:
-            user_sales = user_sales["sales"]
-            return JsonResponse(
-                {
-                    "message": "Sales Feteched successfully",
-                    "sales": user_sales,
-                    "success": True,
-                    "date": date,
-                },
-                status=200,
-            )
-        else:
-            return JsonResponse(
-                {
-                    "message": "Sales Feteched successfully",
-                    "sales": user_sales,
-                    "date": date,
-                    "success": False,
-                },
-                status=200,
-            )
+        
+        if not user_sales:
+            return JsonResponse({"message": "No sales found for this user"}, status=404)
+        
+        sales_data = user_sales.get("sales", [])
+
+        # Format sales data
+        formatted_sales = []
+        for sale in sales_data:
+            formatted_sales.append({
+                "customer_name": sale.get("customer_name", "N/A"),
+                "customer_email": sale.get("customer_email", "N/A"),
+                "items": sale["items"],
+                "sub_total": sale.get("sub_total", 0),
+                "gst": sale.get("gst", 0),
+                "discount": sale.get("discount", 0),
+                "total": sale.get("grand_total", 0),
+                "date": sale.get("date", ""),
+            })
+
+        return JsonResponse({
+            "sales": formatted_sales,
+            "success": True
+        }, status=200)
+    
     else:
         return JsonResponse({"message": "Invalid request method"}, status=405)
 
@@ -860,6 +882,38 @@ def get_suggestions(request):
         else:
             return JsonResponse(
                 {"message": "No tems found", "success": False}, status=200
+            )
+    else:
+        return JsonResponse({"message": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def get_sales(request):
+    data = json.loads(request.body)
+    if request.method == "POST":
+        user_id = data["user_id"]
+        user_sales = sales_collection.find_one({"user_id": user_id})
+        date = user_sales["date"]
+        if user_sales:
+            user_sales = user_sales["sales"]
+            return JsonResponse(
+                {
+                    "message": "Sales Feteched successfully",
+                    "sales": user_sales,
+                    "success": True,
+                    "date": date,
+                },
+                status=200,
+            )
+        else:
+            return JsonResponse(
+                {
+                    "message": "Sales Feteched successfully",
+                    "sales": user_sales,
+                    "date": date,
+                    "success": False,
+                },
+                status=200,
             )
     else:
         return JsonResponse({"message": "Invalid request method"}, status=405)

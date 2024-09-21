@@ -3,7 +3,7 @@ import { Container, Nav } from "react-bootstrap";
 import { useLocation, useNavigate, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import "../Dashboard/Dashboard.css";
-import HomeContent from "../HomeContent/HomeContent";
+import HomeContent from "../Homecontent/HomeContent";
 import InventoryContent from "../InventoryContent/InventoryContent";
 import Reports from "../Reports/Reports";
 import SalesContent from "../SalesContent/SalesContent";
