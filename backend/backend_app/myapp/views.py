@@ -8,11 +8,19 @@ import uuid
 from bson import ObjectId
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+<<<<<<< HEAD
 # import pandas as pd
 # from sklearn.linear_model import LinearRegression
 # from sklearn.model_selection import train_test_split
 # from sklearn.preprocessing import LabelEncoder
 
+=======
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from bson.json_util import dumps
+>>>>>>> af224e9d6eff93482556c40d1588fc1fcbc28999
 from backend_app import settings
 
 client = MongoClient("mongodb://localhost:27017/")
@@ -24,7 +32,7 @@ items_collection = db.items
 contact_collection = db.contact
 sales_collection = db.sales
 orders_collection = db.orders
-
+reviews_collection = db.reviews
 
 @csrf_exempt
 def sign_in(request):
@@ -44,9 +52,7 @@ def sign_in(request):
             {
                 "message": f"Welcome {email}",
                 "user_id": user["user_id"],
-                "role": user[
-                    "role"
-                ],  # Assuming you have a 'role' field in the user collection
+                "role": user["role"],  # Assuming you have a 'role' field in the user collection
                 "success": True,
             },
             status=200,
@@ -299,7 +305,7 @@ def send_email(request):
         try:
             data = json.loads(request.body)
             email = data.get("email")
-            print(email)
+                   
             message = data.get("message")
             contact_id = data.get(
                 "contact_id"
@@ -402,9 +408,9 @@ def get_items(request):
                     status=201,
                 )
             else:
-                return JsonResponse({"message": "Error adding item", "success": False})
+                return JsonResponse({"message": "Error fetching item", "success": False})
         else:
-            return JsonResponse({"message": "Error adding item", "success": False})
+            return JsonResponse({"message": "Error fetching item", "success": False})
 
 
 @csrf_exempt
@@ -524,6 +530,7 @@ def add_sales(request):
         )
     else:
         return JsonResponse({"message": "Invalid request method"}, status=405)
+
 
 
 @csrf_exempt
@@ -678,6 +685,25 @@ def add_item_order(request):
         return JsonResponse({"message": "Invalid request method"}, status=405)
 
 
+@csrf_exempt
+def get_item_order(request):
+    if request.method == "GET":
+        user_id = request.GET.get("user_id")
+        if not user_id:
+            return JsonResponse({"message": "User ID not provided"}, status=400)
+
+        user_orders = orders_collection.find_one({"user_id": user_id})
+
+        if not user_orders:
+            return JsonResponse({"message": "No orders found for this user"}, status=404)
+
+        return JsonResponse({
+            "orders": user_orders["orders"],
+            "success": True,
+        }, status=200)
+    else:
+        return JsonResponse({"message": "Invalid request method"}, status=405)
+
 def send_sales_order_email(
     customer_name, customer_email, rows, subtotal, gst, discount, grand_total
 ):
@@ -708,12 +734,17 @@ def send_sales_order_email(
     )
 
 
-@csrf_exempt
-def get_sales(request):
-    data = json.loads(request.body)
-    if request.method == "POST":
-        user_id = data["user_id"]
+def get_sales_view(request):
+    if request.method == "GET":
+        user_id = request.GET.get("user_id")  # Get user_id from the request query params
+        if not user_id:
+            return JsonResponse({"error": "user_id is required"}, status=400)
+
         user_sales = sales_collection.find_one({"user_id": user_id})
+        if not user_sales:
+            return JsonResponse({
+                "message":"No sales found!"
+            })
         date = user_sales["date"]
         if user_sales:
             user_sales = user_sales["sales"]
@@ -863,3 +894,86 @@ def get_suggestions(request):
             )
     else:
         return JsonResponse({"message": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def get_sales(request):
+    data = json.loads(request.body)
+    if request.method == "POST":
+        user_id = data["user_id"]
+        user_sales = sales_collection.find_one({"user_id": user_id})
+        date = user_sales["date"]
+        if user_sales:
+            user_sales = user_sales["sales"]
+            return JsonResponse(
+                {
+                    "message": "Sales Feteched successfully",
+                    "sales": user_sales,
+                    "success": True,
+                    "date": date,
+                },
+                status=200,
+            )
+        else:
+            return JsonResponse(
+                {
+                    "message": "Sales Feteched successfully",
+                    "sales": user_sales,
+                    "date": date,
+                    "success": False,
+                },
+                status=200,
+            )
+    else:
+        return JsonResponse({"message": "Invalid request method"}, status=405)
+@csrf_exempt
+def add_review(request):
+    if request.method == "POST":
+        
+        data = json.loads(request.body)
+        print(data)
+        user_id = data.get("user_id")
+        name = data.get("name")
+        review_message = data.get("review_message")
+        msg = data.get("msg")
+        if not user_id or not name or not review_message or not msg:
+            return JsonResponse(
+                {"message": "Invalid request data", "success": False}, status=400
+            )
+
+        print("#"*30)
+
+    
+        review_data = {
+            "user_id": user_id,
+            "name": name,
+            "review_message": review_message,
+            "msg": msg
+        }
+        print(review_data)
+        reviews_collection.insert_one(review_data)
+        return JsonResponse({"message": "Review added successfully", "success": True}, status=201)
+
+
+
+@csrf_exempt
+def get_reviews(request):
+    if request.method == "GET":
+        try:
+            reviews = list(reviews_collection.find())
+            review_list = []
+            for review in reviews:
+                review_list.append({
+                    "user_id": review.get("user_id"),
+                    "name": review.get("name"),
+                    "review_message": review.get("review_message"),
+                    "msg": review.get("msg"),
+                })
+            review_list=list(review_list.__reversed__())
+            review_list=review_list[:5]
+            return JsonResponse({"reviews": review_list, "success": True}, status=200)
+
+        except Exception as e:
+            return JsonResponse({"message": f"Error retrieving reviews: {str(e)}", "success": False}, status=500)
+
+    return JsonResponse({"message": "Method not allowed", "success": False}, status=405)

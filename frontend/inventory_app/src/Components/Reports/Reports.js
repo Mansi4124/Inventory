@@ -45,10 +45,10 @@ const Reports = () => {
             if (res.data.success) {
                 return res.data.sales;
             } else {
-                throw new Error(res.data.message || "Failed to fetch sales data");
+                setError("No data available for reports.")
             }
         } catch (err) {
-            setError(err.message);
+            setError("No data available for reports.")
             return [];
         } finally {
             setLoading(false);
@@ -320,7 +320,7 @@ const Reports = () => {
             <h1>These are some reports prepared by us for you</h1>
             <div className='reports-item'>
                 {loading && <p>Loading...</p>}
-                {error && <p>Error: {error}</p>}
+                {error && <p>{error}</p>}
                 {salesChartData &&
                     <div>
                         <div className='reports-item'>
@@ -333,7 +333,7 @@ const Reports = () => {
             <hr />
             <div className='reports-item'>
                 {loading && <p>Loading...</p>}
-                {error && <p>Error: {error}</p>}
+                {error && <p>{error}</p>}
                 {profitChartData &&
                     <div>
                         <div className='reports-item'>
@@ -352,7 +352,7 @@ const Reports = () => {
                         placeholder="Enter customer name"
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
-                    />
+                        />
                 </div>
                 {customerSalesData && <Line data={customerSalesData} />}
             </div>
@@ -365,7 +365,7 @@ const Reports = () => {
                         placeholder="Enter item name"
                         value={itemName}
                         onChange={(e) => setItemName(e.target.value)}
-                    />
+                        />
                 </div>
                 {itemSalesData && <Line data={itemSalesData} />}
             </div>

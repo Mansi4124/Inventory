@@ -17,8 +17,12 @@ from .views import (
     edit_item,
     delete_item,
     add_item_order,
+    get_sales_view,
     get_sales,
-    get_suggestions
+    get_suggestions,
+    get_item_order,
+    add_review,
+    get_reviews
 )
 
 urlpatterns = [
@@ -37,8 +41,12 @@ urlpatterns = [
     path("get_items/", get_items),
     path("add_sales/", add_sales),
     path("add_item_order/", add_item_order),
+    path("get_item_order/", get_item_order),
     path("edit_item/<str:product_name>/", edit_item), 
     path("delete_item/<str:product_name>/", delete_item),
+    path("get_sales_view/", get_sales_view),
     path("get_sales/", get_sales),
     path("get_suggestions/", get_suggestions),
+    path("review/", add_review),
+    path("get_reviews/", get_reviews)
 ]
