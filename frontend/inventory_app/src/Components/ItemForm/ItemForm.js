@@ -58,7 +58,7 @@ function MyForm() {
       }
     }
 
-    const res = await axios.post("http://localhost:8000/add_item/", data);
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}/add_item/`, data);
 
     if (res.data.success === false) {
       setError(res.data.error)

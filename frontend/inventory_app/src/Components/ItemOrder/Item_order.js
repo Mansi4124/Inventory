@@ -84,7 +84,7 @@ export default function Item_orderForm() {
 
   const updateSelect = useCallback(async () => {
     const userId = getCookie('userId');
-    const res = await axios.post("http://localhost:8000/get_items/", { 'user_id': userId });
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}/get_items/`, { 'user_id': userId });
     var items = res.data.success ? res.data.user_items.products : [];
     items = items.filter((item) => item['category'] !== 'Composite');
     setItems(items);
@@ -116,7 +116,7 @@ export default function Item_orderForm() {
       }
     }
 
-    const res = await axios.post("http://localhost:8000/add_item_order/", data);
+    const res = await axios.post("${process.env.REACT_APP_API_URL}/add_item_order/", data);
     if (res.data.success) {
       setRows([{ quantity: '', costPrice: '', name: '' }]);
       setError('');

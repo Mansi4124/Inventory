@@ -31,7 +31,7 @@ const ViewItemOrder = () => {
 
     // Fetch orders from the backend
     axios
-      .get(`http://localhost:8000/get_item_order?user_id=${userId}`)
+      .get(`${process.env.REACT_APP_API_URL}/get_item_order?user_id=${userId}`)
       .then((response) => {
         if (response.data.success) {
           setOrders(response.data.orders);

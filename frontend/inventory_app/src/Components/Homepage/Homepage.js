@@ -101,7 +101,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/get_reviews/");
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/get_reviews/`);
         const data = response.data;
 
         if (data.success) {

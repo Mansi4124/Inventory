@@ -28,7 +28,7 @@ function MyOrganization() {
 
     const fetchOrganizationData = async (userId) => {
         try {
-            const response = await axios.post("http://localhost:8000/get_organization_data/", { user_id: userId });
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/get_organization_data/`, { user_id: userId });
             if (response.data.success) {
                 const orgData = response.data.org;
                 setOrganization({
@@ -53,7 +53,7 @@ function MyOrganization() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:8000/update_organization/", organization);
+            const response = await axios.post("${process.env.REACT_APP_API_URL}/update_organization/", organization);
             if (response.data.success) {
                 alert("Organization updated successfully!");
                 setIsEditing(false); // Switch back to view mode after saving

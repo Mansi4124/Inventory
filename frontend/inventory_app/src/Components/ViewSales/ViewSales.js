@@ -31,7 +31,7 @@ const ViewSales = () => {
 
     // Fetch sales from the backend
     axios
-      .get(`http://localhost:8000/get_sales_view?user_id=${userId}`)
+      .get(`${process.env.REACT_APP_API_URL}/get_sales_view?user_id=${userId}`)
       .then((response) => {
         const sortedSales = response.data.sales.sort(
           (a, b) => new Date(b.date) - new Date(a.date)

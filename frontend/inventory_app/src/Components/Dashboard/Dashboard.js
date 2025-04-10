@@ -44,8 +44,8 @@ const Dashboard = () => {
       if (userId) {
         try {
           const [userResponse, orgResponse] = await Promise.all([
-            axios.post("http://localhost:8000/get_customer_data/", { user_id: userId }),
-            axios.post("http://localhost:8000/get_organization_data/", { user_id: userId }),
+            axios.post(`${process.env.REACT_APP_API_URL}/get_customer_data/`, { user_id: userId }),
+            axios.post(`${process.env.REACT_APP_API_URL}/get_organization_data/`, { user_id: userId }),
           ]);
           
           if (userResponse.data.user) setData(userResponse.data.user);

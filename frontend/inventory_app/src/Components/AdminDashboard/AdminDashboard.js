@@ -13,7 +13,7 @@ const AdminDashboard = () => {
     // Fetch all contact queries
     const fetchQueries = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/get_contact_queries/');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/get_contact_queries/`);
         if (response.data.success) {
           const allQueries = response.data.queries;
           const nonReplied = allQueries.filter(query => !query.reply_sent);
@@ -44,7 +44,7 @@ const AdminDashboard = () => {
   
     console.log('Sending reply:', { email, message, contactId }); // Debugging line
   
-    axios.post('http://localhost:8000/send_email/', { email, message, contact_id: contactId })
+    axios.post(`${process.env.REACT_APP_API_URL}/send_email/`, { email, message, contact_id: contactId })
       .then((response) => {
         console.log('Server response:', response.data);
         

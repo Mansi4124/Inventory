@@ -41,11 +41,11 @@ const HomeContent = () => {
     const fetchData = async () => {
       const userId = getCookie('userId');
       if (userId) {
-        const res = await axios.post("http://localhost:8000/get_organization_data/", { "user_id": userId });
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/get_organization_data/`, { "user_id": userId });
         if (res.data.success) {
           setOrgData(res.data.org);
 
-          const res1 = await axios.post("http://localhost:8000/get_items/", { "user_id": userId });
+          const res1 = await axios.post(`${process.env.REACT_APP_API_URL}/get_items/`, { "user_id": userId });
           if (res1.data.success) {
             const user_items = res1.data.user_items.products;
             const user_normal_items = user_items.filter((item) => item['category'] !== "Composite");

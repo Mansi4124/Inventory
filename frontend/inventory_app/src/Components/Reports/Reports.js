@@ -41,7 +41,7 @@ const Reports = () => {
     const fetchSalesData = async () => {
         try {
             setLoading(true);
-            const res = await axios.post("http://localhost:8000/get_sales/", { 'user_id': getCookie("userId") });
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/get_sales/`, { 'user_id': getCookie("userId") });
             if (res.data.success) {
                 return res.data.sales;
             } else {

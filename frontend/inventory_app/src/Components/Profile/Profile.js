@@ -29,7 +29,7 @@ function Profile() {
 
     const fetchProfileData = async (userId) => {
         try {
-            const res = await axios.post("http://localhost:8000/get_profile/", { user_id: userId });
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/get_profile/`, { user_id: userId });
             if (res.data.success) {
                 setProfile(res.data.user);
             } else {
@@ -61,7 +61,7 @@ function Profile() {
                 confirm_password: passwords.confirmPassword,
             };
 
-            const profileRes = await axios.post("http://localhost:8000/update_profile/", profileData);
+            const profileRes = await axios.post("${process.env.REACT_APP_API_URL}/update_profile/", profileData);
             if (profileRes.data.success) {
                 setIsEditing(false);
                 alert("Profile updated successfully!");

@@ -56,7 +56,7 @@ function MyForm4() {
 
   const updateSelect = useCallback(async () => {
     const userId = getCookie("userId");
-    const res = await axios.post("http://localhost:8000/get_items/", {
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}/get_items/`, {
       user_id: userId,
     });
     const items = res.data.success ? res.data.user_items.products : [];
@@ -154,7 +154,7 @@ function MyForm4() {
       date: new Date()
     };
 
-    const res = await axios.post("http://localhost:8000/add_sales/", data);
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}/add_sales/`, data);
     if (!res.data.success) {
       setError(res.data.error);
     } else {

@@ -37,7 +37,7 @@ function MyForm1() {
 
   const updateSelect = useCallback(async () => {
     const userId = getCookie('userId');
-    const res = await axios.post("http://localhost:8000/get_items/", { 'user_id': userId });
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}/get_items/`, { 'user_id': userId });
     var items = res.data.success ? res.data.user_items.products : [];
     items = items.filter((item) => item['category'] !== 'Composite');
     setItems(items);
@@ -108,7 +108,7 @@ function MyForm1() {
     }
 
     if (newName) {
-      const res = await axios.post("http://localhost:8000/add_item/", data);
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/add_item/`, data);
 
       if (res.data.success === false) {
         setError(res.data.error)

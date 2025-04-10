@@ -40,7 +40,7 @@ const ReviewForm = () => {
     setSuccess("");
 
     try {
-      const response = await axios.post("http://localhost:8000/review/", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/review/`, {
         user_id: userId,
         name: name,
         review_message: review_message,

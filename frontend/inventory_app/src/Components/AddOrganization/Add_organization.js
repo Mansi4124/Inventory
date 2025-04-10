@@ -58,7 +58,7 @@ function Add_organization() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await axios.post("http://localhost:8000/add_organization/", org)
+        await axios.post(`${process.env.REACT_APP_API_URL}/add_organization/`, org)
         navigate('/dashboard');
     };
 

@@ -21,7 +21,7 @@ function Sign_in() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:8000/sign_in/", user);
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/sign_in/`, user);
       const data = res.data;
 
       if (data.success) {

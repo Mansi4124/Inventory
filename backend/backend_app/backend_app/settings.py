@@ -33,9 +33,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['inventory-2-8xj2.onrender.com', 'localhost', '127.0.0.1']
 
 
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    'https://inventory-2-8xj2.onrender.com',
+]
 # Application definition
 
 INSTALLED_APPS = [

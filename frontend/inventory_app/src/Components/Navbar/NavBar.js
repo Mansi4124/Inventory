@@ -39,7 +39,7 @@ const NavBar = () => {
       const userId = getCookie('userId');
       if (userId) {
         setLoggedIn(true);
-        const res = await axios.post("http://localhost:8000/get_organization_data/", { "user_id": userId });
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/get_organization_data/`, { "user_id": userId });
         if (res.data.success) {
           setOrgAdded(true);
           setOrgName(res.data.org['orgName']);

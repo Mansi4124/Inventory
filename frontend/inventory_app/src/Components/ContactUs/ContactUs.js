@@ -14,7 +14,7 @@ const ContactUs = () => {
     setSuccess('');
 
     try {
-      const response = await fetch('http://localhost:8000/contact_us/', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/contact_us/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

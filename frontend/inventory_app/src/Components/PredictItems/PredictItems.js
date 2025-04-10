@@ -29,7 +29,7 @@ const PredictItems = () => {
     const fetchSuggestions = async (e) => {
         e.preventDefault();
 
-        const date_res = await axios.post("http://localhost:8000/get_sales/", { 'user_id': getCookie("userId") });
+        const date_res = await axios.post(`${process.env.REACT_APP_API_URL}/get_sales/`, { 'user_id': getCookie("userId") });
 
         if (date_res.data.success) {
 
@@ -43,7 +43,7 @@ const PredictItems = () => {
 
             console.log(days_diff)
 
-            const res = await axios.post("http://localhost:8000/get_suggestions/", {
+            const res = await axios.post("${process.env.REACT_APP_API_URL}/get_suggestions/", {
                 'user_id': getCookie("userId"),
                 'budget': budget,
                 'days_diff': days_diff

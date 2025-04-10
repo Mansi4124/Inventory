@@ -43,7 +43,7 @@ const Item_Management = () => {
 
     const fetchItems = async (userId) => {
         try {
-            const response = await axios.post('http://localhost:8000/get_items/', { user_id: userId });
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/get_items/`, { user_id: userId });
             if (response.data.success) {
                 setItems(response.data.user_items.products);
             } else {
@@ -76,7 +76,7 @@ const Item_Management = () => {
             }
 
             try {
-                const response = await axios.put(`http://localhost:8000/edit_item/${originalProductName}/`, {
+                const response = await axios.put(`${process.env.REACT_APP_API_URL}/edit_item/${originalProductName}/`, {
                     user_id: userId,
                     product_details: currentItem
                 });
@@ -109,7 +109,7 @@ const Item_Management = () => {
             console.log("Editing Composite Item:", currentComposite);
 
             try {
-                const response = await axios.put(`http://localhost:8000/edit_item/${originalProductName}/`, {
+                const response = await axios.put(`${process.env.REACT_APP_API_URL}/edit_item/${originalProductName}/`, {
                     user_id: userId,
                     product_details: currentComposite // Ensure new product_name is here
                 });
@@ -139,7 +139,7 @@ const Item_Management = () => {
 
     const handleDeleteItem = async (product_name) => {
         try {
-            const response = await axios.delete(`http://localhost:8000/delete_item/${product_name}/`, {
+            const response = await axios.delete(`${process.env.REACT_APP_API_URL}/delete_item/${product_name}/`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
