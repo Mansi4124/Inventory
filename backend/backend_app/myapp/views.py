@@ -1,3 +1,4 @@
+import os
 from django.http import JsonResponse
 from rest_framework import viewsets
 from django.views.decorators.csrf import csrf_exempt
@@ -15,9 +16,12 @@ from sklearn.preprocessing import LabelEncoder
 from bson.json_util import dumps
 from backend_app import settings
 
-client = MongoClient("mongodb://localhost:27017/")
-
-db = client.my_database
+mongo_db_uri = os.getenv('MONGO_DB_URI')
+mongo_db_database=os.getenv('MONGO_DB_NAME')
+client = MongoClient(
+    mongo_db_uri
+)
+db = client[mongo_db_database]
 customer_collection = db.customers
 organization_collection = db.organization
 items_collection = db.items
