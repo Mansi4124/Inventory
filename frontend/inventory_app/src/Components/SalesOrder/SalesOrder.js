@@ -181,7 +181,7 @@ function MyForm4() {
   return (
     <section id="salesorder" className="salesorder-section">
       <div className="salesorder-container">
-        <form className="myform-container">
+        <form className="myform-container"  onSubmit={handleSalesSave}>
           <fieldset className="myform-fieldset">
             <legend className="myform-legend">Sales Order</legend>
 
@@ -201,7 +201,7 @@ function MyForm4() {
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
                       className="myform-input myform-input-full-width"
-                      required
+                      
                     />
                   </td>
                 </tr>
@@ -431,16 +431,11 @@ function MyForm4() {
                     <button
                       type="submit"
                       className="myform-button myform-button-save"
-                      onClick={handleSalesSave}
+                     
                     >
                       Save
                     </button>
-                    <button
-                      type="button"
-                      className="myform-button myform-button-cancel"
-                    >
-                      Cancel
-                    </button>
+                    
                   </td>
                 </tr>
               </tbody>

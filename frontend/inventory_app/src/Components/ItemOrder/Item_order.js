@@ -128,7 +128,7 @@ export default function Item_orderForm() {
   return (
     <section id='itemorder' className='itemorder-section'>
       <div className='itemorder-container'>
-      <form className="myform-container">
+      <form className="myform-container" onSubmit={handleItemOrder}>
         <fieldset className="myform-fieldset">
           <legend className="myform-legend">Add Order Details</legend>
 
@@ -146,7 +146,7 @@ export default function Item_orderForm() {
                     className="myform-input myform-input-full-width"
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
-                    required
+                  
                   />
                   {error !== "" && <p style={{ color: 'red' }}>{error}</p>}
                 </td>
@@ -168,7 +168,7 @@ export default function Item_orderForm() {
                       {rows.map((row, index) => (
                         <tr key={index}>
                           <td>
-                            <select name='name' className="myform-input" value={row.name} onChange={event => handleItemSelect(index, event)}>
+                            <select name='name' className="myform-input" value={row.name} onChange={event => handleItemSelect(index, event)} required>
                               <option value='' hidden>Select Items</option>
                               {items.length === 0 && <option disabled>No Items Found</option>}
                               {items.map((item, idx) => (
@@ -269,12 +269,10 @@ export default function Item_orderForm() {
               <tr>
 
                 <td colSpan="2" className="myform-button-cell">
-                  <button type="submit" className="myform-button myform-button-save" onClick={handleItemOrder}>
+                  <button type="submit" className="myform-button myform-button-save" >
                     Save
                   </button>
-                  <button type="button" className="myform-button myform-button-cancel">
-                    Cancel
-                  </button>
+                 
                 </td>
               </tr>
             </tbody>

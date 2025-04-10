@@ -894,6 +894,10 @@ def get_sales(request):
     if request.method == "POST":
         user_id = data["user_id"]
         user_sales = sales_collection.find_one({"user_id": user_id})
+        if not user_sales:
+            return JsonResponse({
+                "message":"No sales found!"
+            })
         date = user_sales["date"]
         if user_sales:
             user_sales = user_sales["sales"]

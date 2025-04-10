@@ -61,7 +61,16 @@ function MyForm1() {
 
   const addNewRow = (event) => {
     event.preventDefault();
-    setRows([...rows, { name: '', quantity: 0, sellingPrice: '', costPrice: '' }]);
+    console.log(rows.length);
+    if (rows.length < 5){
+     
+      
+      setRows([...rows, { name: '', quantity: 0, sellingPrice: '', costPrice: '' }]);
+      
+    }
+    else{
+      alert("Maximum number of rows reached");  
+    }
   };
 
   const removeRow = (index) => {
@@ -71,10 +80,11 @@ function MyForm1() {
   };
 
   const handleCompositeSave = async (e) => {
+    e.preventDefault()
     if (newName === "") {
       setError("Item name cannot be empty!")
     }
-    e.preventDefault();
+   
     const userId = getCookie('userId');
     const quantities = {}
     const cost_prices = {}
@@ -176,7 +186,7 @@ function MyForm1() {
                       {rows.map((row, index) => (
                         <tr key={index}>
                           <td>
-                            <select name='name' className="myform-input" value={row.name} onChange={event => handleItemSelect(index, event)}>
+                            <select name= 'name' className="myform-input" value={row.name} onChange={event => handleItemSelect(index, event)} required>
                               <option value='' hidden>Select Items</option>
                               {items.length === 0 && <option disabled>No Items Found</option>}
                               {items.map((item, idx) => (
@@ -228,13 +238,18 @@ function MyForm1() {
                       <tr>
                         <td>
                           <div className="pt-2">
-                            <button className="myform-add-row-button" onClick={addNewRow}>
-                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="icon icon-sm text-open fill-azure-blue align-middle">
-                                <path d="M256 15C122.9 15 15 122.9 15 256s107.9 241 241 241 241-107.9 241-241S389.1 15 256 15zm122 263H278v100c0 12.2-9.8 22-22 22s-22-9.8-22-22V278H134c-12.2 0-22-9.8-22-22s9.8-22 22-22h100V134c0-12.2 9.8-22 22-22s22 9.8 22 22v100h100c12.2 0 22-9.8 22-22s-9.8-22-22-22z"></path>
-                                <path fill="#FFF" d="M378 234H278V134c0-12.2-9.8-22-22-22s-22 9.8-22 22v100H134c-12.2 0-22 9.8-22 22s9.8 22 22 22h100v100c0 12.2 9.8 22 22 22s22-9.8 22-22V256h100c12.2 0 22-9.8 22-22s-9.8-22-22-22z"></path>
-                              </svg>
-                              <span>Add New Row</span>
-                            </button>
+
+                          {
+                                rows.length<5 && (<button className="myform-add-row-button"  onClick={addNewRow}>
+                              
+                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="icon icon-sm text-open fill-azure-blue align-middle">
+                                    <path d="M256 15C122.9 15 15 122.9 15 256s107.9 241 241 241 241-107.9 241-241S389.1 15 256 15zm122 263H278v100c0 12.2-9.8 22-22 22s-22-9.8-22-22V278H134c-12.2 0-22-9.8-22-22s9.8-22 22-22h100V134c0-12.2 9.8-22 22-22s22 9.8 22 22v100h100c12.2 0 22-9.8 22-22s-9.8-22-22-22z"></path>
+                                    <path fill="#FFF" d="M378 234H278V134c0-12.2-9.8-22-22-22s-22 9.8-22 22v100H134c-12.2 0-22 9.8-22 22s9.8 22 22 22h100v100c0 12.2 9.8 22 22 22s22-9.8 22-22V256h100c12.2 0 22-9.8 22-22s-9.8-22-22-22z"></path>
+                                  </svg>
+                                  <span>Add New Row</span>
+                                </button>)
+                              }
+                            
                           </div>
                         </td>
                         <td className="myform-button-cell">Total:</td>
@@ -254,12 +269,10 @@ function MyForm1() {
               <tr>
 
                 <td colSpan="2" className="myform-button-cell">
-                  <button type="submit" className="myform-button myform-button-save" onClick={handleCompositeSave}>
+                  <button type="submit" className="myform-button myform-button-save" >
                     Save
                   </button>
-                  <button type="button" className="myform-button myform-button-cancel">
-                    Cancel
-                  </button>
+                  
                 </td>
               </tr>
             </tbody>

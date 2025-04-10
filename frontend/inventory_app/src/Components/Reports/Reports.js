@@ -46,6 +46,7 @@ const Reports = () => {
                 return res.data.sales;
             } else {
                 setError("No data available for reports.")
+
             }
         } catch (err) {
             setError("No data available for reports.")
@@ -147,155 +148,163 @@ const Reports = () => {
 
     const fetchReports = async () => {
         const sales = await fetchSalesData();
-        if (sales.length > 0) {
-            const { salesData, profitData } = processSalesData(sales, 6);
-            updateCharts(salesData, profitData);
+        if (sales) {
+            if (sales.length > 0) {
+                const { salesData, profitData } = processSalesData(sales, 6);
+                updateCharts(salesData, profitData);
+            }
         }
     };
 
     const fetchCustomerSales = async () => {
         const sales = await fetchSalesData();
-        if (sales.length > 0) {
-            const customerSalesData = {};
-            const currentDate = new Date();
-            const currentMonth = currentDate.getMonth();
-            const currentYear = currentDate.getFullYear();
+        if (sales) {
 
-            for (let i = 0; i < 6; i++) {
-                let monthIndex = currentMonth - i;
-                let year = currentYear;
+            if (sales.length > 0) {
+                const customerSalesData = {};
+                const currentDate = new Date();
+                const currentMonth = currentDate.getMonth();
+                const currentYear = currentDate.getFullYear();
 
-                if (monthIndex < 0) {
-                    monthIndex += 12;
-                    year--;
+                for (let i = 0; i < 6; i++) {
+                    let monthIndex = currentMonth - i;
+                    let year = currentYear;
+
+                    if (monthIndex < 0) {
+                        monthIndex += 12;
+                        year--;
+                    }
+
+                    const monthName = months[monthIndex];
+                    const key = `${monthName} ${year}`;
+                    customerSalesData[key] = 0;
                 }
 
-                const monthName = months[monthIndex];
-                const key = `${monthName} ${year}`;
-                customerSalesData[key] = 0;
-            }
+                sales.forEach(sale => {
+                    if (sale['customer_name'].toLowerCase() === customerName.toLowerCase()) {
+                        const salesDate = new Date(sale['date']);
+                        const salesMonth = salesDate.getMonth();
+                        const salesYear = salesDate.getFullYear();
 
-            sales.forEach(sale => {
-                if (sale['customer_name'].toLowerCase() === customerName.toLowerCase()) {
-                    const salesDate = new Date(sale['date']);
-                    const salesMonth = salesDate.getMonth();
-                    const salesYear = salesDate.getFullYear();
+                        for (let i = 0; i < 6; i++) {
+                            let monthIndex = currentMonth - i;
+                            let year = currentYear;
 
-                    for (let i = 0; i < 6; i++) {
-                        let monthIndex = currentMonth - i;
-                        let year = currentYear;
+                            if (monthIndex < 0) {
+                                monthIndex += 12;
+                                year--;
+                            }
 
-                        if (monthIndex < 0) {
-                            monthIndex += 12;
-                            year--;
-                        }
+                            if (salesMonth === monthIndex && salesYear === year) {
+                                const monthName = months[monthIndex];
+                                const key = `${monthName} ${year}`;
 
-                        if (salesMonth === monthIndex && salesYear === year) {
-                            const monthName = months[monthIndex];
-                            const key = `${monthName} ${year}`;
+                                let totalSalesAmount = 0;
+                                sale.items.forEach(item => {
+                                    const salesAmount = parseInt(item.quantity) * item.sellingPrice;
+                                    totalSalesAmount += salesAmount;
+                                });
 
-                            let totalSalesAmount = 0;
-                            sale.items.forEach(item => {
-                                const salesAmount = parseInt(item.quantity) * item.sellingPrice;
-                                totalSalesAmount += salesAmount;
-                            });
-
-                            customerSalesData[key] += totalSalesAmount;
+                                customerSalesData[key] += totalSalesAmount;
+                            }
                         }
                     }
-                }
-            });
+                });
 
-            const salesLabels = Object.keys(customerSalesData);
-            const salesDataset = Object.values(customerSalesData);
+                const salesLabels = Object.keys(customerSalesData);
+                const salesDataset = Object.values(customerSalesData);
 
-            setCustomerSalesData({
-                labels: salesLabels,
-                datasets: [
-                    {
-                        label: `Sales for ${customerName}`,
-                        data: salesDataset,
-                        fill: false,
-                        backgroundColor: 'rgba(255, 159, 64, 0.6)',
-                        borderColor: 'rgba(255, 159, 64, 1)',
-                        tension: 0.1,
-                    },
-                ],
-            });
+                setCustomerSalesData({
+                    labels: salesLabels,
+                    datasets: [
+                        {
+                            label: `Sales for ${customerName}`,
+                            data: salesDataset,
+                            fill: false,
+                            backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            tension: 0.1,
+                        },
+                    ],
+                });
+            }
         }
     };
 
     const fetchItemSales = async () => {
         const sales = await fetchSalesData();
-        if (sales.length > 0) {
-            const itemSalesData = {};
-            const currentDate = new Date();
-            const currentMonth = currentDate.getMonth();
-            const currentYear = currentDate.getFullYear();
+        if (sales) {
 
-            for (let i = 0; i < 6; i++) {
-                let monthIndex = currentMonth - i;
-                let year = currentYear;
+            if (sales.length > 0) {
+                const itemSalesData = {};
+                const currentDate = new Date();
+                const currentMonth = currentDate.getMonth();
+                const currentYear = currentDate.getFullYear();
 
-                if (monthIndex < 0) {
-                    monthIndex += 12;
-                    year--;
+                for (let i = 0; i < 6; i++) {
+                    let monthIndex = currentMonth - i;
+                    let year = currentYear;
+
+                    if (monthIndex < 0) {
+                        monthIndex += 12;
+                        year--;
+                    }
+
+                    const monthName = months[monthIndex];
+                    const key = `${monthName} ${year}`;
+                    itemSalesData[key] = 0;
                 }
 
-                const monthName = months[monthIndex];
-                const key = `${monthName} ${year}`;
-                itemSalesData[key] = 0;
-            }
+                sales.forEach(sale => {
+                    if (sale.items.some(item => item.name.toLowerCase() === itemName.toLowerCase())) {
+                        const salesDate = new Date(sale['date']);
+                        const salesMonth = salesDate.getMonth();
+                        const salesYear = salesDate.getFullYear();
 
-            sales.forEach(sale => {
-                if (sale.items.some(item => item.name.toLowerCase() === itemName.toLowerCase())) {
-                    const salesDate = new Date(sale['date']);
-                    const salesMonth = salesDate.getMonth();
-                    const salesYear = salesDate.getFullYear();
+                        for (let i = 0; i < 6; i++) {
+                            let monthIndex = currentMonth - i;
+                            let year = currentYear;
 
-                    for (let i = 0; i < 6; i++) {
-                        let monthIndex = currentMonth - i;
-                        let year = currentYear;
+                            if (monthIndex < 0) {
+                                monthIndex += 12;
+                                year--;
+                            }
 
-                        if (monthIndex < 0) {
-                            monthIndex += 12;
-                            year--;
-                        }
+                            if (salesMonth === monthIndex && salesYear === year) {
+                                const monthName = months[monthIndex];
+                                const key = `${monthName} ${year}`;
 
-                        if (salesMonth === monthIndex && salesYear === year) {
-                            const monthName = months[monthIndex];
-                            const key = `${monthName} ${year}`;
+                                let totalSalesAmount = 0;
+                                sale.items.forEach(item => {
+                                    if (item.name.toLowerCase() === itemName.toLowerCase()) {
+                                        const salesAmount = parseInt(item.quantity) * item.sellingPrice;
+                                        totalSalesAmount += salesAmount;
+                                    }
+                                });
 
-                            let totalSalesAmount = 0;
-                            sale.items.forEach(item => {
-                                if (item.name.toLowerCase() === itemName.toLowerCase()) {
-                                    const salesAmount = parseInt(item.quantity) * item.sellingPrice;
-                                    totalSalesAmount += salesAmount;
-                                }
-                            });
-
-                            itemSalesData[key] += totalSalesAmount;
+                                itemSalesData[key] += totalSalesAmount;
+                            }
                         }
                     }
-                }
-            });
+                });
 
-            const salesLabels = Object.keys(itemSalesData);
-            const salesDataset = Object.values(itemSalesData);
+                const salesLabels = Object.keys(itemSalesData);
+                const salesDataset = Object.values(itemSalesData);
 
-            setItemSalesData({
-                labels: salesLabels,
-                datasets: [
-                    {
-                        label: `Sales for ${itemName}`,
-                        data: salesDataset,
-                        fill: false,
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        tension: 0.1,
-                    },
-                ],
-            });
+                setItemSalesData({
+                    labels: salesLabels,
+                    datasets: [
+                        {
+                            label: `Sales for ${itemName}`,
+                            data: salesDataset,
+                            fill: false,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            tension: 0.1,
+                        },
+                    ],
+                });
+            }
         }
     };
 
@@ -352,7 +361,7 @@ const Reports = () => {
                         placeholder="Enter customer name"
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
-                        />
+                    />
                 </div>
                 {customerSalesData && <Line data={customerSalesData} />}
             </div>
@@ -365,7 +374,7 @@ const Reports = () => {
                         placeholder="Enter item name"
                         value={itemName}
                         onChange={(e) => setItemName(e.target.value)}
-                        />
+                    />
                 </div>
                 {itemSalesData && <Line data={itemSalesData} />}
             </div>

@@ -39,7 +39,7 @@ const ViewSales = () => {
         setSales(sortedSales);
       })
       .catch((error) => {
-        setError(error.response?.data?.message || "Error fetching sales data");
+        setError(error.response?.data?.message || "No Sales Found! Please Add Sales");
       });
   }, []);
 
@@ -60,10 +60,9 @@ const ViewSales = () => {
                 <th>Customer Name</th>
                 <th>Customer Email</th>
                 <th>Items</th>
-                <th>Sub Total</th>
                 <th>GST</th>
                 <th>Discount</th>
-                <th>Total</th>
+                <th>Sub Total</th>
                 <th>Date</th>
               </tr>
             </thead>
@@ -81,10 +80,9 @@ const ViewSales = () => {
                       ))}
                     </ul>
                   </td>
-                  <td>{sale.sub_total}</td>
                   <td>{sale.gst}</td>
                   <td>{sale.discount}</td>
-                  <td>{sale.total}</td>
+                  <td>{sale.grand_total}</td>
                   <td>{new Date(sale.date).toLocaleDateString()}</td> {/* Format the date */}
                 </tr>
               ))}
