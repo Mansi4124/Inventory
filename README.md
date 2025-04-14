@@ -1,8 +1,12 @@
 # 📦 Inventory Management System
 
-An intelligent inventory management system built using **Django** as the backend framework with **MongoDB**. This application helps users manage their inventory, track stock performance, and make smart restocking decisions using integrated **Machine Learning** predictions.
+An intelligent inventory management system built using **React** as the frontend and **Django** as the backend framework with **MongoDB**. This application helps users manage their inventory, track stock performance, and make smart restocking decisions using integrated **Machine Learning** predictions.
 
 ---
+## ⚙️ Tech Stack
+![React](https://img.shields.io/badge/Frontend-React-blue)
+![Django](https://img.shields.io/badge/Backend-Django-green)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen)
 
 ## 🚀 **[👉 CHECK IT LIVE 👈][](https://inventory-vpom.vercel.app/)**
 
