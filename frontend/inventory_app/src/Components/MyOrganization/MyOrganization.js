@@ -53,7 +53,7 @@ function MyOrganization() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("${process.env.REACT_APP_API_URL}/update_organization/", organization);
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/update_organization/`, organization);
             if (response.data.success) {
                 alert("Organization updated successfully!");
                 setIsEditing(false); // Switch back to view mode after saving

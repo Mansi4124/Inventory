@@ -295,7 +295,7 @@ const HomePage = () => {
       </section>
 
 
-      <section className="about-carousel-section">
+      {/* <section className="about-carousel-section">
         <h1>About Us</h1>
         <div className="about-carousel">
           <button className="prev-arrow" onClick={moveToPrevAboutSlide}>&#10094;</button>
@@ -333,7 +333,7 @@ const HomePage = () => {
             ></span>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* <section id="contact" className="contact-section">
         <div className="contact-container">

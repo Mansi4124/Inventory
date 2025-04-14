@@ -43,7 +43,7 @@ const PredictItems = () => {
 
             console.log(days_diff)
 
-            const res = await axios.post("${process.env.REACT_APP_API_URL}/get_suggestions/", {
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/get_suggestions/`, {
                 'user_id': getCookie("userId"),
                 'budget': budget,
                 'days_diff': days_diff

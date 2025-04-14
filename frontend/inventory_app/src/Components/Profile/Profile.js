@@ -61,7 +61,7 @@ function Profile() {
                 confirm_password: passwords.confirmPassword,
             };
 
-            const profileRes = await axios.post("${process.env.REACT_APP_API_URL}/update_profile/", profileData);
+            const profileRes = await axios.post(`${process.env.REACT_APP_API_URL}/update_profile/`, profileData);
             if (profileRes.data.success) {
                 setIsEditing(false);
                 alert("Profile updated successfully!");
