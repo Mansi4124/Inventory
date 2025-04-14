@@ -38,7 +38,7 @@ git clone https://github.com/your-username/inventory-management.git
 ```
 📦 Frontend Setup (/frontend)
 ```bash
-cd frontend
+cd frontend/inventory_app
 npm install
 npm start          # Run in dev mode
 npm run build      # Create production build
@@ -51,7 +51,7 @@ REACT_APP_BACKEND_URL='https://yourbackend.onrender.com'
 
 🔧 Backend Setup (/backend)
 ```bash
-cd backend
+cd backend/backend_app
 pip install -r requirements.txt
 ```
 
