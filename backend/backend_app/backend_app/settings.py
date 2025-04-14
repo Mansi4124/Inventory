@@ -35,12 +35,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 ALLOWED_HOSTS = ['inventory-2-8xj2.onrender.com', 'localhost', '127.0.0.1']
 
-
-
-CORS_ALLOWED_ORIGINS = [
-    ":3000",
-    'https://inventory-2-8xj2.onrender.com',
-]
 # Application definition
 
 INSTALLED_APPS = [
@@ -143,6 +137,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://inventory-vpom-ebtwkkgbq-mansis-projects-6a18fec3.vercel.app/"
 ]
 
 # To allow specific HTTP methods
