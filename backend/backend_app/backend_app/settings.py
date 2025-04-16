@@ -137,7 +137,8 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://inventory-vpom-ebtwkkgbq-mansis-projects-6a18fec3.vercel.app/"
+    "https://inventory-vpom-ebtwkkgbq-mansis-projects-6a18fec3.vercel.app/",
+    "https://inventory-vpom.vercel.app/"
 ]
 
 # To allow specific HTTP methods
