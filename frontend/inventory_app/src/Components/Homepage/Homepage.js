@@ -64,7 +64,7 @@ const about = [
     backgroundColor: "#ebe1bb"
   },
   {
-    name: "Ganpat Kumawat",
+    name: "Ganpat Kumavat",
     contactNo: "9725370778",
     image: "ganpat.png",
     linkedin: "https://www.linkedin.com/in/ganpat-kumawat-b51571302/",
@@ -123,6 +123,7 @@ const HomePage = () => {
 
     return () => clearInterval(intervalId);
   }, []);
+ 
 
   const nextSlide = () => {
     setCurrentSlide((currentSlide + 1) % testimonials.length);
@@ -135,6 +136,8 @@ const HomePage = () => {
   const setSlide = (index) => {
     setCurrentSlide(index);
   };
+
+  const [aboutCurrentSlide, setAboutCurrentSlide] = useState(1); // Renamed state variables
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -163,22 +166,22 @@ const HomePage = () => {
       navigate('/sign_in');
     }
   };
-
   const getVisibleAboutSlides = () => {
     const prevIndex = (aboutCurrentSlide - 1 + about.length) % about.length;
     const nextIndex = (aboutCurrentSlide + 1) % about.length;
     return [prevIndex, aboutCurrentSlide, nextIndex];
   };
 
+
   return (
     <>
       <div className="home-container">
         <section>
           <header className="hero">
-            <h1>Inventory Management Software Designed For Small Businesses</h1>
-            <p>Manage orders. Track inventory. Handle GST billing. One inventory management software to run all your inventory operations.</p>
+            <h1>Inventory management software designed for small businesses</h1>
+            <p>Manage orders. Track inventory. Handle GST billing. Oversee warehouses. One inventory management software to run all your inventory operations.</p>
             <button className="cta-button" onClick={handleGetStartedClick}>Get Started</button>
-          </header>
+                      </header>
 
           <div className="ratings-section">
             <div className="rating-1 rating-block">
@@ -374,17 +377,17 @@ const HomePage = () => {
 
         </div>
         <div className="col">
-          <h3>Features</h3>
+          <h4>Features</h4>
           <a href="/dashboard">Dashboard</a>
           <a href="/inventory">Inventory</a>
           <a href="/contact_us">Contact Us</a>
           <a href="/add-organization">Add Organization</a>
 
-          <a href="#/reports">Reports</a>
-
+          <a href="/reports">Reports</a>
+  <a href="/reports">All features</a>
         </div>
         <div className="col">
-          <h3>About</h3>
+          <h4>About</h4>
           <a href="/profile">My Account</a>
           <a href="/my-organization">My Organization</a>
           <a href="/features">Features</a>

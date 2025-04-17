@@ -9,11 +9,19 @@ import uuid
 from bson import ObjectId
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+<<<<<<< HEAD
+# import pandas as pd
+# from sklearn.linear_model import LinearRegression
+# from sklearn.model_selection import train_test_split
+# from sklearn.preprocessing import LabelEncoder
+
+=======
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from bson.json_util import dumps
+>>>>>>> af224e9d6eff93482556c40d1588fc1fcbc28999
 from backend_app import settings
 
 mongo_db_uri = os.getenv('MONGO_DB_URI')
